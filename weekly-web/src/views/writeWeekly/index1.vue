@@ -49,83 +49,83 @@
     </div>
 </template>
 <script>
-    import Vue from 'vue'
-    export default {
-        data() {
-            return {
-                tabledatas: [],
-                multipleSelection: [],
-            }
-        },
-        created() {
-            this.tabledatas = [
-                { title: '标题1', text: 's111sssa' },
-                { title: '标题2', text: 'ss222ssa' },
-            ]
-            this.tabledatas.map(i => {
-                i.show = false
-                return i
-            })
-        },
-        methods: {
-            edit(row, index) {
-                row.show = row.show ? false : true
-                Vue.set(this.tabledatas, index, row)
-                // 修改后保存
-            },
-            editAll() {
-                this.tabledatas.map((i, index) => {
-                    i.show = true
-                    Vue.set(this.tabledatas, index, i)
-                })
-            },
-            submit() {
-                this.tabledatas.map((i, index) => {
-                    i.show = false
-                    Vue.set(this.tabledatas, index, i)
-                })
-            },
-            // 单个复制
-            cope(val, index) {
-     			this.tabledatas.splice(index, 0,JSON.parse(JSON.stringify(val)))
-   			},  
-            // 单个删除
-            delect(index) {
-                this.tabledatas.splice(index, 1)
-            },
-            //批量新增
-            addAll() {
-                if (this.multipleSelection.length == 0) {
-                    let list = {
-                        title: "",
-                        text: ""
-                    }
-                    this.tabledatas.push(list)
-                } else {
-                     this.multipleSelection.forEach((val, index)=> {
-                   		this.tabledatas.splice(index, 0,JSON.parse(JSON.stringify(val)))
-                    });
-                }
-            },
-            //批量删除
-            delectAll() {
-                for (let i = 0; i < this.tabledatas.length; i++) {
-                    const element = this.tabledatas[i];
-                    element.id = i
-                }
-                if (this.multipleSelection.length == 0) this.$message.error('请先至少选择一项')
-                this.multipleSelection.forEach(element => {
-                    this.tabledatas.forEach((e, i) => {
-                        if (element.id == e.id) {
-                            this.tabledatas.splice(i, 1)
-                        }
-                    });
-                });
-            },
-            //选
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            }
-        },
+import Vue from 'vue'
+export default {
+  data () {
+    return {
+      tabledatas: [],
+      multipleSelection: []
     }
+  },
+  created () {
+    this.tabledatas = [
+      { title: '标题1', text: 's111sssa' },
+      { title: '标题2', text: 'ss222ssa' }
+    ]
+    this.tabledatas.map(i => {
+      i.show = false
+      return i
+    })
+  },
+  methods: {
+    edit (row, index) {
+      row.show = !row.show
+      Vue.set(this.tabledatas, index, row)
+      // 修改后保存
+    },
+    editAll () {
+      this.tabledatas.map((i, index) => {
+        i.show = true
+        Vue.set(this.tabledatas, index, i)
+      })
+    },
+    submit () {
+      this.tabledatas.map((i, index) => {
+        i.show = false
+        Vue.set(this.tabledatas, index, i)
+      })
+    },
+    // 单个复制
+    cope (val, index) {
+      this.tabledatas.splice(index, 0, JSON.parse(JSON.stringify(val)))
+    },
+    // 单个删除
+    delect (index) {
+      this.tabledatas.splice(index, 1)
+    },
+    // 批量新增
+    addAll () {
+      if (this.multipleSelection.length === 0) {
+        let list = {
+          title: '',
+          text: ''
+        }
+        this.tabledatas.push(list)
+      } else {
+        this.multipleSelection.forEach((val, index) => {
+          this.tabledatas.splice(index, 0, JSON.parse(JSON.stringify(val)))
+        })
+      }
+    },
+    // 批量删除
+    delectAll () {
+      for (let i = 0; i < this.tabledatas.length; i++) {
+        const element = this.tabledatas[i]
+        element.id = i
+      }
+      if (this.multipleSelection.length === 0) this.$message.error('请先至少选择一项')
+      this.multipleSelection.forEach(element => {
+        this.tabledatas.forEach((e, i) => {
+          if (element.id === e.id) {
+            this.tabledatas.splice(i, 1)
+          }
+        })
+      })
+    },
+    // 选
+    handleSelectionChange (val) {
+      this.multipleSelection = val
+    }
+  }
+}
 </script>
