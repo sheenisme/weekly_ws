@@ -288,315 +288,307 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
-  export default {
-    data(){
-      return {
-        memberList: [],
-        currentPage: 1,
-        memberListTotal: 0,
-        dialogTitle: '',
-        formUser: {
-          username: '',
-          usernum: '',
-          email: '',
-          company_id: '',
-          company_name: '',
-          department_id: '',
-          department_name: '',
-          role: '',
-          role_name: '',
-          telephone: ''
-        },
-        confirmCreateVisiable: false,
-        loadingFlag: false,
-        departmentListOptions: [],
-        selectedItem: '',
-        confirmDeleteVisiable: false,
-        dialogBody: '',
-        departmentListMap: [],
-        roleListOptions: [],
-        roleListMap: [],
-        searchContent: '',
-        searchContentAdmin: '',
-        memberListAdmin: [],
-        currentPageAdmin: 1,
-        memberListTotalAdmin: 0,
-        companyListMap: [],
-        companyListOptions: [],
-        companyId: '',
-        companyOptions: [],
-        companyMap: [],
-        companyAdmin: false
-      }
-    },
-    created(){
-      if(this.userInfo.role == 1){
-        this.queryMemberListAdmin(1, 10);
-        this.queryCompanyList();
-      }else{
-        this.queryMemberList(1, 10);
-      }
-    },
-    computed: {
-      ...mapGetters([
-        "userInfo",
-      ])
-    },
-    methods: {
-      ...mapActions([
-        "getDepartmentMemberList",
-        "addUser",
-        "deleteUser",
-        "getAllDepartmentList",
-        "getRole",
-        "getAllMemberList",
-        "getAllCompanyList"
-      ]),
-      queryCompanyList(){
-        this.getAllCompanyList().then(res => {
-          if(res.errno == 0){
-            this.companyOptions = res.data;
-            this.companyId = this.companyOptions[0].company_id;
-            for(let i=0;i<this.companyOptions.length;i++){
-              this.companyMap[this.companyOptions[i].company_id] = this.companyOptions[i].company_name;
-            }
-            this.queryMemberListAdmin(1,10);
-          }else{
-            this.$message.error(res.errmsg || '服务器出了小差');
+import { mapGetters, mapActions } from 'vuex'
+export default {
+  data () {
+    return {
+      memberList: [],
+      currentPage: 1,
+      memberListTotal: 0,
+      dialogTitle: '',
+      formUser: {
+        username: '',
+        usernum: '',
+        email: '',
+        company_id: '',
+        company_name: '',
+        department_id: '',
+        department_name: '',
+        role: '',
+        role_name: '',
+        telephone: ''
+      },
+      confirmCreateVisiable: false,
+      loadingFlag: false,
+      departmentListOptions: [],
+      selectedItem: '',
+      confirmDeleteVisiable: false,
+      dialogBody: '',
+      departmentListMap: [],
+      roleListOptions: [],
+      roleListMap: [],
+      searchContent: '',
+      searchContentAdmin: '',
+      memberListAdmin: [],
+      currentPageAdmin: 1,
+      memberListTotalAdmin: 0,
+      companyListMap: [],
+      companyListOptions: [],
+      companyId: '',
+      companyOptions: [],
+      companyMap: [],
+      companyAdmin: false
+    }
+  },
+  created () {
+    if (this.userInfo.role == 1) {
+      this.queryMemberListAdmin(1, 10)
+      this.queryCompanyList()
+    } else {
+      this.queryMemberList(1, 10)
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'getDepartmentMemberList',
+      'addUser',
+      'deleteUser',
+      'getAllDepartmentList',
+      'getRole',
+      'getAllMemberList',
+      'getAllCompanyList'
+    ]),
+    queryCompanyList () {
+      this.getAllCompanyList().then(res => {
+        if (res.errno == 0) {
+          this.companyOptions = res.data
+          this.companyId = this.companyOptions[0].company_id
+          for (let i = 0; i < this.companyOptions.length; i++) {
+            this.companyMap[this.companyOptions[i].company_id] = this.companyOptions[i].company_name
           }
-        })
-      },
-      handleCurrentChange(currentPage){
-        this.queryMemberList(currentPage,10)
-      },
-      handleCurrentChangeAdmin(currentPage){
-        this.queryMemberListAdmin(currentPage,10)
-      },
-      changeDepartment(){
-        this.queryRole();
-      },
-      changeCompany(){
-        this.queryMemberListAdmin(1,10);
-      },
-      queryMemberList(pageNum, pageSize){
-        this.getDepartmentMemberList({pageNum, pageSize,searchContent: this.searchContent}).then( res => {
-          if(res.errno == 0){
-            this.memberList = res.data.data;
-            this.memberListTotal = res.data.count;
-            this.currentPage = pageNum
-          }else{
-            this.$message.error(res.errmsg || '服务器出了小差');
-          }
-        })
-      },
-      queryMemberListAdmin(pageNum, pageSize){
-        this.getAllMemberList({pageNum, pageSize, company_id: this.companyId}).then( res => {
-          if(res.errno == 0){
-            this.memberListAdmin = res.data.data;
-            this.memberListTotalAdmin = res.data.count;
-            this.currentPageAdmin = pageNum
-          }else{
-            this.$message.error(res.errmsg || '服务器出了小差');
-          }
-        })
-      },
-      queryDepartment(){
-        if(this.companyId){
-          this.getAllDepartmentList({company_id: this.companyId}).then( res => {
-            if(res.errno == 0){
-              if(res.data.length>0){
-                this.confirmCreateVisiable = true;
-                this.departmentListOptions = res.data.map(item => {
-                  this.departmentListMap[item.department_id] = item.department_name;
-                  return {
-                    department_id: item.department_id,
-                    department_name: item.department_name
-                  }
-                })
-              }else{
-                this.departmentListOptions = [];
-                this.$message.warning('请先添加部门');
-              }
-            }else{
-              this.$message.error(res.errmsg || '服务器出了小差');
-            }
-          })
-        }else{
-          this.getAllDepartmentList().then( res => {
-            if(res.errno == 0){
-              if(res.data.length>0){
-                this.confirmCreateVisiable = true;
-                this.departmentListOptions = res.data.map(item => {
-                  this.departmentListMap[item.department_id] = item.department_name;
-                  return {
-                    department_id: item.department_id,
-                    department_name: item.department_name
-                  }
-                })
-              }else{
-                this.departmentListOptions = [];
-                this.$message.warning('请先添加部门');
-              }
-            }else{
-              this.$message.error(res.errmsg || '服务器出了小差');
-            }
-          })
+          this.queryMemberListAdmin(1, 10)
+        } else {
+          this.$message.error(res.errmsg || '服务器出了小差')
         }
-      },
-      queryCompany(){
-        this.getAllCompanyList().then( res => {
-          if(res.errno == 0){
-            if(res.data.length>0){
-              this.companyListOptions = res.data.map(item => {
-                this.companyListMap[item.company_id] = item.company_name;
+      })
+    },
+    handleCurrentChange (currentPage) {
+      this.queryMemberList(currentPage, 10)
+    },
+    handleCurrentChangeAdmin (currentPage) {
+      this.queryMemberListAdmin(currentPage, 10)
+    },
+    changeDepartment () {
+      this.queryRole()
+    },
+    changeCompany () {
+      this.queryMemberListAdmin(1, 10)
+    },
+    queryMemberList (pageNum, pageSize) {
+      this.getDepartmentMemberList({pageNum, pageSize, searchContent: this.searchContent}).then(res => {
+        if (res.errno == 0) {
+          this.memberList = res.data.data
+          this.memberListTotal = res.data.count
+          this.currentPage = pageNum
+        } else {
+          this.$message.error(res.errmsg || '服务器出了小差')
+        }
+      })
+    },
+    queryMemberListAdmin (pageNum, pageSize) {
+      this.getAllMemberList({pageNum, pageSize, company_id: this.companyId}).then(res => {
+        if (res.errno == 0) {
+          this.memberListAdmin = res.data.data
+          this.memberListTotalAdmin = res.data.count
+          this.currentPageAdmin = pageNum
+        } else {
+          this.$message.error(res.errmsg || '服务器出了小差')
+        }
+      })
+    },
+    queryDepartment () {
+      if (this.companyId) {
+        this.getAllDepartmentList({company_id: this.companyId}).then(res => {
+          if (res.errno == 0) {
+            if (res.data.length > 0) {
+              this.confirmCreateVisiable = true
+              this.departmentListOptions = res.data.map(item => {
+                this.departmentListMap[item.department_id] = item.department_name
                 return {
-                  company_id: item.company_id,
-                  company_name: item.company_name
+                  department_id: item.department_id,
+                  department_name: item.department_name
                 }
               })
-            }else{
-              this.companyListOptions = [];
+            } else {
+              this.departmentListOptions = []
+              this.$message.warning('请先添加部门')
             }
-          }else{
-            this.$message.error(res.errmsg || '服务器出了小差');
+          } else {
+            this.$message.error(res.errmsg || '服务器出了小差')
           }
         })
-      },
-      queryRole(){
-        if(this.formUser.department_id){
-          this.getRole({company_id: this.companyId, department_id: this.formUser.department_id}).then( res => {
-            if(res.errno == 0){
-              if(res.data.length>0){
-                this.roleListOptions = res.data.map(item => {
-                  this.roleListMap[item.role] = item.role_name;
-                  return {
-                    role: item.role,
-                    role_name: item.role_name
-                  }
-                })
-//                this.formUser.role = this.roleListOptions[0].role;
-              }else{
-                this.roleListOptions = [];
-              }
-            }else{
-              this.$message.error(res.errmsg || '服务器出了小差');
+      } else {
+        this.getAllDepartmentList().then(res => {
+          if (res.errno == 0) {
+            if (res.data.length > 0) {
+              this.confirmCreateVisiable = true
+              this.departmentListOptions = res.data.map(item => {
+                this.departmentListMap[item.department_id] = item.department_name
+                return {
+                  department_id: item.department_id,
+                  department_name: item.department_name
+                }
+              })
+            } else {
+              this.departmentListOptions = []
+              this.$message.warning('请先添加部门')
             }
-          })
-        }
-      },
-      addMember(type,item){
-        if(type == 'add'){
-          this.dialogTitle = '添加人员信息';
-          if(this.userInfo.role !== 3){
-            this.queryDepartment();
-            this.queryRole();
-          }else{
-            this.confirmCreateVisiable = true;
+          } else {
+            this.$message.error(res.errmsg || '服务器出了小差')
           }
-        }else if(type == 'edit'){
-          this.confirmCreateVisiable = true;
-          this.dialogTitle = '修改人员信息';
-          this.formUser = item;
-        }
-      },
-      addMemberAdmin(type,item){
-        if(type == 'add'){
-          this.dialogTitle = '添加人员信息';
-          if(this.userInfo.role == 1){
-            this.queryDepartment();
-            this.queryRole();
-          }
-        }else if(type == 'edit'){
-          this.confirmCreateVisiable = true;
-          this.dialogTitle = '修改人员信息';
-          this.formUser = item;
-        }
-      },
-      handleClose(){
-        this.confirmCreateVisiable = false;
-        this.loadingFlag = false;
-        this.confirmDeleteVisiable = false;
-        this.formUser = {};
-        this.roleListOptions = [];
-        this.departmentListOptions = [];
-        if(this.userInfo.role == 1){
-          this.queryMemberListAdmin(1, 10);
-          this.queryCompanyList();
-        }else{
-          this.queryMemberList(1, 10);
-        }
-      },
-      successConfirm(type){
-        if(!this.formUser.username){ this.$message.warning('请输入姓名');}
-        else if(!this.formUser.usernum){ this.$message.warning('请输入工号');}
-        else if((this.userInfo.role == 1 || this.userInfo.role == 2) && !this.formUser.department_id){ this.$message.warning('请选择部门名称');}
-        else if((this.userInfo.role == 1 || this.userInfo.role == 2) && !this.formUser.role){ this.$message.warning('请选择角色');}
-        else if(!this.formUser.email){ this.$message.warning('请输入邮箱');}
-        else if(this.formUser.email && !(/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/.test(this.formUser.email))){ this.$message.warning('请输入正确邮箱');}
-        else if(!this.formUser.telephone){ this.$message.warning('请输入手机号');}
-        else if(this.formUser.telephone && !(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.formUser.telephone))){ this.$message.warning('请输入正确手机号');}
-        else{
-          this.formUser.department_name = this.departmentListMap[this.formUser.department_id];
-          this.formUser.role_name = this.roleListMap[this.formUser.role];
-          this.formUser.company_id = this.companyId;
-          this.formUser.company_name = this.companyMap[this.companyId];
-          this.formUser.type = type;
-          this.loadingFlag = true;
-          this.addUser(this.formUser).then(res => {
-            if(res.errno == 0){
-              this.$message.success(res.data || '添加人员成功');
-              if(this.userInfo.role == 1){
-                this.queryMemberListAdmin(this.currentPageAdmin, 10);
-              }else{
-                this.queryMemberList(this.currentPage, 10);
-              }
-              this.confirmCreateVisiable = false;
-              this.formUser = {};
-            }else{
-              this.$message.error(res.errmsg || '服务器出了小差');
-            }
-            this.loadingFlag = false;
-          })
-        }
-      },
-      deleteMember(item){
-        this.selectedItem = item;
-        this.confirmDeleteVisiable = true;
-        this.dialogTitle = '确认移除'
-        this.dialogBody = '确认移除，' + this.selectedItem.username + '(' + this.selectedItem.usernum + ')吗？'
-      },
-      deleteMemberAdmin(item){
-        this.selectedItem = item;
-        this.confirmDeleteVisiable = true;
-        this.dialogTitle = '确认移除'
-        this.dialogBody = '确认移除，' + this.selectedItem.username + '(' + this.selectedItem.usernum + ')吗？'
-      },
-      confirmDelete(){
-        this.loadingFlag = true;
-        this.deleteUser({usernum: this.selectedItem.usernum, company_id: this.companyId, department_id: this.selectedItem.department_id}).then( res => {
-          if(res.errno == 0){
-            this.$message.success('删除成功');
-            this.confirmDeleteVisiable = false;
-            if(this.userInfo.role == 1){
-              this.queryMemberListAdmin(1, 10);
-            }else{
-              this.queryMemberList(1, 10);
-            }
-          }else{
-            this.$message.error(res.errmsg || '服务器出了小差');
-          }
-          this.loadingFlag = false;
         })
-      },
-      search(){
-        this.queryMemberList(1, 10);
-      },
-      searchAdmin(){
-        this.queryMemberListAdmin(1, 10);
       }
+    },
+    queryCompany () {
+      this.getAllCompanyList().then(res => {
+        if (res.errno == 0) {
+          if (res.data.length > 0) {
+            this.companyListOptions = res.data.map(item => {
+              this.companyListMap[item.company_id] = item.company_name
+              return {
+                company_id: item.company_id,
+                company_name: item.company_name
+              }
+            })
+          } else {
+            this.companyListOptions = []
+          }
+        } else {
+          this.$message.error(res.errmsg || '服务器出了小差')
+        }
+      })
+    },
+    queryRole () {
+      if (this.formUser.department_id) {
+        this.getRole({company_id: this.companyId, department_id: this.formUser.department_id}).then(res => {
+          if (res.errno == 0) {
+            if (res.data.length > 0) {
+              this.roleListOptions = res.data.map(item => {
+                this.roleListMap[item.role] = item.role_name
+                return {
+                  role: item.role,
+                  role_name: item.role_name
+                }
+              })
+              //                this.formUser.role = this.roleListOptions[0].role;
+            } else {
+              this.roleListOptions = []
+            }
+          } else {
+            this.$message.error(res.errmsg || '服务器出了小差')
+          }
+        })
+      }
+    },
+    addMember (type, item) {
+      if (type == 'add') {
+        this.dialogTitle = '添加人员信息'
+        if (this.userInfo.role !== 3) {
+          this.queryDepartment()
+          this.queryRole()
+        } else {
+          this.confirmCreateVisiable = true
+        }
+      } else if (type == 'edit') {
+        this.confirmCreateVisiable = true
+        this.dialogTitle = '修改人员信息'
+        this.formUser = item
+      }
+    },
+    addMemberAdmin (type, item) {
+      if (type == 'add') {
+        this.dialogTitle = '添加人员信息'
+        if (this.userInfo.role == 1) {
+          this.queryDepartment()
+          this.queryRole()
+        }
+      } else if (type == 'edit') {
+        this.confirmCreateVisiable = true
+        this.dialogTitle = '修改人员信息'
+        this.formUser = item
+      }
+    },
+    handleClose () {
+      this.confirmCreateVisiable = false
+      this.loadingFlag = false
+      this.confirmDeleteVisiable = false
+      this.formUser = {}
+      this.roleListOptions = []
+      this.departmentListOptions = []
+      if (this.userInfo.role == 1) {
+        this.queryMemberListAdmin(1, 10)
+        this.queryCompanyList()
+      } else {
+        this.queryMemberList(1, 10)
+      }
+    },
+    successConfirm (type) {
+      if (!this.formUser.username) { this.$message.warning('请输入姓名') } else if (!this.formUser.usernum) { this.$message.warning('请输入工号') } else if ((this.userInfo.role == 1 || this.userInfo.role == 2) && !this.formUser.department_id) { this.$message.warning('请选择部门名称') } else if ((this.userInfo.role == 1 || this.userInfo.role == 2) && !this.formUser.role) { this.$message.warning('请选择角色') } else if (!this.formUser.email) { this.$message.warning('请输入邮箱') } else if (this.formUser.email && !(/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/.test(this.formUser.email))) { this.$message.warning('请输入正确邮箱') } else if (!this.formUser.telephone) { this.$message.warning('请输入手机号') } else if (this.formUser.telephone && !(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.formUser.telephone))) { this.$message.warning('请输入正确手机号') } else {
+        this.formUser.department_name = this.departmentListMap[this.formUser.department_id]
+        this.formUser.role_name = this.roleListMap[this.formUser.role]
+        this.formUser.company_id = this.companyId
+        this.formUser.company_name = this.companyMap[this.companyId]
+        this.formUser.type = type
+        this.loadingFlag = true
+        this.addUser(this.formUser).then(res => {
+          if (res.errno == 0) {
+            this.$message.success(res.data || '添加人员成功')
+            if (this.userInfo.role == 1) {
+              this.queryMemberListAdmin(this.currentPageAdmin, 10)
+            } else {
+              this.queryMemberList(this.currentPage, 10)
+            }
+            this.confirmCreateVisiable = false
+            this.formUser = {}
+          } else {
+            this.$message.error(res.errmsg || '服务器出了小差')
+          }
+          this.loadingFlag = false
+        })
+      }
+    },
+    deleteMember (item) {
+      this.selectedItem = item
+      this.confirmDeleteVisiable = true
+      this.dialogTitle = '确认移除'
+      this.dialogBody = '确认移除，' + this.selectedItem.username + '(' + this.selectedItem.usernum + ')吗？'
+    },
+    deleteMemberAdmin (item) {
+      this.selectedItem = item
+      this.confirmDeleteVisiable = true
+      this.dialogTitle = '确认移除'
+      this.dialogBody = '确认移除，' + this.selectedItem.username + '(' + this.selectedItem.usernum + ')吗？'
+    },
+    confirmDelete () {
+      this.loadingFlag = true
+      this.deleteUser({usernum: this.selectedItem.usernum, company_id: this.companyId, department_id: this.selectedItem.department_id}).then(res => {
+        if (res.errno == 0) {
+          this.$message.success('删除成功')
+          this.confirmDeleteVisiable = false
+          if (this.userInfo.role == 1) {
+            this.queryMemberListAdmin(1, 10)
+          } else {
+            this.queryMemberList(1, 10)
+          }
+        } else {
+          this.$message.error(res.errmsg || '服务器出了小差')
+        }
+        this.loadingFlag = false
+      })
+    },
+    search () {
+      this.queryMemberList(1, 10)
+    },
+    searchAdmin () {
+      this.queryMemberListAdmin(1, 10)
     }
   }
+}
 </script>
 
 <style lang="postcss" scoped>

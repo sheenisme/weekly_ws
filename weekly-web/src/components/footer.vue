@@ -4,17 +4,17 @@
         <!--<div class="footer-link-wrap">-->
           <!--欢迎使用{{systemName}}-->
         <!--</div>-->
-        <div class="footer-link-wrap">
-          <a href="http://www.mwcxs.top/" target="_blank">交流学习社区</a>
-          <a href="http://www.cnblogs.com/chengxs" target="_blank" >safeguardEagle</a>
+        <div class="footer-link-wrap">Copyright©&nbsp;2020
+          <a href="https://www.winsensor.com" target="_blank">,&nbsp;&nbsp;炜盛科技&nbsp;</a>版权所有
+          <!-- <a href="http://www.cnblogs.com/chengxs" target="_blank" >safeguardEagle</a>
           <a href="https://www.chengxinsong.cn/" target="_blank" >程新松博客网站</a>
-          <a href="https://github.com/saucxs" target="_blank">saucxs的github</a>
+          <a href="https://github.com/saucxs" target="_blank">saucxs的github</a> -->
         </div>
-        <div class="footer-link-wrap">Copyright© 2018，mwcxs.top版权所有
-          <a href="http://www.miitbeian.gov.cn" target="_blank">辽ICP备16015497号-2</a>
+        <!-- <div class="footer-link-wrap">
+          <a href="http://www.miitbeian.gov.cn" target="_blank">辽ICP备16015497号-2</a> 
           <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv" style="color:#e40202"></span>次</span>
           <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv" style="color:#e40202"></span>人次</span>
-        </div>
+        </div> -->
       </div>
     </footer>
 </template>

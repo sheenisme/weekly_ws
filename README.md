@@ -1,16 +1,28 @@
-# [weekly](https://github.com/saucxs/weekly)
+# weekly周报系统
+补充了原作者的数据库（此处感谢作者群里的一个陌生的群友的分享）。另外，根据需求，将周报的内容改写成了可以动态修改的表格。
+
+
+
+Write by sheen
+
+
+
+## 下面是原作者的readme.md
+
 [![](https://img.shields.io/badge/Powered%20by-saucxs%20-brightgreen.svg)](https://github.com/saucxs/weekly)
+
 [![GitHub license](https://img.shields.io/github/license/saucxs/weekly.svg?style=popout)](https://github.com/saucxs/weekly/blob/master/LICENSE)
+
 [![GitHub stars](https://img.shields.io/github/stars/saucxs/weekly.svg?style=popout)](https://github.com/saucxs/weekly/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/saucxs/weekly.svg?style=popout)](https://github.com/saucxs/weekly/network)
 [![GitHub issues](https://img.shields.io/github/issues/saucxs/weekly.svg?style=popout)](https://github.com/saucxs/weekly/issues)
 
 周报系统的技术栈主要是node+vue+redis+mysql+es6，一个企业管理系统，企业员工汇报每周工作情况，以及完成情况，各级负责人可以查看和提醒相应未写周报人员，后端完全使用`nodeJS`，数据库使用`mysql`，基于`nodejs的thinkjs框架搭建的`，如果喜欢`nodeJS`写的后端，支持大前端，支持全栈开发，请请`star`并`fork`项目。
 
-> + 系统演示地址为：[周报线上地址](http://weekly.mwcxs.top)。因为个别人原因，总会删除下面的账号test和teststaff，
-> + （公司负责人）账号：testadmin，密码：a123456   
-> + （部门经理）账号：test，密码：a123456
-> + （成员）账号：teststaff，密码：a123456
+> + 系统演示地址为：[周报线上地址](http://weekly.mwcxs.top)。
+> + （公司负责人）账号：testadmin，密码：123456
+> + （部门经理）账号：test，密码：123456
+> + （成员）账号：teststaff，密码：123456
 
 如有使用问题请留言。
 
@@ -19,7 +31,6 @@
 > + 2.自己可以新建账号来测试，玩耍 
 > + 3.每一个公司（组织机构）都是独立，每一个部门是独立，互不干扰 
 > + 4.如果有商务要求，可以对接我，邮箱:saucxs@163.com，新建自己公司（组织机构）统一管理。
-> + 5、**数据库文件，其实没有数据库，你可以看sql语句，你就知道表中需要的字段，可以参考https://github.com/saucxs/structure-admin 里的数据库表weekly_user，地址在structure-admin-node/src/common/mysql/structure_admin.sql**
 
 ### 功能点：
 > + 1、所有人周报提交修改；
@@ -127,23 +138,9 @@ exports.model = {
 (1)前端vue的weekly-web的启动
 ````
 npm run dev
- ````
+````
 
 (2)和node后端weekly-node的启动
 ````
 npm start
- ````
-
-### 五、欢迎关注
-欢迎关注Github：https://github.com/saucxs
-
-后续会出更多知识体系构建，技术分享，项目实战，实验室等，欢迎关注本公众号:**[松宝写代码]**
-
-![欢迎关注](http://static.chengxinsong.cn/image/author/intro.jpg?width=600)
-
->微信公众号：**[松宝写代码]**
-songEagle开发知识体系构建，技术分享，项目实战，实验室，带你一起学习新技术，总结学习过程，让你进阶到高级资深工程师，学习项目管理，思考职业发展，生活感悟，充实中成长起来。问题或建议，请公众号留言。
-
->微信群：**【写代码】研发进阶群**
-一个成长交流的产研群，帮忙拉产研的同学们进群，聚聚人气😘😘。
-每一个开发同学都应该形成自己的[知识体系](https://github.com/saucxs/full_stack_knowledge_list)，做到提纲挈领🧐🧐🧐
+````

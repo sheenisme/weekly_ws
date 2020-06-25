@@ -6,15 +6,15 @@
       <span>{{currentDate}}</span>，
       <span>{{currentWeek}}</span>
     </p>
-    <!-- <el-input
+    <el-input
       type="textarea"
       maxlength="500"
       :autosize="{ minRows: 4, maxRows: 6}"
       placeholder="请输入内容"
       v-model="weeklyContent">
     </el-input>-->
-    <!-- <el-button @click="show=true">开始编辑</el-button>
-    <el-table :data="tabledatas" v-model="weeklyContent" border>
+    <el-button @click="show=true">开始编辑</el-button>
+    <el-table :data="tabledatas1" v-model="weeklyContent" border>
             <el-table-column label="本周工作情况">
                 <template slot-scope="scope">
                     <el-input placeholder="请输入内容" v-show="show" v-model="scope.row.tab1"></el-input>
@@ -34,19 +34,38 @@
                 </template>
             </el-table-column>
     </el-table>
+    <el-table :data="tabledatas2" v-model="weeklyContent" border>
+            <el-table-column label="下周工作情况">
+                <template slot-scope="scope">
+                    <el-input placeholder="请输入内容" v-show="show" v-model="scope.row.tab1"></el-input>
+                    <span v-show="!show">{{scope.row.tab1}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="预计完成时间">
+                <template slot-scope="scope">
+                    <el-input placeholder="请输入内容" v-show="show" v-model="scope.row.tab2"></el-input>
+                    <span v-show="!show">{{scope.row.tab2}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="备注">
+                <template slot-scope="scope">
+                    <el-input placeholder="请输入内容" v-show="show" v-model="scope.row.tab3"></el-input>
+                    <span v-show="!show">{{scope.row.tab3}}</span>
+                </template>
+            </el-table-column>
+    </el-table>
     <p>
       <el-button type="primary" :loading="loadingFlag" plain @click="submitWeekly,show=false">提交周报</el-button>
-    </p>-->
-    <div>
-      <el-button type="success" @click="submitWeekly">提交</el-button>
-      <el-button type="warning" @click="save_More">全部保存</el-button>
-      <el-button type="primary" @click="add_More">增加</el-button>
-      <el-button type="primary" @click="edit_More">批量编辑</el-button>
-      <el-button type="danger" @click="delect_More">批量删除</el-button>
+    </p>
+    <p>
+      <!-- <el-button @click="editAll">批量编辑</el-button>
+      <el-button @click="submitWeekly,show=false">提交</el-button>
+      <el-button @click="addAll">批量增加</el-button>
+      <el-button @click="delectAll">批量删除</el-button>
       <el-table
+        v-model="weeklyContent"
         :data="tabledatas"
         border
-        show-header="true"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection"></el-table-column>
@@ -73,8 +92,8 @@
             </span>
             <span v-else>{{scope.row.备注}}</span>
           </template>
-        </el-table-column>
-        <el-table-column label="下周工作内容">
+        </el-table-column> -->
+        <!-- <el-table-column label="下周工作内容">
           <template slot-scope="scope">
             <span v-if="scope.row.show">
               <el-input size="mini" placeholder="请输入内容" v-model="scope.row.下周工作内容"></el-input>
@@ -90,32 +109,27 @@
             <span v-else>{{scope.row.需协调的资源}}</span>
           </template>
         </el-table-column>
-        <el-table-column disabled label="预计完成时间">
+        <el-table-column label="预计完成时间">
           <template slot-scope="scope">
             <span v-if="scope.row.show">
               <el-input size="mini" placeholder="请输入内容" v-model="scope.row.预计完成时间"></el-input>
             </span>
             <span v-else>{{scope.row.预计完成时间}}</span>
           </template>
-        </el-table-column>
-        <el-table-column label="操作">
+        </el-table-column> -->
+        <!-- <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              plain
-              @click="edit_Single(scope.row,scope.$index)">{{scope.row.show?"保存":"修改"}}</el-button>
-            <el-button size="mini" type="danger" plain @click="delect_Single(scope.$index)">删除</el-button>
+            <el-button @click="edit(scope.row,scope.$index)">{{scope.row.show?'保存':"修改"}}</el-button>
+            <el-button @click="delect(scope.$index)">删除</el-button>
           </template>
         </el-table-column>
-      </el-table>
-    </div>
+      </el-table> -->
+    </p>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-
 export default {
   data() {
     return {
@@ -142,52 +156,52 @@ export default {
 
   created() {
     //下面部分为新增
-    this.tabledatas = [
+    (this.tabledatas = [
       {
-        本周工作内容: "尽量详细",
+        本周工作内容: "标题1",
         完成情况: "完成/未完成，并说明详细情况",
-        备注: "  ",
-        下周工作内容: "越详细越好",
+        备注: "无",
+        下周工作内容: "标题2",
         需协调的资源: "说明全部未掌握的资源",
         预计完成时间: "下周五"
       },
       {
-        本周工作内容: "尽量详细",
+        本周工作内容: "标题1",
         完成情况: "完成/未完成，并说明详细情况",
-        备注: "  ",
-        下周工作内容: "越详细越好",
+        备注: "无",
+        下周工作内容: "标题2",
         需协调的资源: "说明全部未掌握的资源",
         预计完成时间: "下周五"
       },
       {
-        本周工作内容: "尽量详细",
+        本周工作内容: "标题1",
         完成情况: "完成/未完成，并说明详细情况",
-        备注: "  ",
-        下周工作内容: "越详细越好",
+        备注: "无",
+        下周工作内容: "标题2",
         需协调的资源: "说明全部未掌握的资源",
         预计完成时间: "下周五"
       },
       {
-        本周工作内容: "尽量详细",
+        本周工作内容: "标题1",
         完成情况: "完成/未完成，并说明详细情况",
-        备注: "  ",
-        下周工作内容: "越详细越好",
+        备注: "无",
+        下周工作内容: "标题2",
         需协调的资源: "说明全部未掌握的资源",
         预计完成时间: "下周五"
       },
       {
-        本周工作内容: "尽量详细",
+        本周工作内容: "标题1",
         完成情况: "完成/未完成，并说明详细情况",
-        备注: "  ",
-        下周工作内容: "越详细越好",
+        备注: "无",
+        下周工作内容: "标题2",
         需协调的资源: "说明全部未掌握的资源",
         预计完成时间: "下周五"
-      },
-    ],
-    this.tabledatas.map(i => {
-      i.show = false;
-      return i;
-    })
+      }
+    ]),
+      this.tabledatas.map(i => {
+        i.show = false;
+        return i;
+      }),
 
       //下面代码为原始代码
       (this.currentWeek = this.weekDay[this.day]);
@@ -223,49 +237,32 @@ export default {
   },
   methods: {
     //之后为新增代码
-    edit_Single(row, index) {
+    edit(row, index) {
       row.show = row.show ? false : true;
-      this.$set(this.tabledatas, index, row);
+      Vue.set(this.tabledatas, index, row);
+      // 修改后保存
     },
-    //批量修改
-    edit_More() {
-      for (let i = 0; i < this.tabledatas.length; i++) {
-        const element = this.tabledatas[i];
-        element.id = i;
-      }
-      if (this.multipleSelection.length == 0)
-        this.$message.error("请先至少选择一项");
-      this.multipleSelection.forEach(element => {
-        this.tabledatas.forEach((e, i) => {
-          if (element.id == e.id) {
-            element.show =true;
-            this.$set(this.tabledatas, i, element);
-          }
-        });
-      });
-    },
-    //批量保存
-    save_More() {
+    editAll() {
       this.tabledatas.map((i, index) => {
-        i.show = false;
-        this.$set(this.tabledatas, index, i);
+        i.show = true;
+        Vue.set(this.tabledatas, index, i);
       });
     },
     // 单个删除
-    delect_Single(index) {
+    delect(index) {
       this.tabledatas.splice(index, 1);
     },
     //批量新增
-    add_More() {
+    addAll() {
       if (this.multipleSelection.length == 0) {
         let list = {
-        本周工作内容: "尽量详细",
+          本周工作内容: "       ",
         完成情况: "完成/未完成，并说明详细情况",
-        备注: "  ",
-        下周工作内容: "越详细越好",
+        备注: "    ",
+        下周工作内容: "      ",
         需协调的资源: "说明全部未掌握的资源",
         预计完成时间: "下周五"
-      };
+        };
         this.tabledatas.push(list);
       } else {
         this.multipleSelection.forEach((val, index) => {
@@ -274,7 +271,7 @@ export default {
       }
     },
     //批量删除
-    delect_More() {
+    delectAll() {
       for (let i = 0; i < this.tabledatas.length; i++) {
         const element = this.tabledatas[i];
         element.id = i;
@@ -313,29 +310,28 @@ export default {
     },
     submitWeekly() {
       //下面函数为新增
-      this.save_More();
-      console.log('表格的数据：'+this.tabledatas);
-      let week_Content_Text=JSON.stringify(this.tabledatas);
-      console.log( week_Content_Text );
+      this.tabledatas.map((i, index) => {
+        i.show = false;
+        Vue.set(this.tabledatas, index, i);
+      });
 
       //下面为原始代码
       var params = {
-        content: week_Content_Text,
+        content: this.weeklyContent,
         date: this.currentDate,
         id: this.weeklyId
       };
-      if (week_Content_Text) {
+      if (this.weeklyContent) {
         this.loadingFlag = true;
         this.addWeekly(params).then(res => {
           if (res.errno == 0) {
-            this.$message.success(res.errmsg || "提交成功!");
+            this.$message.success(res.errmsg || "提交成功");
           } else {
-            this.$message.error(res.errmsg || "服务器开小差!");
+            this.$message.error(res.errmsg || "服务器开小差");
           }
           this.loadingFlag = false;
         });
       } else {
-        console.log("输入的周报内容为："+ week_Content_Text );
         this.$message.warning("输入周报才能提交");
       }
     }
