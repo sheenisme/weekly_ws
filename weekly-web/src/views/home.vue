@@ -14,22 +14,22 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import headerBar from '../components/header'
-import menuBar from '../components/menu'
-import footerBar from '../components/footer'
-export default {
-  data () {
-    return {
+  import { mapGetters, mapActions } from "vuex";
+  import headerBar from '../components/header'
+  import menuBar from "../components/menu";
+  import footerBar from "../components/footer";
+  export default {
+    data() {
+      return {
 
+      }
+    },
+    components: {
+      headerBar,
+      menuBar,
+      footerBar
     }
-  },
-  components: {
-    headerBar,
-    menuBar,
-    footerBar
   }
-}
 </script>
 
 <style lang="postcss">

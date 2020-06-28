@@ -26,55 +26,55 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import footerBar from '../../components/footer'
-export default {
-  name: 'login',
-  data () {
-    return {
-      usernum: '',
-      password: ''
-    }
-  },
-  components: {
-    footerBar
-  },
-  computed: {
-    ...mapGetters([
-      'systemName'
-    ])
-  },
-  methods: {
-    ...mapActions([
-      'login',
-      'getUserInfo'
-    ]),
-    submit () {
-      var usernum = this.usernum
-      var password = this.password
-      var param = {
-        usernum: usernum,
-        password: password
-      }
-      if (usernum && password) {
-        this.login(param).then(res => {
-          if (res.errno == 0) {
-            this.$message.success(res.errmsg || '登陆成功')
-            if (res.data.role == '1' || res.data.role == '2' || res.data.role == '3') {
-              this.$router.push({ path: '/weekly/weeklyView' })
-            } else if (res.data.role == '4') {
-              this.$router.push({ path: '/weekly/writeWeekly' })
-            } else if (res.data.role == '1') {
+  import { mapGetters, mapActions } from 'vuex';
+  import footerBar from "../../components/footer";
+  export default {
+    name: 'login',
+    data() {
+      return {
+        usernum: "",
+        password: "",
+      };
+    },
+    components: {
+      footerBar
+    },
+    computed: {
+      ...mapGetters([
+        'systemName'
+      ])
+    },
+    methods: {
+      ...mapActions([
+        "login",
+        "getUserInfo",
+      ]),
+      submit(){
+        var usernum =  this.usernum;
+        var password = this.password;
+        var param = {
+          usernum : usernum,
+          password : password
+        }
+        if(usernum && password){
+          this.login(param).then(res => {
+            if(res.errno == 0 ){
+              this.$message.success(res.errmsg|| '登陆成功');
+              if(res.data.role == '1' || res.data.role == '2' || res.data.role == '3'){
+                this.$router.push({ path: '/weekly/weeklyView' });
+              }else if(res.data.role == '4'){
+                this.$router.push({ path: '/weekly/writeWeekly' });
+              }else if(res.data.role == '1'){
 
+              }
+            }else{
+              this.$message.error(res.errmsg|| '服务开小差');
             }
-          } else {
-            this.$message.error(res.errmsg || '服务开小差')
-          }
-        })
+          })
+        }
       }
     }
   }
-}
 </script>
 
 <style lang="postcss" scoped>

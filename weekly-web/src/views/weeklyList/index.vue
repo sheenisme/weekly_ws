@@ -66,102 +66,102 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-export default {
-  data () {
-    return {
-      weeklyTableData: [],
-      dialogTitle: '',
-      confirmSubmitVisiable: false,
-      confirmTipMessage: '',
-      editWeeklyContentRow: '',
-      editWeeklyContent: '',
-      editWeeklyDate: '',
-      currentDate: new Date().toLocaleDateString(),
-      loadingFlag: false,
-      weeklyListTotal: 0,
-      currentPage: 1
-    }
-  },
-  created () {
-    this.weeklyList()
-  },
-  computed: {
-    ...mapGetters([])
-  },
-  methods: {
-    ...mapActions([
-      'getWeeklyList',
-      'addWeekly'
-    ]),
-    dateFormatSpe (item) {
-      if (!item) return '--'
-      var date = new Date(parseInt(item))
-      var y = date.getFullYear()
-      var m = date.getMonth() + 1
-      m = m < 10 ? ('0' + m) : m
-      var d = date.getDate()
-      d = d < 10 ? ('0' + d) : d
-      var h = date.getHours()
-      h = h < 10 ? ('0' + h) : h
-      var minute = date.getMinutes()
-      minute = minute < 10 ? ('0' + minute) : minute
-      var second = date.getSeconds()
-      second = second < 10 ? ('0' + second) : second
-      return y + '.' + m + '.' + d
-    },
-    handleCurrentChange (currentPage) {
-      this.queryWeeklyList(currentPage, 10)
-    },
-    weeklyList () {
-      this.queryWeeklyList(1, 10)
-    },
-    queryWeeklyList (currentPage, pageSize) {
-      this.getWeeklyList({pageNum: currentPage, pageSize: pageSize}).then(res => {
-        if (res.errno == 0) {
-          this.weeklyTableData = res.data.data
-          this.weeklyListTotal = res.data.count
-        } else {
-          this.$message.warning('服务器出了小差')
-        }
-      })
-    },
-    editClick (row) {
-      this.editWeeklyContentRow = row
-      this.confirmSubmitVisiable = true
-      this.dialogTitle = '修改周报'
-      this.editWeeklyContent = this.editWeeklyContentRow.content
-      this.editWeeklyDate = this.dateFormatSpe(this.editWeeklyContentRow.startDate) + '--' + this.dateFormatSpe(this.editWeeklyContentRow.endDate)
-    },
-    successConfirm () {
-      var params = {
-        content: this.editWeeklyContent,
-        date: this.currentDate,
-        id: this.editWeeklyContentRow.id
+  import { mapGetters, mapActions } from 'vuex';
+  export default {
+    data(){
+      return {
+        weeklyTableData: [],
+        dialogTitle: '',
+        confirmSubmitVisiable: false,
+        confirmTipMessage: '',
+        editWeeklyContentRow: '',
+        editWeeklyContent: '',
+        editWeeklyDate: '',
+        currentDate: new Date().toLocaleDateString(),
+        loadingFlag: false,
+        weeklyListTotal: 0,
+        currentPage: 1
       }
-      if (this.editWeeklyContent) {
-        this.loadingFlag = true
-        this.addWeekly(params).then(res => {
-          if (res.errno == 0) {
-            this.$message.success(res.errmsg || '提交成功')
-            this.confirmSubmitVisiable = false
-            this.editWeeklyContentRow = ''
-            this.weeklyList()
-          } else {
-            this.$message.error(res.errmsg || '服务器开小差')
+    },
+    created(){
+     this.weeklyList();
+    },
+    computed: {
+      ...mapGetters([])
+    },
+    methods: {
+      ...mapActions([
+        "getWeeklyList",
+        "addWeekly"
+      ]),
+      dateFormatSpe(item){
+        if(!item) return '--';
+        var date = new Date(parseInt(item));
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours();
+        h=h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        var second=date.getSeconds();
+        second=second < 10 ? ('0' + second) : second;
+        return y + '.' + m + '.' + d;
+      },
+      handleCurrentChange(currentPage) {
+        this.queryWeeklyList(currentPage,10)
+      },
+      weeklyList(){
+        this.queryWeeklyList(1,10)
+      },
+      queryWeeklyList(currentPage, pageSize){
+        this.getWeeklyList({pageNum: currentPage, pageSize: pageSize}).then(res => {
+          if(res.errno == 0){
+            this.weeklyTableData = res.data.data;
+            this.weeklyListTotal = res.data.count;
+          }else{
+            this.$message.warning('服务器出了小差');
           }
-          this.loadingFlag = false
         })
-      } else {
-        this.$message.warning('输入周报才能提交')
+      },
+      editClick(row){
+        this.editWeeklyContentRow = row;
+        this.confirmSubmitVisiable = true;
+        this.dialogTitle = '修改周报'
+        this.editWeeklyContent = this.editWeeklyContentRow.content;
+        this.editWeeklyDate = this.dateFormatSpe(this.editWeeklyContentRow.startDate) + '--' + this.dateFormatSpe(this.editWeeklyContentRow.endDate);
+      },
+      successConfirm(){
+        var params = {
+          content: this.editWeeklyContent,
+          date: this.currentDate,
+          id:  this.editWeeklyContentRow.id
+        }
+        if(this.editWeeklyContent){
+          this.loadingFlag = true;
+          this.addWeekly(params).then(res => {
+            if(res.errno == 0){
+              this.$message.success(res.errmsg|| '提交成功');
+              this.confirmSubmitVisiable = false;
+              this.editWeeklyContentRow = '';
+              this.weeklyList();
+            }else{
+              this.$message.error(res.errmsg|| '服务器开小差');
+            }
+            this.loadingFlag = false;
+          })
+        }else{
+          this.$message.warning( '输入周报才能提交');
+        }
+      },
+      handleClose(){
+        this.confirmSubmitVisiable = false;
+        this.editWeeklyContentRow = '';
       }
-    },
-    handleClose () {
-      this.confirmSubmitVisiable = false
-      this.editWeeklyContentRow = ''
     }
   }
-}
 </script>
 
 <style lang="postcss" scoped>

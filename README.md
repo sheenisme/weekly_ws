@@ -1,18 +1,6 @@
-# weekly周报系统
-补充了原作者的数据库（此处感谢作者群里的一个陌生的群友的分享）。另外，根据需求，将周报的内容改写成了可以动态修改的表格。
-
-
-
-Write by sheen
-
-
-
-## 下面是原作者的readme.md
-
+# [weekly](https://github.com/saucxs/weekly)
 [![](https://img.shields.io/badge/Powered%20by-saucxs%20-brightgreen.svg)](https://github.com/saucxs/weekly)
-
 [![GitHub license](https://img.shields.io/github/license/saucxs/weekly.svg?style=popout)](https://github.com/saucxs/weekly/blob/master/LICENSE)
-
 [![GitHub stars](https://img.shields.io/github/stars/saucxs/weekly.svg?style=popout)](https://github.com/saucxs/weekly/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/saucxs/weekly.svg?style=popout)](https://github.com/saucxs/weekly/network)
 [![GitHub issues](https://img.shields.io/github/issues/saucxs/weekly.svg?style=popout)](https://github.com/saucxs/weekly/issues)
@@ -138,9 +126,9 @@ exports.model = {
 (1)前端vue的weekly-web的启动
 ````
 npm run dev
-````
+ ````
 
 (2)和node后端weekly-node的启动
 ````
 npm start
-````
+ ````
