@@ -183,168 +183,164 @@
       </el-dialog>
     </el-row>
     </div>
-  </div>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
-  export default {
-    data(){
-      return {
-        departmentList: [],
-        currentPage: 1,
-        departmentListTotal: 0,
-        dialogTitle: '',
-        formUser: {
-          department_id: '',
-          department_name: '',
-        },
-        confirmCreateVisiable: false,
-        loadingFlag: false,
-        departmentListOptions: [],
-        selectedItem: '',
-        confirmDeleteVisiable: false,
-        dialogBody: '',
-        departmentListMap: [],
-        roleListOptions: [],
-        roleListMap: [],
-        searchContent: '',
-        companyId: '',
-        companyOptions: [],
-        companyMap: []
-      }
-    },
-    created(){
-      if(this.userInfo.role == 1){
-        this.queryCompanyList()
-      }else if(this.userInfo.role == 2){
-        this.queryDepartmentList();
-      }
-
-    },
-    computed: {
-      ...mapGetters([
-        "userInfo",
-      ])
-    },
-    methods: {
-      ...mapActions([
-        "addDepartment",
-        "deleteDepartment",
-        "getAllDepartmentList",
-        "getRole",
-        "getAllCompanyList"
-      ]),
-      changeCompany(){
-        this.queryDepartmentList();
+import { mapGetters, mapActions } from 'vuex'
+export default {
+  data () {
+    return {
+      departmentList: [],
+      currentPage: 1,
+      departmentListTotal: 0,
+      dialogTitle: '',
+      formUser: {
+        department_id: '',
+        department_name: ''
       },
-      queryCompanyList(){
-        this.getAllCompanyList().then(res => {
-          if(res.errno == 0){
-            this.companyOptions = res.data;
-            this.companyId = this.companyOptions[0].company_id;
-            for(let i=0;i<this.companyOptions.length;i++){
-              this.companyMap[this.companyOptions[i].company_id] = this.companyOptions[i].company_name;
-            }
-            this.queryDepartmentList();
-          }else{
-            this.$message.error(res.errmsg || '服务器出了小差');
+      confirmCreateVisiable: false,
+      loadingFlag: false,
+      departmentListOptions: [],
+      selectedItem: '',
+      confirmDeleteVisiable: false,
+      dialogBody: '',
+      departmentListMap: [],
+      roleListOptions: [],
+      roleListMap: [],
+      searchContent: '',
+      companyId: '',
+      companyOptions: [],
+      companyMap: []
+    }
+  },
+  created () {
+    if (this.userInfo.role == 1) {
+      this.queryCompanyList()
+    } else if (this.userInfo.role == 2) {
+      this.queryDepartmentList()
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'addDepartment',
+      'deleteDepartment',
+      'getAllDepartmentList',
+      'getRole',
+      'getAllCompanyList'
+    ]),
+    changeCompany () {
+      this.queryDepartmentList()
+    },
+    queryCompanyList () {
+      this.getAllCompanyList().then(res => {
+        if (res.errno == 0) {
+          this.companyOptions = res.data
+          this.companyId = this.companyOptions[0].company_id
+          for (let i = 0; i < this.companyOptions.length; i++) {
+            this.companyMap[this.companyOptions[i].company_id] = this.companyOptions[i].company_name
+          }
+          this.queryDepartmentList()
+        } else {
+          this.$message.error(res.errmsg || '服务器出了小差')
+        }
+      })
+    },
+    search () {
+      this.queryDepartmentList()
+    },
+    queryDepartmentList () {
+      if (this.userInfo.role == 1) {
+        this.getAllDepartmentList({company_id: this.companyId}).then(res => {
+          if (res.errno == 0) {
+            this.departmentList = res.data
+          } else {
+            this.$message.error(res.errmsg || '服务器出了小差')
           }
         })
-      },
-      search(){
-        this.queryDepartmentList();
-      },
-      queryDepartmentList(){
-        if(this.userInfo.role == 1){
-          this.getAllDepartmentList({company_id: this.companyId}).then( res => {
-            if(res.errno == 0){
-              this.departmentList = res.data;
-            }else{
-              this.$message.error(res.errmsg || '服务器出了小差');
-            }
-          })
-        }else if(this.userInfo.role == 2){
-          this.getAllDepartmentList({searchContent: this.searchContent}).then( res => {
-            if(res.errno == 0){
-              this.departmentList = res.data;
-            }else{
-              this.$message.error(res.errmsg || '服务器出了小差');
-            }
-          })
-        }
-      },
-      addDepartmentDialog(){
-        this.confirmCreateVisiable = true;
-        this.dialogTitle = '添加部门';
-      },
-      editDepartmentDialog(item){
-        this.confirmCreateVisiable = true;
-        this.dialogTitle = '修改部门';
-        this.formUser = item;
-      },
-      handleClose(){
-        this.confirmCreateVisiable = false;
-        this.loadingFlag = false;
-        this.confirmDeleteVisiable = false;
-        this.formUser = {};
-        this.queryDepartmentList();
-      },
-      successConfirm(type){
-        if(!this.formUser.department_id){ this.$message.warning('请输入部门id');}
-        else if(!this.formUser.department_name){ this.$message.warning('请输入部门名称');}
-        else{
-          this.formUser.type = type;
-          this.loadingFlag = true;
-          this.formUser.company_id = this.companyId;
-          this.formUser.company_name = this.companyMap[this.companyId];
-          this.addDepartment(this.formUser).then(res => {
-            if(res.errno == 0){
-              this.$message.success(res.data || '添加成功');
-              this.queryDepartmentList();
-              this.confirmCreateVisiable = false;
-              this.formUser = {};
-            }else{
-              this.$message.error(res.errmsg || '服务器出了小差');
-            }
-            this.loadingFlag = false;
-          })
-        }
-      },
-      deleteDepartmentDialog(item){
-        this.selectedItem = item;
-        this.confirmDeleteVisiable = true;
-        this.dialogTitle = '确认移除'
-        this.dialogBody = '确认移除，' + this.selectedItem.department_name + '(' + this.selectedItem.department_id + ')吗？'
-      },
-      confirmDelete(){
-        this.loadingFlag = true;
-        if(this.userInfo.role == 1){
-          this.deleteDepartment({company_id: this.companyId, department_id: this.selectedItem.department_id}).then( res => {
-            if(res.errno == 0){
-              this.$message.success('删除成功');
-              this.confirmDeleteVisiable = false;
-              this.queryDepartmentList();
-            }else{
-              this.$message.error(res.errmsg || '服务器出了小差');
-            }
-            this.loadingFlag = false;
-          })
-        }else if(this.userInfo.role == 2){
-          this.deleteDepartment({department_id: this.selectedItem.department_id}).then( res => {
-            if(res.errno == 0){
-              this.$message.success('删除成功');
-              this.confirmDeleteVisiable = false;
-              this.queryDepartmentList();
-            }else{
-              this.$message.error(res.errmsg || '服务器出了小差');
-            }
-            this.loadingFlag = false;
-          })
-        }
+      } else if (this.userInfo.role == 2) {
+        this.getAllDepartmentList({searchContent: this.searchContent}).then(res => {
+          if (res.errno == 0) {
+            this.departmentList = res.data
+          } else {
+            this.$message.error(res.errmsg || '服务器出了小差')
+          }
+        })
+      }
+    },
+    addDepartmentDialog () {
+      this.confirmCreateVisiable = true
+      this.dialogTitle = '添加部门'
+    },
+    editDepartmentDialog (item) {
+      this.confirmCreateVisiable = true
+      this.dialogTitle = '修改部门'
+      this.formUser = item
+    },
+    handleClose () {
+      this.confirmCreateVisiable = false
+      this.loadingFlag = false
+      this.confirmDeleteVisiable = false
+      this.formUser = {}
+      this.queryDepartmentList()
+    },
+    successConfirm (type) {
+      if (!this.formUser.department_id) { this.$message.warning('请输入部门id') } else if (!this.formUser.department_name) { this.$message.warning('请输入部门名称') } else {
+        this.formUser.type = type
+        this.loadingFlag = true
+        this.formUser.company_id = this.companyId
+        this.formUser.company_name = this.companyMap[this.companyId]
+        this.addDepartment(this.formUser).then(res => {
+          if (res.errno == 0) {
+            this.$message.success(res.data || '添加成功')
+            this.queryDepartmentList()
+            this.confirmCreateVisiable = false
+            this.formUser = {}
+          } else {
+            this.$message.error(res.errmsg || '服务器出了小差')
+          }
+          this.loadingFlag = false
+        })
+      }
+    },
+    deleteDepartmentDialog (item) {
+      this.selectedItem = item
+      this.confirmDeleteVisiable = true
+      this.dialogTitle = '确认移除'
+      this.dialogBody = '确认移除，' + this.selectedItem.department_name + '(' + this.selectedItem.department_id + ')吗？'
+    },
+    confirmDelete () {
+      this.loadingFlag = true
+      if (this.userInfo.role == 1) {
+        this.deleteDepartment({company_id: this.companyId, department_id: this.selectedItem.department_id}).then(res => {
+          if (res.errno == 0) {
+            this.$message.success('删除成功')
+            this.confirmDeleteVisiable = false
+            this.queryDepartmentList()
+          } else {
+            this.$message.error(res.errmsg || '服务器出了小差')
+          }
+          this.loadingFlag = false
+        })
+      } else if (this.userInfo.role == 2) {
+        this.deleteDepartment({department_id: this.selectedItem.department_id}).then(res => {
+          if (res.errno == 0) {
+            this.$message.success('删除成功')
+            this.confirmDeleteVisiable = false
+            this.queryDepartmentList()
+          } else {
+            this.$message.error(res.errmsg || '服务器出了小差')
+          }
+          this.loadingFlag = false
+        })
       }
     }
   }
+}
 </script>
 
 <style lang="postcss" scoped>

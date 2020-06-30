@@ -52,98 +52,98 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
-   export default {
-    name: 'Header',
-    data() {
-      return {
-        dialogTitle: '',
-        loadingFlag: false,
-        changePawwordVisiable: false,
-        changePasswordForm: {
-          oldPassword: '',
-          newPassword: '',
-          confirmNewPassword: ''
+import { mapGetters, mapActions } from 'vuex'
+export default {
+  name: 'Header',
+  data () {
+    return {
+      dialogTitle: '',
+      loadingFlag: false,
+      changePawwordVisiable: false,
+      changePasswordForm: {
+        oldPassword: '',
+        newPassword: '',
+        confirmNewPassword: ''
+      }
+    }
+  },
+  // beforeRouteEnter: (to, from, next) => {
+  //   next(vm => {
+  //     vm.getUserInfo();
+  //   });
+  // },
+  computed: {
+    ...mapGetters([
+      'userInfo',
+      'systemName'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'getUserInfo',
+      'logout',
+      'changePassword'
+    ]),
+    signOut () {
+      this.logout().then(res => {
+        if (res.errno == 0) {
+          this.$router.push({ path: '/weekly/login' })
+          this.$store.commit('USER_INFO', {})
+        } else {
+          this.$message.error(res.errmsg || '服务器开小差')
+        }
+      })
+    },
+    changPassword () {
+      this.changePawwordVisiable = true
+      this.dialogTitle = '修改密码'
+    },
+    handleClose () {
+      this.clearAll()
+      this.changePawwordVisiable = false
+    },
+    clearAll () {
+      this.changePasswordForm.oldPassword = ''
+      this.changePasswordForm.newPassword = ''
+      this.changePasswordForm.confirmNewPassword = ''
+    },
+    confirmChangePassword () {
+      if (!this.changePasswordForm.oldPassword) {
+        this.$message.warning('请输入原密码')
+      } else if (!this.changePasswordForm.newPassword) {
+        this.$message.warning('请输入新密码')
+      } else if (!this.changePasswordForm.confirmNewPassword) {
+        this.$message.warning('请输入确认新密码')
+      } else {
+        if (this.changePasswordForm.newPassword != this.changePasswordForm.confirmNewPassword) {
+          this.$message.warning('新密码和确认密码不一致')
+        } else {
+          var passwordReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
+          if (passwordReg.test(this.changePasswordForm.newPassword)) {
+            let params = {
+              usernum: this.userInfo.usernum,
+              oldpassword: this.changePasswordForm.oldPassword,
+              newpassword: this.changePasswordForm.newPassword
+            }
+            this.loadingFlag = true
+            this.changePassword(params).then(res => {
+              if (res.errno === 0) {
+                this.clearAll()
+                this.changePawwordVisiable = false
+                this.$message.success('密码修改成功')
+              } else {
+                this.$message.error(res.errmsg)
+              }
+              this.loadingFlag = false
+            }).catch()
+          } else {
+            this.$message.warning('密码需满足至少6-16位,必须含有数字和字母')
+          }
         }
       }
-    },
-     // beforeRouteEnter: (to, from, next) => {
-     //   next(vm => {
-     //     vm.getUserInfo();
-     //   });
-     // },
-    computed: {
-      ...mapGetters([
-        "userInfo",
-        "systemName"
-      ])
-    },
-     methods: {
-       ...mapActions([
-         "getUserInfo",
-         "logout",
-         "changePassword"
-       ]),
-       signOut() {
-         this.logout().then(res => {
-           if(res.errno == 0){
-             this.$router.push({ path: '/weekly/login' });
-             this.$store.commit("USER_INFO", {});
-           }else{
-             this.$message.error(res.errmsg|| '服务器开小差');
-           }
-         })
-       },
-       changPassword() {
-         this.changePawwordVisiable = true;
-         this.dialogTitle = '修改密码'
-       },
-       handleClose(){
-        this.clearAll();
-        this.changePawwordVisiable = false;
-       },
-       clearAll(){
-         this.changePasswordForm.oldPassword = '';
-         this.changePasswordForm.newPassword = '';
-         this.changePasswordForm.confirmNewPassword = '';
-       },
-       confirmChangePassword() {
-         if(!this.changePasswordForm.oldPassword){
-           this.$message.warning( '请输入原密码');
-         }else if(!this.changePasswordForm.newPassword){
-           this.$message.warning( '请输入新密码');
-         }else if(!this.changePasswordForm.confirmNewPassword){
-           this.$message.warning( '请输入确认新密码');
-         }else{
-           if (this.changePasswordForm.newPassword != this.changePasswordForm.confirmNewPassword) {
-             this.$message.warning( '新密码和确认密码不一致');
-           } else {
-             var passwordReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
-             if (passwordReg.test(this.changePasswordForm.newPassword)) {
-               let params = {
-                 usernum: this.userInfo.usernum,
-                 oldpassword: this.changePasswordForm.oldPassword,
-                 newpassword: this.changePasswordForm.newPassword
-               }
-               this.loadingFlag = true;
-               this.changePassword(params).then(res => {
-                 if (res.errno === 0) {
-                   this.clearAll();
-                   this.changePawwordVisiable = false;
-                   this.$message.success( '密码修改成功');
-                 } else {
-                   this.$message.error(res.errmsg);
-                 }
-                 this.loadingFlag = false;
-               }).catch()
-             } else {
-               this.$message.warning('密码需满足至少6-16位,必须含有数字和字母');
-             }
-           }
-         }
-       }
-     }
+    }
   }
+}
 
 </script>
 

@@ -1,6 +1,6 @@
 import {
-    USER_INFO
-} from "../mutation-types.js";
+  USER_INFO
+} from '../mutation-types.js'
 
 const state = {
   systemName: '周报系统',
@@ -10,8 +10,8 @@ const state = {
 }
 
 const mutations = {
-  [USER_INFO](state,newData){
-    state.userInfo = newData;
+  [USER_INFO] (state, newData) {
+    state.userInfo = newData
   }
 }
 

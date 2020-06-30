@@ -109,118 +109,108 @@
         </span>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
-  export default {
-    data(){
-      return {
-        searchContent: '',
-        companyList: [],
-        dialogTitle: '',
-        confirmCreateVisiable: false,
-        formUser: {
-          company_id: '',
-          company_name: '',
-          usernum: '',
-          username: '',
-          telephone: '',
-          email: ''
-        },
-        confirmDeleteVisiable: false,
-        dialogBody: '',
-        loadingFlag: false,
-        selectedItem: ''
-      }
-    },
-    created(){
-     this.queryCompany();
-    },
-    computed: {
-      ...mapGetters([
-        "userInfo",
-      ])
-    },
-    methods: {
-      ...mapActions([
-        "getAllCompanyList",
-        "addUpdateCompany",
-        "deleteCompany"
-      ]),
-      queryCompany(){
-        this.getAllCompanyList().then(res => {
-          if(res.errno == 0){
-            this.companyList = res.data;
-          }else{
-            this.$message.error(res.errmsg|| '服务器开小差');
-          }
-        })
+import { mapGetters, mapActions } from 'vuex'
+export default {
+  data () {
+    return {
+      searchContent: '',
+      companyList: [],
+      dialogTitle: '',
+      confirmCreateVisiable: false,
+      formUser: {
+        company_id: '',
+        company_name: '',
+        usernum: '',
+        username: '',
+        telephone: '',
+        email: ''
       },
-      addCompanyDialog(){
-        this.confirmCreateVisiable = true;
-        this.dialogTitle = '添加公司';
-      },
-      editCompanyDialog(item){
-        this.confirmCreateVisiable = true;
-        this.dialogTitle = '修改公司';
-//        console.log(item,'item');
-        this.formUser = item;
-      },
-      successConfirm(type){
-//        console.log(type);
-        if(!this.formUser.company_id){ this.$message.warning('请输入公司id');}
-        else if(!this.formUser.company_name){ this.$message.warning('请输入公司名称');}
-        else if(!this.formUser.usernum){ this.$message.warning('请输入负责人id');}
-        else if(!this.formUser.username){ this.$message.warning('请输入负责人姓名');}
-        else if(!this.formUser.telephone){ this.$message.warning('请输入手机号');}
-        else if(this.formUser.telephone && !(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.formUser.telephone))){ this.$message.warning('请输入正确手机号');}
-        else if(!this.formUser.email){ this.$message.warning('请输入邮箱');}
-        else if(this.formUser.email && !(/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/.test(this.formUser.email))){ this.$message.warning('请输入正确邮箱');}
-        else{
-          this.formUser.type = type;
-          this.addUpdateCompany(this.formUser).then(res => {
-            if (res.errno == 0) {
-              this.$message.success(res.data || '添加成功');
-              this.queryCompany();
-              this.confirmCreateVisiable = false;
-              this.formUser = {};
-            }else{
-              this.$message.error(res.errmsg|| '服务器开小差');
-            }
-          })
+      confirmDeleteVisiable: false,
+      dialogBody: '',
+      loadingFlag: false,
+      selectedItem: ''
+    }
+  },
+  created () {
+    this.queryCompany()
+  },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'getAllCompanyList',
+      'addUpdateCompany',
+      'deleteCompany'
+    ]),
+    queryCompany () {
+      this.getAllCompanyList().then(res => {
+        if (res.errno == 0) {
+          this.companyList = res.data
+        } else {
+          this.$message.error(res.errmsg || '服务器开小差')
         }
-
-      },
-      handleClose(){
-        this.confirmCreateVisiable = false;
-        this.formUser = {};
-        this.confirmDeleteVisiable = false;
-        this.selectedItem = '';
-        this.queryCompany();
-      },
-      deleteCompanyDialog(item){
-        this.selectedItem = item;
-        this.confirmDeleteVisiable = true;
-        this.dialogTitle = '确认移除';
-        this.dialogBody = '确认移除，' + this.selectedItem.company_name + '(' + this.selectedItem.company_id + ')吗？'
-      },
-      confirmDelete(){
-        this.loadingFlag = true;
-        this.deleteCompany(this.selectedItem).then( res => {
-          if(res.errno == 0){
-            this.$message.success('删除成功');
-            this.confirmDeleteVisiable = false;
-            this.queryCompany();
-          }else{
-            this.$message.error(res.errmsg || '服务器出了小差');
+      })
+    },
+    addCompanyDialog () {
+      this.confirmCreateVisiable = true
+      this.dialogTitle = '添加公司'
+    },
+    editCompanyDialog (item) {
+      this.confirmCreateVisiable = true
+      this.dialogTitle = '修改公司'
+      //        console.log(item,'item');
+      this.formUser = item
+    },
+    successConfirm (type) {
+      //        console.log(type);
+      if (!this.formUser.company_id) { this.$message.warning('请输入公司id') } else if (!this.formUser.company_name) { this.$message.warning('请输入公司名称') } else if (!this.formUser.usernum) { this.$message.warning('请输入负责人id') } else if (!this.formUser.username) { this.$message.warning('请输入负责人姓名') } else if (!this.formUser.telephone) { this.$message.warning('请输入手机号') } else if (this.formUser.telephone && !(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.formUser.telephone))) { this.$message.warning('请输入正确手机号') } else if (!this.formUser.email) { this.$message.warning('请输入邮箱') } else if (this.formUser.email && !(/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/.test(this.formUser.email))) { this.$message.warning('请输入正确邮箱') } else {
+        this.formUser.type = type
+        this.addUpdateCompany(this.formUser).then(res => {
+          if (res.errno == 0) {
+            this.$message.success(res.data || '添加成功')
+            this.queryCompany()
+            this.confirmCreateVisiable = false
+            this.formUser = {}
+          } else {
+            this.$message.error(res.errmsg || '服务器开小差')
           }
-          this.loadingFlag = false;
         })
       }
+    },
+    handleClose () {
+      this.confirmCreateVisiable = false
+      this.formUser = {}
+      this.confirmDeleteVisiable = false
+      this.selectedItem = ''
+      this.queryCompany()
+    },
+    deleteCompanyDialog (item) {
+      this.selectedItem = item
+      this.confirmDeleteVisiable = true
+      this.dialogTitle = '确认移除'
+      this.dialogBody = '确认移除，' + this.selectedItem.company_name + '(' + this.selectedItem.company_id + ')吗？'
+    },
+    confirmDelete () {
+      this.loadingFlag = true
+      this.deleteCompany(this.selectedItem).then(res => {
+        if (res.errno == 0) {
+          this.$message.success('删除成功')
+          this.confirmDeleteVisiable = false
+          this.queryCompany()
+        } else {
+          this.$message.error(res.errmsg || '服务器出了小差')
+        }
+        this.loadingFlag = false
+      })
     }
   }
+}
 </script>
 
 <style lang="postcss" scoped>

@@ -5,26 +5,26 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from "vuex";
-  export default {
-    name: 'App',
-    computed: {
-      ...mapGetters(["userInfo"])
-    },
-    data(){
-      return {
+import { mapGetters, mapActions } from 'vuex'
+export default {
+  name: 'App',
+  computed: {
+    ...mapGetters(['userInfo'])
+  },
+  data () {
+    return {
 
-      }
-    },
-    mounted() {
-
-    },
-    methods:{
-      ...mapActions([
-        "getUserInfo",
-      ]),
     }
+  },
+  mounted () {
+
+  },
+  methods: {
+    ...mapActions([
+      'getUserInfo'
+    ])
   }
+}
 </script>
 
 <style lang="postcss">

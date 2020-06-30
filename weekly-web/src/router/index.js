@@ -2,27 +2,28 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 // 登陆
-const login = () => import("@/views/login/index")
+const login = () => import('@/views/login/index')
 
 // 布局
-const home = () => import("@/views/home");
-//首页
-const dashBoard = () => import("@/views/dashBoard/dashBoard");
+const home = () => import('@/views/home')
+// 首页
+const dashBoard = () => import('@/views/dashBoard/dashBoard')
 
 // 周报管理
-const weeklyView = () => import("@/views/departmentManage/weeklyView");
-const memberList = () => import("@/views/departmentManage/memberList");
+const weeklyView = () => import('@/views/departmentManage/weeklyView')
+const memberList = () => import('@/views/departmentManage/memberList')
+const departmentHistoryWeekly = () => import(('@/views/departmentManage/departmentHistoryWeekly'))
 
 // 写当前周
-const writeWeekly = () => import("@/views/writeWeekly/index");
-//历史周报
-const weeklyList = () => import("@/views/weeklyList/index");
+const writeWeekly = () => import('@/views/writeWeekly/index')
+// 历史周报
+const weeklyList = () => import('@/views/weeklyList/index')
 
-//公司管理-管理部门
-const companyManage = () => import("@/views/companyManagement/index");
-//管理员-管理公司
-const adminCompany = () => import("@/views/admin/adminCompany");
-const adminLog = () => import("@/views/admin/adminLog");
+// 公司管理-管理部门
+const companyManage = () => import('@/views/companyManagement/index')
+// 管理员-管理公司
+const adminCompany = () => import('@/views/admin/adminCompany')
+const adminLog = () => import('@/views/admin/adminLog')
 
 Vue.use(Router)
 
@@ -145,7 +146,7 @@ export default new Router({
         name: 'weeklyView',
         component: weeklyView,
         meta: {
-          zhName: '周报管理',
+          zhName: '本周周报',
           key: '1-1',
           role: 3
         }
@@ -157,6 +158,15 @@ export default new Router({
           zhName: '成员管理',
           key: '1-2',
           role: 2
+        }
+      }, {
+        path: '/weekly/departmentHistoryWeekly',
+        name: 'departmentHistoryWeekly',
+        component: departmentHistoryWeekly,
+        meta: {
+          zhName: '历史周报',
+          key: '1-3',
+          role: 3
         }
       }]
     }, {
@@ -175,7 +185,7 @@ export default new Router({
         name: 'writeWeekly',
         icon: 'el-icon-edit',
         meta: {
-          zhName: '写周报',
+          zhName: '填写周报',
           key: '2-1',
           role: 4
         },
@@ -198,7 +208,7 @@ export default new Router({
         isNest: false,
         icon: 'el-icon-search',
         meta: {
-          zhName: '历史周报',
+          zhName: '查看周报',
           key: '3-1',
           role: 4
         },

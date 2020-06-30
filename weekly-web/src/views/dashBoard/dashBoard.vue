@@ -42,7 +42,7 @@
                 <i class="el-icon-edit"></i>
               </div>
               <div class="card-panel-description">
-                <div class="card-panel-text">历史周报</div>
+                <div class="card-panel-text">本周总周报</div>
                 <count-to :start-val="0" :end-val="myWeeklyNumber" :duration="1000" class="card-panel-num"/>
               </div>
             </div>
@@ -80,7 +80,7 @@
                 <i class="el-icon-edit"></i>
               </div>
               <div class="card-panel-description">
-                <div class="card-panel-text">总周报</div>
+                <div class="card-panel-text">本周总周报</div>
                 <count-to :start-val="0" :end-val="totalWeeklyNumber" :duration="1000" class="card-panel-num"/>
               </div>
             </div>
@@ -91,104 +91,106 @@
                 <i class="el-icon-edit"></i>
               </div>
               <div class="card-panel-description">
-                <div class="card-panel-text">历史周报</div>
+                <div class="card-panel-text">查看周报</div>
                 <count-to :start-val="0" :end-val="myWeeklyNumber" :duration="1000" class="card-panel-num"/>
               </div>
             </div>
           </el-col>
         </el-row>
+        <el-row>
+        <!-- 这里添加公司简介 departmentHistoryWeekly  -->
+        </el-row>
       </el-row>
     </div>
-  </div>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
-  import CountTo from 'vue-count-to'
-  export default {
-    components: {
-      CountTo
-    },
-    data(){
-      return {
-        departmentNumber: 0,
-        alreadyWeeklyNumber: 0,
-        unWeeklyNumber: 0,
-        myWeeklyNumber: 0,
-        companyNumber: 0,
-        totalUserNumber: 0,
-        totalWeeklyNumber: 0
-      }
-    },
-    created(){
-      this.getBoard().then(res => {
-        if(res.errno == 0){
-          if(this.userInfo.role == 2 || this.userInfo.role == 3){
-            this.departmentNumber = res.data.departmentNumber;
-            this.alreadyWeeklyNumber = res.data.alreadyWeeklyNumber;
-            this.unWeeklyNumber = res.data.unWeeklyNumber;
-            this.myWeeklyNumber = res.data.myWeeklyNumber;
-          }else if(this.userInfo.role == 1){
-            this.companyNumber = res.data.companyNumber;
-            this.totalUserNumber = res.data.totalUserNumber - 1;
-            this.totalWeeklyNumber = res.data.totalWeeklyNumber;
-            this.myWeeklyNumber = res.data.myWeeklyNumber;
-          }
-        }else{
-          this.$message.error(res.errmsg|| '服务器开小差');
-        }
-      })
-    },
-    computed: {
-      ...mapGetters([
-        "userInfo",
-      ])
-    },
-    methods: {
-      ...mapActions([
-        "getBoard",
-      ]),
-      handleSetData(type){
-        if(type == 'depNum'){
-          this.$router.push({
-            path: `/weekly/memberList`,
-          })
-        }else if(type == 'unWeekly'){
-          this.$router.push({
-            path: `/weekly/weeklyView`,
-          })
-        }else if(type == 'weekly'){
-          this.$router.push({
-            path: `/weekly/weeklyView`,
-          })
-        }else if(type == 'hisWeekly'){
-          this.$router.push({
-            path: `/weekly/weeklyList`,
-          })
-        }
-      },
-      handleSetDataAdmin(type){
-        if(type == 'companyNum'){
-          this.$router.push({
-            path: `/weekly/adminCompany`,
-          })
-        }else if(type == 'totalNum'){
-          this.$router.push({
-            path: `/weekly/memberList`,
-          })
-        }else if(type == 'totalWeekly'){
-          this.$router.push({
-            path: `/weekly/weeklyView`,
-          })
-        }else if(type == 'hisWeekly'){
-          this.$router.push({
-            path: `/weekly/weeklyList`,
-          })
-        }
-      }
-
+import { mapGetters, mapActions } from 'vuex'
+import CountTo from 'vue-count-to'
+export default {
+  components: {
+    CountTo
+  },
+  data () {
+    return {
+      departmentNumber: 0,
+      alreadyWeeklyNumber: 0,
+      unWeeklyNumber: 0,
+      myWeeklyNumber: 0,
+      companyNumber: 0,
+      totalUserNumber: 0,
+      totalWeeklyNumber: 0
     }
+  },
+  created () {
+    this.getBoard().then(res => {
+      if (res.errno == 0) {
+        if (this.userInfo.role == 2 || this.userInfo.role == 3) {
+          this.departmentNumber = res.data.departmentNumber
+          this.alreadyWeeklyNumber = res.data.alreadyWeeklyNumber
+          this.unWeeklyNumber = res.data.unWeeklyNumber
+          this.myWeeklyNumber = res.data.myWeeklyNumber
+        } else if (this.userInfo.role == 1) {
+          this.companyNumber = res.data.companyNumber
+          this.totalUserNumber = res.data.totalUserNumber - 1
+          this.totalWeeklyNumber = res.data.totalWeeklyNumber
+          this.myWeeklyNumber = res.data.myWeeklyNumber
+        }
+      } else {
+        this.$message.error(res.errmsg || '服务器开小差')
+      }
+    })
+  },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'getBoard'
+    ]),
+    handleSetData (type) {
+      if (type == 'depNum') {
+        this.$router.push({
+          path: `/weekly/memberList`
+        })
+      } else if (type == 'unWeekly') {
+        this.$router.push({
+          path: `/weekly/weeklyView`
+        })
+      } else if (type == 'weekly') {
+        this.$router.push({
+          path: `/weekly/weeklyView`
+        })
+      } else if (type == 'hisWeekly') {
+        this.$router.push({
+          path: `/weekly/weeklyList`
+        })
+      }
+    },
+    handleSetDataAdmin (type) {
+      if (type == 'companyNum') {
+        this.$router.push({
+          path: `/weekly/adminCompany`
+        })
+      } else if (type == 'totalNum') {
+        this.$router.push({
+          path: `/weekly/memberList`
+        })
+      } else if (type == 'totalWeekly') {
+        this.$router.push({
+          path: `/weekly/weeklyView`
+        })
+      } else if (type == 'hisWeekly') {
+        this.$router.push({
+          path: `/weekly/weeklyList`
+        })
+      }
+    }
+
   }
+}
 </script>
 
 <style lang="postcss" scoped>

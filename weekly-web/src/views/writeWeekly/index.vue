@@ -28,42 +28,43 @@
            'text-align': 'center',
           }">
           <!-- <el-table-column type="selection"></el-table-column> -->
-          <el-table-column label="本周重点目标内容(O)">
+          <el-table-column label="本周重点目标内容(O)" width="390px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
-                <el-input size="mini"
+                <el-input type="textarea"
+                          :autosize="{ minRows: 1, maxRows: 3}"
+                          size="mini"
                           placeholder="请输入内容"
                           v-model="scope.row.本周重点目标内容"></el-input>
               </span>
               <span v-else>{{ scope.row.本周重点目标内容 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="关键结果(KRs)">
+          <el-table-column label="关键结果(KRs)" width="390px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
-                <el-input size="mini"
+                <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 3}" size="mini"
                           placeholder="请输入内容"
                           v-model="scope.row.关键结果"></el-input>
               </span>
               <span v-else>{{ scope.row.关键结果 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="未完成原因分析"
-                           width="162px">
+          <el-table-column label="未完成原因分析" width="162px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
-                <el-input size="mini"
+                <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 3}"
+                          size="mini"
                           placeholder="请输入内容"
                           v-model="scope.row.未完成原因分析"></el-input>
               </span>
               <span v-else>{{ scope.row.未完成原因分析 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="备注"
-                           width="148px">
+          <el-table-column label="备注" width="148px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
-                <el-input size="mini"
+                <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 3}" size="mini"
                           placeholder="请输入内容"
                           v-model="scope.row.备注"></el-input>
               </span>
@@ -94,31 +95,29 @@
            'text-align': 'center',
           }">
           <!-- <el-table-column type="selection"></el-table-column> -->
-          <el-table-column label="下周重点工作计划">
+          <el-table-column label="下周重点工作计划" width="390px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
-                <el-input size="mini"
+                <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 3}" size="mini"
                           placeholder="请输入内容"
                           v-model="scope.row.下周重点工作计划"></el-input>
               </span>
               <span v-else>{{ scope.row.下周重点工作计划 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="完成标准及输出结果">
+          <el-table-column label="完成标准及输出结果" width="390px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
-                <el-input size="mini"
+                <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 3}" size="mini"
                           placeholder="请输入内容"
                           v-model="scope.row.完成标准及输出结果"></el-input>
               </span>
               <span v-else>{{ scope.row.完成标准及输出结果 }}</span>
             </template>
           </el-table-column>
-          <el-table-column disabled
-                           label="完成时间点"
-                           width="160px">
+          <el-table-column disabled label="完成时间点" width="160px">
             <template slot-scope="scope">
-              <el-date-picker v-if="scope.row.show"
+              <el-date-picker v-if="scope.row.show" size="small"
                               v-model="scope.row.完成时间点"
                               type="date"
                               placeholder="选择日期"
@@ -128,11 +127,10 @@
               <span v-else>{{ scope.row.完成时间点 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="备注"
-                           width="148px">
+          <el-table-column label="备注" width="148px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
-                <el-input size="mini"
+                <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 3}" size="mini"
                           placeholder="请输入内容"
                           v-model="scope.row.备注"></el-input>
               </span>
@@ -165,6 +163,7 @@ export default {
     return {
       // 下面3行为新增
       tabledatas: [],
+      tabledatas2: [],
       multipleSelection: [],
 
       currentDate: new Date().toLocaleDateString(),
@@ -208,61 +207,61 @@ export default {
     // 下面部分为新增
     this.tabledatas = [
       {
-        本周重点目标内容: '',
-        关键结果: '',
-        未完成原因分析: '',
-        备注: ''
+        本周重点目标内容: '1',
+        关键结果: '2',
+        未完成原因分析: '3',
+        备注: '4'
       },
       {
-        本周重点目标内容: '',
-        关键结果: '',
-        未完成原因分析: '',
-        备注: ''
+        本周重点目标内容: '11',
+        关键结果: '22',
+        未完成原因分析: '33',
+        备注: '44'
       },
       {
-        本周重点目标内容: '',
-        关键结果: '',
-        未完成原因分析: '',
-        备注: ''
+        本周重点目标内容: '111',
+        关键结果: '222',
+        未完成原因分析: '333',
+        备注: '444'
       },
       {
-        本周重点目标内容: '',
-        关键结果: '',
-        未完成原因分析: '',
-        备注: ''
+        本周重点目标内容: '1111',
+        关键结果: '2222',
+        未完成原因分析: '3333',
+        备注: '4444'
       },
       {
-        本周重点目标内容: '',
-        关键结果: '',
-        未完成原因分析: '',
-        备注: ''
+        本周重点目标内容: '11111',
+        关键结果: '22222',
+        未完成原因分析: '33333',
+        备注: '44444'
       }
     ]
     this.tabledatas2 = [
       {
-        下周重点工作计划: '',
-        完成标准及输出结果: '',
-        备注: ''
+        下周重点工作计划: '1',
+        完成标准及输出结果: '1',
+        备注: '1'
       },
       {
-        下周重点工作计划: '',
-        完成标准及输出结果: '',
-        备注: ''
+        下周重点工作计划: '1',
+        完成标准及输出结果: '1',
+        备注: '1'
       },
       {
-        下周重点工作计划: '',
-        完成标准及输出结果: '',
-        备注: ''
+        下周重点工作计划: '1',
+        完成标准及输出结果: '1',
+        备注: '1'
       },
       {
-        下周重点工作计划: '',
-        完成标准及输出结果: '',
-        备注: ''
+        下周重点工作计划: '1',
+        完成标准及输出结果: '1',
+        备注: '1'
       },
       {
-        下周重点工作计划: '',
-        完成标准及输出结果: '',
-        备注: ''
+        下周重点工作计划: '1',
+        完成标准及输出结果: '1',
+        备注: '1'
       }
     ]
     this.tabledatas.map(i => {
@@ -460,18 +459,75 @@ export default {
     submitWeekly () {
       // 下面为新增
       this.save_More()
-      let weekcontenttext = '数据来了！！'
-      weekcontenttext += JSON.stringify(this.tabledatas)
-      weekcontenttext += JSON.stringify(this.tabledatas2)
-      console.log(weekcontenttext)
+      let weekcontenttext = '<span class="content1 backgroundSet">本周重点目标内容(O)</span><span class="content1 backgroundSet">关键结果(KRs)</span><span class="content2 backgroundSet">未完成原因分析</span><span class="content3 backgroundSet rightContent">备注</span><br>'
+      let str1 = JSON.parse(JSON.stringify(this.tabledatas))
+      let str2 = JSON.parse(JSON.stringify(this.tabledatas2))
+      let keys1 = {
+        本周重点目标内容: '',
+        关键结果: '',
+        未完成原因分析: '',
+        备注: ' '
+      }
+      let keys2 = {
+        下周重点工作计划: '',
+        完成标准及输出结果: '',
+        完成时间点: 2020 - 6 - 23,
+        备注: ' '
+      }
 
+      console.log(str1)
+      for (let i1 of str1) {
+        // console.log(i1)
+        // console.log(Object.keys(i1))
+        // console.log(Object.values(i1))
+        let classi = 0
+        for (let key1 in keys1) {
+          // console.log(key1 + '---' + i1[key1])
+          if (classi == 2) {
+            weekcontenttext += '<span class="content2 clearcenter">'
+          } else if (classi == 3) {
+            weekcontenttext += '<span class="content3 clearcenter rightContent">'
+          } else {
+            weekcontenttext += '<span class="content1 clearcenter">'
+          }
+          weekcontenttext += i1[key1]
+          weekcontenttext += '</span>'
+          classi++
+        }
+        weekcontenttext += '<br>'
+      }
+      weekcontenttext += '<span class="content1 backgroundSet">下周重点工作计划</span><span class="content1 backgroundSet">完成标准及输出结果</span><span class="content2 backgroundSet">完成时间点</span><span class="content3 backgroundSet rightContent">备注</span><br>'
+      console.log(str2)
+      for (let i2 of str2) {
+        // console.log(i2)
+        // console.log(Object.keys(i1))
+        // console.log(Object.values(i1))
+        let classi = 0
+        for (let key2 in keys2) {
+          // console.log(key2 + '---' + i2[key2])
+          if (classi == 2) {
+            weekcontenttext += '<span class="content2 clearcenter">'
+          } else if (classi == 3) {
+            weekcontenttext += '<span class="content3 clearcenter rightContent">'
+          } else {
+            weekcontenttext += '<span class="content1 clearcenter">'
+          }
+          weekcontenttext += i2[key2]
+          weekcontenttext += '</span>'
+          classi++
+        }
+        weekcontenttext += '<br>'
+      }
+      console.log('即将要进入数据库的周报内容为：')
+      console.log(weekcontenttext)
       // 下面为原始代码
       var params = {
         content: weekcontenttext,
         date: this.currentDate,
         id: this.weeklyId
       }
-      if (weekcontenttext) {
+      if (params.content) {
+        console.log(params.content)
         this.loadingFlag = true
         this.addWeekly(params).then(res => {
           if (res.errno === 0) {
