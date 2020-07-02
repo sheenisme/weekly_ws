@@ -36,8 +36,10 @@ router.beforeEach((to, from, next) => {
           return next('/weekly/login')
         }
         next()
+        console.log('1111111111')
       } else {
         if (to.path == '/weekly/login') {
+          console.log('2222222222')
           if (response.data.role == 1 || response.data.role == 2 || response.data.role == 3) {
             return next('/weekly/weeklyView')
           } else if (response.data.role == 4) {

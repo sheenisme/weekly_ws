@@ -1,13 +1,12 @@
 <template>
   <div class="view-weekly">
-    <el-row v-if="userInfo.role == 2 || userInfo.role == 3 || userInfo.role == 4 || userInfo.role == 1">
-      <div class="title">历史周报：--<span v-if="userInfo.role == 2">公司</span><span v-if="userInfo.role == 3 || userInfo.role == 4">部门</span><span v-else>集团</span>周报概览</div>
+    <el-row v-if="userInfo.role == 2 || userInfo.role == 3">
+      <div class="title">历史周报：--<span v-if="userInfo.role == 2">公司</span><span v-else>部门</span>周报概览</div>
       <p>公司<span v-if="userInfo.department_name">--部门</span>：<span>{{userInfo.company_name}}<span v-if="userInfo.department_name">--{{userInfo.department_name}}</span></span></p>
       <p>
         <label>
           <span v-if="userInfo.role == 2">公司人员({{departmentMember.length}}人)：</span>
-          <span v-if="userInfo.role == 3 || userInfo.role == 4">部门人员({{departmentMember.length}}份)：</span>
-          <span v-else>集团人员({{departmentMember.length}}份)：</span>
+          <span v-else>部门人员({{departmentMember.length}}人)：</span>
           <el-tag v-for="(item, index) in departmentMember"
                   :key="index">{{item.username}}({{item.usernum}})</el-tag>
         </label>
@@ -35,7 +34,7 @@
                          label="工号"
                          width="80">
         </el-table-column> -->
-      <p><label>历史周报(<span class="data-style">{{weeklyTableData.length}}人</span>)如下所示：</label></p>
+      <p><label>历史周报(<span class="data-style">{{weeklyTableData.length}}份</span>)如下所示：</label></p>
       <el-table :data="weeklyTableData"
                 border
                 style="width: 100%">
@@ -99,57 +98,30 @@
         </span>
       </el-dialog>
     </el-row>
-    <el-row v-if="userInfo.role == 1">
-      <div class="title">历史-<span v-if="userInfo.role == 2">公司</span><span v-else>部门</span>周报概览</div>
+    <el-row v-if="userInfo.role == 4">
+      <div class="title"><span>本部门</span>历史周报概览</div>
       <p>公司<span v-if="userInfo.department_name">--部门</span>：<span>{{userInfo.company_name}}<span v-if="userInfo.department_name">--{{userInfo.department_name}}</span></span></p>
       <p>
         <label>
-          <span v-if="userInfo.role == 2">公司人员({{departmentMember.length}}人)：</span>
-          <span v-else>部门人员({{departmentMember.length}}人)：</span>
+          <span>部门人员({{departmentMember.length}}人)：</span>
           <el-tag v-for="(item, index) in departmentMember"
                   :key="index">{{item.username}}({{item.usernum}})</el-tag>
         </label>
       </p>
-      <p>
-        <label>未填写周报(<span class="data-style">{{unWeeklyData.length}}人：</span>)
-          <el-tag v-for="(item, index) in unWeeklyData"
-                  :key="index">{{item.username}}({{item.usernum}})</el-tag></label>
-      </p>
-      <p><label>已填周报(<span class="data-style">{{weeklyTableData.length}}人</span>)如下所示：</label></p>
+      <p><label>历史周报(<span class="data-style">{{weeklyTableData.length}}份</span>)如下所示：</label></p>
       <el-table :data="weeklyTableData"
                 border
                 style="width: 100%">
-        <el-table-column label="周报日期"
-                         width="180">
+        <el-table-column label="周报内容">
           <template slot-scope="scope">
-            <span>{{scope.row.startDate | dateFormat}}</span>--<span>{{scope.row.endDate | dateFormat}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="username"
-                         label="姓名"
-                         width="120">
-        </el-table-column>
-        <el-table-column prop="usernum"
-                         label="工号"
-                         width="80">
-        </el-table-column>
-        <el-table-column prop="content"
-                         label="周报内容">
-        </el-table-column>
-        <el-table-column label="最近一次提交日期"
-                         width="160">
-          <template slot-scope="scope">
-            {{scope.row.time | dateTimeFormat}}
-          </template>
-        </el-table-column>
-        <el-table-column label="操作"
-                         width="100">
-          <template slot-scope="scope">
-            <el-button v-if="new Date().getTime()>= scope.row.startDate && new Date().getTime()<=scope.row.endDate"
-                       @click="editClick(scope.row)"
-                       type="text"
-                       size="small">编辑</el-button>
-            <span v-else>--</span>
+            <div style="text-align:center;">
+              <span style="font-size:16px;font-weight:bold;">姓名：{{scope.row.username}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span style="font-size:16px;font-weight:bold;">周报时间：{{scope.row.startDate | dateFormat}}</span>
+              ---<span style="font-size:16px;font-weight:bold;">{{scope.row.endDate | dateFormat}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span style="font-size:16px;font-weight:bold;">提交时间：{{scope.row.time | dateTimeFormat}}</span><br>
+            </div>
+            <p v-html="scope.row.content"
+               style="margin-top: 0px;margin-bottom: 0px;"></p>
           </template>
         </el-table-column>
       </el-table>
@@ -183,6 +155,9 @@
                      @click="successConfirm()">确 定</el-button>
         </span>
       </el-dialog>
+    </el-row>
+    <el-row v-if="userInfo.role == 1">
+
     </el-row>
   </div>
 </template>
@@ -270,7 +245,6 @@ export default {
     },
     queryDepartmentWeeklyList (currentPage, pageSize) {
       /* 获取已写历史全部周报列表 */
-      // this. getDepartmentWeeklyList
       this.getDepartmentHistoryWeeklyList({ currentPage, pageSize }).then(res => {
         if (res.errno == 0) {
           this.weeklyTableData = res.data.data

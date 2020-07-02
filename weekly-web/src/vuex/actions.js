@@ -157,3 +157,17 @@ export const getLoginLog = ({ commit }, params) => {
     return response
   })
 }
+
+// 新增关于新闻的函数
+// 获取新闻
+export const getNews = ({ commit }, params) => {
+  return Api.getNews(params).then(response => {
+    return response
+  })
+}
+// 添加新闻
+export const addNews = ({ commit }, params) => {
+  return Api.addNews(params).then(response => {
+    return response
+  })
+}

@@ -9,6 +9,7 @@
     <div class="login_contenter">
       <!--<img class="login_contenter_bg" src="../../assets/suningcloud.jpg">-->
       <div class="content_box">
+        <img class="content_box_img" src="../../assets/OKR.jpg">
         <div class="content_box_form">
           <h1>登&nbsp;&nbsp;录</h1>
           <p class="form_content" >
@@ -110,8 +111,8 @@ export default {
     position: relative;
     width: 100%;
     min-width: 1190px;
-    height: 665px;
-    background: #00000e url("../../assets/suningcloud.jpg") no-repeat center 0;
+    height: 825px;
+    background: url("../../assets/background.jpg") repeat center 0;
   }
 
   .content_box {
@@ -121,7 +122,10 @@ export default {
     margin: 0 auto;
     box-sizing: border-box;
   }
-
+  .content_box_img{
+    margin-top: 30px;
+    margin-left: 100px;
+  }
   .content_box_form {
     box-sizing: border-box;
     display: inline-block;

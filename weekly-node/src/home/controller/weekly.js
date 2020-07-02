@@ -178,8 +178,7 @@ module.exports = class extends Base {
   async getDepartmentHistoryWeeklyListAction() {
     let page = this.post('pageNum');
     let pagesize = this.post('pageSize');
-    const searchContent = this.post('searchContent');
-    console.log("hiehfiue");
+    // const searchContent = this.post('searchContent');
 
     let companyNumber;
     let companyWeeklyList;
@@ -218,7 +217,16 @@ module.exports = class extends Base {
           role: {'>=': this.user.role}
         }).order('time desc, role asc, company_id asc, department_id asc').page(page, pagesize).countSelect();
         return this.success(departmentWeeklyList);
-      } else if (this.user.role == 1) {
+      }else if (this.user.role == 4) {
+        const departmentWeeklyList = await this.model('week').where({
+          company_id: this.user.company_id,
+          department_id: this.user.department_id,
+          time: {'>': 1580486400000 , '<': endWeekStamp},
+          role: {'>=': this.user.role}
+        }).order('time desc,  department_id asc').page(page, pagesize).countSelect();
+        return this.success(departmentWeeklyList);
+      } 
+      else if (this.user.role == 1) {
         const company = await this.model('company').select();
         const tempData = [];
         let companyWeeklyData;

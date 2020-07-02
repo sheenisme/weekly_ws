@@ -1,5 +1,14 @@
 <template>
   <div class="write-weekly">
+    <el-drawer size="90%"
+               direction="ttb"
+               :visible.sync="drawer">
+      <div style="width:1024px; position: absolute;left:20%;top:1%;">
+        <h3 style="text-align:center;">{{this.newsTitle}}</h3>
+        <p v-html="this.newsContnt"></p>
+      </div>
+    </el-drawer>
+
     <div class="title">写周报</div>
     <p>
       今天：
@@ -28,7 +37,8 @@
            'text-align': 'center',
           }">
           <!-- <el-table-column type="selection"></el-table-column> -->
-          <el-table-column label="本周重点目标内容(O)" width="390px">
+          <el-table-column label="本周重点目标内容(O)"
+                           width="390px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
                 <el-input type="textarea"
@@ -40,20 +50,25 @@
               <span v-else>{{ scope.row.本周重点目标内容 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="关键结果(KRs)" width="390px">
+          <el-table-column label="关键结果(KRs)"
+                           width="390px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
-                <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 3}" size="mini"
+                <el-input type="textarea"
+                          :autosize="{ minRows: 1, maxRows: 3}"
+                          size="mini"
                           placeholder="请输入内容"
                           v-model="scope.row.关键结果"></el-input>
               </span>
               <span v-else>{{ scope.row.关键结果 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="未完成原因分析" width="162px">
+          <el-table-column label="未完成原因分析"
+                           width="162px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
-                <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 3}"
+                <el-input type="textarea"
+                          :autosize="{ minRows: 1, maxRows: 3}"
                           size="mini"
                           placeholder="请输入内容"
                           v-model="scope.row.未完成原因分析"></el-input>
@@ -61,10 +76,13 @@
               <span v-else>{{ scope.row.未完成原因分析 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="备注" width="148px">
+          <el-table-column label="备注"
+                           width="148px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
-                <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 3}" size="mini"
+                <el-input type="textarea"
+                          :autosize="{ minRows: 1, maxRows: 3}"
+                          size="mini"
                           placeholder="请输入内容"
                           v-model="scope.row.备注"></el-input>
               </span>
@@ -95,29 +113,38 @@
            'text-align': 'center',
           }">
           <!-- <el-table-column type="selection"></el-table-column> -->
-          <el-table-column label="下周重点工作计划" width="390px">
+          <el-table-column label="下周重点工作计划"
+                           width="390px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
-                <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 3}" size="mini"
+                <el-input type="textarea"
+                          :autosize="{ minRows: 1, maxRows: 3}"
+                          size="mini"
                           placeholder="请输入内容"
                           v-model="scope.row.下周重点工作计划"></el-input>
               </span>
               <span v-else>{{ scope.row.下周重点工作计划 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="完成标准及输出结果" width="390px">
+          <el-table-column label="完成标准及输出结果"
+                           width="390px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
-                <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 3}" size="mini"
+                <el-input type="textarea"
+                          :autosize="{ minRows: 1, maxRows: 3}"
+                          size="mini"
                           placeholder="请输入内容"
                           v-model="scope.row.完成标准及输出结果"></el-input>
               </span>
               <span v-else>{{ scope.row.完成标准及输出结果 }}</span>
             </template>
           </el-table-column>
-          <el-table-column disabled label="完成时间点" width="160px">
+          <el-table-column disabled
+                           label="完成时间点"
+                           width="160px">
             <template slot-scope="scope">
-              <el-date-picker v-if="scope.row.show" size="small"
+              <el-date-picker v-if="scope.row.show"
+                              size="small"
                               v-model="scope.row.完成时间点"
                               type="date"
                               placeholder="选择日期"
@@ -127,10 +154,13 @@
               <span v-else>{{ scope.row.完成时间点 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="备注" width="148px">
+          <el-table-column label="备注"
+                           width="148px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
-                <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 3}" size="mini"
+                <el-input type="textarea"
+                          :autosize="{ minRows: 1, maxRows: 3}"
+                          size="mini"
                           placeholder="请输入内容"
                           v-model="scope.row.备注"></el-input>
               </span>
@@ -161,10 +191,13 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      // 下面3行为新增
+      // 下面6行为新增
       tabledatas: [],
       tabledatas2: [],
       multipleSelection: [],
+      drawer: true,
+      newsTitle: '',
+      newsContnt: '',
 
       currentDate: new Date().toLocaleDateString(),
       day: new Date().getDay(),
@@ -204,6 +237,26 @@ export default {
     }
   },
   created () {
+    // 获取新闻
+    this.getNews().then(res => {
+      // console.log(res)
+      if (res.errno == 0) {
+        let newsdata = res.data.data[0]
+        // console.log(newsdata)
+        for (let key in newsdata) {
+          if (key == 'title') {
+            this.newsTitle = newsdata[key]
+          } else if (key == 'content') {
+            this.newsContnt = newsdata[key]
+          } else {
+            // console.log(key + '---' + newsdata[key])
+          }
+        }
+        // console.log(this.newsTitle + '   内容为：' + this.newsContnt)
+      } else {
+        this.$message.error(res.errmsg || '服务器开小差')
+      }
+    })
     // 下面部分为新增
     this.tabledatas = [
       {
@@ -440,7 +493,11 @@ export default {
     // },
 
     // 之后为原始代码
-    ...mapActions(['getCurrentWeekly', 'addWeekly']),
+    ...mapActions([
+      'getCurrentWeekly',
+      'addWeekly',
+      'getNews'
+    ]),
     formatDateTime (item) {
       var date = new Date(parseInt(item))
       var y = date.getFullYear()

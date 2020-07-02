@@ -18,12 +18,14 @@ const departmentHistoryWeekly = () => import(('@/views/departmentManage/departme
 const writeWeekly = () => import('@/views/writeWeekly/index')
 // 历史周报
 const weeklyList = () => import('@/views/weeklyList/index')
+const departmentWeelyList = () => import(('@/views/departmentManage/departmentHistoryWeekly'))
 
 // 公司管理-管理部门
 const companyManage = () => import('@/views/companyManagement/index')
 // 管理员-管理公司
 const adminCompany = () => import('@/views/admin/adminCompany')
 const adminLog = () => import('@/views/admin/adminLog')
+const adminNews = () => import(('@/views/admin/adminNews'))
 
 Vue.use(Router)
 
@@ -66,16 +68,17 @@ export default new Router({
       meta: {
         zhName: '概览',
         key: '0',
-        role: 3
+        role: 4
       },
       children: [{
         path: '/weekly/dashBoard',
         name: 'dashBoard',
         icon: 'el-icon-view',
         meta: {
-          zhName: '概览',
+          //  zhName: '概览',
+          zhName: '首页',
           key: '0-1',
-          role: 3
+          role: 4
         },
         component: dashBoard
       }]
@@ -83,7 +86,7 @@ export default new Router({
       path: '/weekly/admin',
       name: 'admin',
       isNest: true,
-      icon: 'el-icon-setting',
+      icon: 'el-icon-s-tools',
       component: home,
       meta: {
         zhName: '管理员管理',
@@ -108,7 +111,18 @@ export default new Router({
           key: '5-2',
           role: 1
         }
-      }]
+      },
+      {
+        path: '/admin/adminNews',
+        name: 'adminNews',
+        component: adminNews,
+        meta: {
+          zhName: '管理新闻',
+          key: '5-3',
+          role: 1
+        }
+      }
+      ]
     }, {
       path: '/weekly/setting',
       name: 'setting',
@@ -157,15 +171,6 @@ export default new Router({
         meta: {
           zhName: '成员管理',
           key: '1-2',
-          role: 2
-        }
-      }, {
-        path: '/weekly/departmentHistoryWeekly',
-        name: 'departmentHistoryWeekly',
-        component: departmentHistoryWeekly,
-        meta: {
-          zhName: '历史周报',
-          key: '1-3',
           role: 3
         }
       }]
@@ -205,7 +210,6 @@ export default new Router({
       children: [{
         path: '/weekly/weeklyList',
         name: 'weeklyList',
-        isNest: false,
         icon: 'el-icon-search',
         meta: {
           zhName: '查看周报',
@@ -213,6 +217,29 @@ export default new Router({
           role: 4
         },
         component: weeklyList
+      }
+      ]
+    }, {
+      path: '/weekly/HistoryWeekly',
+      name: 'history',
+      component: home,
+      isNest: false,
+      redirect: '/departmentManage/departmentHistoryWeekly',
+      meta: {
+        zhName: '历史周报列表',
+        key: '4',
+        role: 4
+      },
+      children: [{
+        path: '/departmentManage/departmentHistoryWeekly',
+        name: 'departmentWeelyList',
+        icon: 'el-icon-notebook-2',
+        component: departmentWeelyList,
+        meta: {
+          zhName: '历史周报',
+          key: '3-2',
+          role: 4
+        }
       }]
     }
   ]

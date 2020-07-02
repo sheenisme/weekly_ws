@@ -56,49 +56,49 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
-  export default {
-    data(){
-      return {
-        searchContent: '',
-        logList: [],
-        logListTotal: 0,
-        currentPage: 1,
-      }
+import { mapGetters, mapActions } from 'vuex'
+export default {
+  data () {
+    return {
+      searchContent: '',
+      logList: [],
+      logListTotal: 0,
+      currentPage: 1
+    }
+  },
+  created () {
+    this.queryLog()
+  },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'getLoginLog'
+    ]),
+    search () {
+      this.queryLogList(1, 10)
     },
-    created(){
-     this.queryLog();
+    queryLog () {
+      this.queryLogList(1, 10)
     },
-    computed: {
-      ...mapGetters([
-        "userInfo",
-      ])
+    queryLogList (currentPage, pageSize) {
+      this.getLoginLog({pageNum: currentPage, pageSize: pageSize, searchContent: this.searchContent}).then(res => {
+        if (res.errno == 0) {
+          this.logList = res.data.data
+          this.logListTotal = res.data.count
+        } else {
+          this.$message.warning('服务器出了小差')
+        }
+      })
     },
-    methods: {
-      ...mapActions([
-        "getLoginLog"
-      ]),
-      search(){
-        this.queryLogList(1, 10);
-      },
-      queryLog(){
-        this.queryLogList(1, 10)
-      },
-      queryLogList(currentPage, pageSize){
-        this.getLoginLog({pageNum: currentPage, pageSize: pageSize, searchContent: this.searchContent}).then(res => {
-          if(res.errno == 0){
-            this.logList = res.data.data;
-            this.logListTotal = res.data.count;
-          }else{
-            this.$message.warning('服务器出了小差');
-          }
-        })
-      },
-      handleCurrentChange(currentPage) {
-        this.queryLogList(currentPage,10)
-      },
+    handleCurrentChange (currentPage) {
+      this.queryLogList(currentPage, 10)
     }
   }
+}
 </script>
 
 <style lang="postcss" scoped>

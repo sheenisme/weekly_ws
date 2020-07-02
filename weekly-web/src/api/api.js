@@ -124,6 +124,16 @@ export default {
   /* 登入和登出日志 */
   getLoginLog: params => {
     return service.post('/home/log/getLoginLog', params)
+  },
+
+  // 新增关于新闻的函数
+  /* 增加新闻 */
+  addNews: params => {
+    return service.post('/home/news/addNews', params)
+  },
+  /* 获得新闻 */
+  getNews: params => {
+    return service.post('/home/news/getNews', params)
   }
   /**
    * API demo

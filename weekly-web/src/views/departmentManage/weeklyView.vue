@@ -1,3 +1,4 @@
+/* eslint-disable vue/require-v-for-key */
 <template>
   <div class="view-weekly">
     <el-row v-if="userInfo.role == 2 || userInfo.role == 3">
@@ -219,8 +220,8 @@
         <el-tag v-for="(item, index) in companyList"
                 :key="index">{{item.company_name}}</el-tag>
       </p>
-      <template v-for="(item, index) in weeklyDataList">
-        <div style="margin-bottom">
+      <template>
+        <div style="margin-bottom" v-for="(item, index) in weeklyDataList" v-bind:key='index'>
           <div class="title">{{item.company_name || item.company_id}}-本周已填周报列表</div>
           <p>
             <label>部门人数：</label>
