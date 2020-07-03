@@ -2,15 +2,15 @@
   <div class="view-weekly">
     <el-row v-if="userInfo.role == 2 || userInfo.role == 3">
       <div class="title">历史周报：--<span v-if="userInfo.role == 2">公司</span><span v-else>部门</span>周报概览</div>
-      <p>公司<span v-if="userInfo.department_name">--部门</span>：<span>{{userInfo.company_name}}<span v-if="userInfo.department_name">--{{userInfo.department_name}}</span></span></p>
+      <!-- <p>公司<span v-if="userInfo.department_name">--部门</span>：<span>{{userInfo.company_name}}<span v-if="userInfo.department_name">--{{userInfo.department_name}}</span></span></p>
       <p>
-        <label>
+          <label>
           <span v-if="userInfo.role == 2">公司人员({{departmentMember.length}}人)：</span>
           <span v-else>部门人员({{departmentMember.length}}人)：</span>
           <el-tag v-for="(item, index) in departmentMember"
                   :key="index">{{item.username}}({{item.usernum}})</el-tag>
         </label>
-      </p>
+      </p> -->
       <!-- <p>
         <label>未填写周报(<span class="data-style">{{unWeeklyData.length}}人：</span>)
           <el-tag v-for="(item, index) in unWeeklyData"
@@ -105,7 +105,7 @@
         <label>
           <span>部门人员({{departmentMember.length}}人)：</span>
           <el-tag v-for="(item, index) in departmentMember"
-                  :key="index">{{item.username}}({{item.usernum}})</el-tag>
+                  :key="index">{{item.username}}</el-tag>
         </label>
       </p>
       <p><label>历史周报(<span class="data-style">{{weeklyTableData.length}}份</span>)如下所示：</label></p>

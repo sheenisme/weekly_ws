@@ -33,13 +33,13 @@ module.exports = class extends Base {
             unWeeklyList = await this.model('user').field('id, company_id, company_name, department_id, department_name, email, role, role_name, username, usernum,telephone').where({
               usernum: ['not in', usernumList],
               company_id: this.user.company_id,
-              role: {'>=': 2 }
+              role: {'>': 2 }
             }).order('role DESC').select();
           }
         } else {
           unWeeklyList = await this.model('user').field('id, company_id, company_name, department_id, department_name, email, role, role_name, username, usernum,telephone').where({
             company_id: this.user.company_id,
-            role: {'>=': 2 }
+            role: {'>': 2 }
           }).order('role DESC').select();
         }
       } else if (this.user.role == 3) {

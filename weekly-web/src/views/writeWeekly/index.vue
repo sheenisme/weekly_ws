@@ -4,8 +4,12 @@
                direction="ttb"
                :visible.sync="drawer">
       <div style="width:1024px; position: absolute;left:20%;top:1%;">
-        <h3 style="text-align:center;">{{this.newsTitle}}</h3>
-        <p v-html="this.newsContnt"></p>
+        <template>
+          <h3 style="text-align:center;">{{this.newsTitle}}</h3>
+          <!--  v-html="this.newsContent"-->
+            <div class="scrollbar"
+                 v-html="this.newsContent"></div>
+        </template>
       </div>
     </el-drawer>
 
@@ -197,7 +201,7 @@ export default {
       multipleSelection: [],
       drawer: true,
       newsTitle: '',
-      newsContnt: '',
+      newsContent: '',
 
       currentDate: new Date().toLocaleDateString(),
       day: new Date().getDay(),
@@ -247,12 +251,12 @@ export default {
           if (key == 'title') {
             this.newsTitle = newsdata[key]
           } else if (key == 'content') {
-            this.newsContnt = newsdata[key]
+            this.newsContent = newsdata[key]
           } else {
             // console.log(key + '---' + newsdata[key])
           }
         }
-        // console.log(this.newsTitle + '   内容为：' + this.newsContnt)
+        // console.log(this.newsTitle + '   内容为：' + this.newsContent)
       } else {
         this.$message.error(res.errmsg || '服务器开小差')
       }
@@ -260,61 +264,61 @@ export default {
     // 下面部分为新增
     this.tabledatas = [
       {
-        本周重点目标内容: '1',
-        关键结果: '2',
-        未完成原因分析: '3',
-        备注: '4'
+        本周重点目标内容: '',
+        关键结果: '',
+        未完成原因分析: '',
+        备注: ''
       },
       {
-        本周重点目标内容: '11',
-        关键结果: '22',
-        未完成原因分析: '33',
-        备注: '44'
+        本周重点目标内容: '',
+        关键结果: '',
+        未完成原因分析: '',
+        备注: ''
       },
       {
-        本周重点目标内容: '111',
-        关键结果: '222',
-        未完成原因分析: '333',
-        备注: '444'
+        本周重点目标内容: '',
+        关键结果: '',
+        未完成原因分析: '',
+        备注: ''
       },
       {
-        本周重点目标内容: '1111',
-        关键结果: '2222',
-        未完成原因分析: '3333',
-        备注: '4444'
+        本周重点目标内容: '',
+        关键结果: '',
+        未完成原因分析: '',
+        备注: ''
       },
       {
-        本周重点目标内容: '11111',
-        关键结果: '22222',
-        未完成原因分析: '33333',
-        备注: '44444'
+        本周重点目标内容: '',
+        关键结果: '',
+        未完成原因分析: '',
+        备注: ''
       }
     ]
     this.tabledatas2 = [
       {
-        下周重点工作计划: '1',
-        完成标准及输出结果: '1',
-        备注: '1'
+        下周重点工作计划: '',
+        完成标准及输出结果: '',
+        备注: ''
       },
       {
-        下周重点工作计划: '1',
-        完成标准及输出结果: '1',
-        备注: '1'
+        下周重点工作计划: '',
+        完成标准及输出结果: '',
+        备注: ''
       },
       {
-        下周重点工作计划: '1',
-        完成标准及输出结果: '1',
-        备注: '1'
+        下周重点工作计划: '',
+        完成标准及输出结果: '',
+        备注: ''
       },
       {
-        下周重点工作计划: '1',
-        完成标准及输出结果: '1',
-        备注: '1'
+        下周重点工作计划: '',
+        完成标准及输出结果: '',
+        备注: ''
       },
       {
-        下周重点工作计划: '1',
-        完成标准及输出结果: '1',
-        备注: '1'
+        下周重点工作计划: '',
+        完成标准及输出结果: '',
+        备注: ''
       }
     ]
     this.tabledatas.map(i => {
@@ -605,5 +609,11 @@ export default {
 
 <style lang="postcss" scoped>
 .write-weekly {
+}
+</style>
+<style type="text/css">
+.scrollbar {
+  max-height: 590px;
+  overflow: auto;
 }
 </style>
