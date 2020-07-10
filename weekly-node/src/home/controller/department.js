@@ -175,7 +175,7 @@ module.exports = class extends Base {
       if (this.user.role == 2) {
         departmentMemberList = await this.model('user').field('id, company_id, company_name, department_id, department_name, email, role, role_name, username, usernum,telephone').where({
           company_id: this.user.company_id,
-          role: {'>=': this.user.role}
+          role: {'>': this.user.role}
         }).select();
       } else if (this.user.role == 3) {
         departmentMemberList = await this.model('user').field('id, company_id, company_name, department_id, department_name, email, role, role_name, username, usernum,telephone').where({

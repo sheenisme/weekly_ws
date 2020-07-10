@@ -12,13 +12,14 @@ const dashBoard = () => import('@/views/dashBoard/dashBoard')
 // 周报管理
 const weeklyView = () => import('@/views/departmentManage/weeklyView')
 const memberList = () => import('@/views/departmentManage/memberList')
-const departmentHistoryWeekly = () => import(('@/views/departmentManage/departmentHistoryWeekly'))
 
 // 写当前周
 const writeWeekly = () => import('@/views/writeWeekly/index')
 // 历史周报
 const weeklyList = () => import('@/views/weeklyList/index')
-const departmentWeelyList = () => import(('@/views/departmentManage/departmentHistoryWeekly'))
+const departmentWeeklyList = () => import(('@/views/departmentManage/departmentHistoryWeekly'))
+// 历史纪要
+const historicalSummary = () => import(('@/views//historicalSummary/historicalSummary'))
 
 // 公司管理-管理部门
 const companyManage = () => import('@/views/companyManagement/index')
@@ -117,7 +118,7 @@ export default new Router({
         name: 'adminNews',
         component: adminNews,
         meta: {
-          zhName: '管理新闻',
+          zhName: '管理纪要',
           key: '5-3',
           role: 1
         }
@@ -224,20 +225,42 @@ export default new Router({
       name: 'history',
       component: home,
       isNest: false,
-      redirect: '/departmentManage/departmentHistoryWeekly',
+      redirect: '/weekly/HistoryWeekly',
       meta: {
         zhName: '历史周报列表',
         key: '4',
         role: 4
       },
       children: [{
-        path: '/departmentManage/departmentHistoryWeekly',
-        name: 'departmentWeelyList',
+        path: '/weekly/HistoryWeekly',
+        name: 'departmentWeeklyList',
         icon: 'el-icon-notebook-2',
-        component: departmentWeelyList,
+        component: departmentWeeklyList,
         meta: {
           zhName: '历史周报',
-          key: '3-2',
+          key: '4-1',
+          role: 4
+        }
+      }]
+    }, {
+      path: '/historicalSummary',
+      name: 'historicalSummary',
+      component: home,
+      isNest: false,
+      redirect: '/weekly/historicalSummary',
+      meta: {
+        zhName: '历史纪要列表',
+        key: '5',
+        role: 4
+      },
+      children: [{
+        path: '/weekly/historicalSummary',
+        name: 'historicalSummar',
+        icon: 'el-icon-notebook-1',
+        component: historicalSummary,
+        meta: {
+          zhName: '历史纪要',
+          key: '5-1',
           role: 4
         }
       }]

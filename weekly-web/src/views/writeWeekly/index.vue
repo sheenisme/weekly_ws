@@ -3,7 +3,7 @@
     <el-drawer size="90%"
                direction="ttb"
                :visible.sync="drawer">
-      <div style="width:1024px; position: absolute;left:20%;top:1%;">
+      <div style="width:88%; position: absolute;left:6%;right:6%;top:1%;">
         <template>
           <h3 style="text-align:center;">{{this.newsTitle}}</h3>
           <!--  v-html="this.newsContent"-->
@@ -245,8 +245,9 @@ export default {
     this.getNews().then(res => {
       // console.log(res)
       if (res.errno == 0) {
+        console.log(res.data.data)
         let newsdata = res.data.data[0]
-        // console.log(newsdata)
+        console.log(newsdata)
         for (let key in newsdata) {
           if (key == 'title') {
             this.newsTitle = newsdata[key]
