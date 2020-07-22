@@ -8,7 +8,6 @@
     <div>
       <div>
         <el-input placeholder="请输入新闻标题"
-                  style="width:603px;"
                   v-model="title">
           <template slot="prepend"> 标&nbsp;&nbsp;&nbsp;题:</template>
         </el-input>
@@ -30,14 +29,6 @@
         </el-autocomplete>
       </div>
       <div>
-        <el-input v-model="periods"
-                   style="width:303px;"
-                   placeholder="请输入期数"
-                   >
-          <template slot="prepend">期&nbsp;&nbsp;&nbsp;数:</template>
-        </el-input>
-      </div>
-      <div>
         <el-input v-model="publisher"
                    style="width:303px;"
                    placeholder="请输入发布人"
@@ -48,7 +39,7 @@
       <el-button type="danger"
                  @click="submitNews">&nbsp;&nbsp;提&nbsp;交&nbsp;&nbsp;
       </el-button>
-      <div class="ql-editor">
+      <div>
         <el-card style="height: 610px;">
           <quill-editor v-model="content"
                         ref="myQuillEditor"
@@ -70,12 +61,6 @@ import {
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-import Quill from 'quill'
-import QuillBetterTable from 'quill-better-table'
-
-Quill.register({
-  'modules/better-table': QuillBetterTable
-}, true)
 
 export default {
   components: {
@@ -84,32 +69,7 @@ export default {
   data () {
     return {
       content: null,
-      periods: null,
-      editorOption: {
-        theme: 'snow',
-        modules: {
-          toolbar: {
-            container: [
-              [{ 'header': 1 }, { 'header': 2 }],
-              [{ 'align': [] }],
-              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-              [{ 'size': ['small', false, 'large', 'huge'] }],
-              [{ 'font': [] }],
-              [{ 'color': [] }, { 'background': [] }],
-              ['bold', 'italic', 'underline', 'strike'],
-              ['blockquote', 'code-block'],
-              [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-              [{ 'script': 'sub' }, { 'script': 'super' }],
-              [{ 'indent': '-1' }, { 'indent': '+1' }],
-              [{ 'direction': 'rtl' }],
-              ['clean'],
-              ['link', 'image', 'video', 'table']
-            ]
-          },
-          table: true
-        },
-        placeholder: '点击输入 ...'
-      },
+      editorOption: {},
       title: '',
       // 获取当前时间
       currentDate: this.getNowFormatDate(),
@@ -149,7 +109,6 @@ export default {
         date: this.currentDate,
         title: this.title,
         type: this.state,
-        periods: this.periods,
         publisher: this.publisher
       }
       if (params.content) {
@@ -184,9 +143,9 @@ export default {
     },
     loadAll () {
       return [
-        { 'value': '月度总结会议' },
-        { 'value': '经营分析会议' },
-        { 'value': '其他会议' }
+        { 'value': '企管中心-月度总结会议' },
+        { 'value': '企管中心-经营分析会议' },
+        { 'value': '企管中心-其他会议' }
       ]
     },
     handleSelect (item) {

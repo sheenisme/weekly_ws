@@ -7,8 +7,8 @@
         <template>
           <h3 style="text-align:center;">{{this.newsTitle}}</h3>
           <!--  v-html="this.newsContent"-->
-            <div class="scrollbar"
-                 v-html="this.newsContent"></div>
+            <p class="scrollbar ql-editor"
+                 v-html="this.newsContent"></p>
         </template>
       </div>
     </el-drawer>

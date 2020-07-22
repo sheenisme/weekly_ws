@@ -33,13 +33,18 @@ router.beforeEach((to, from, next) => {
     store.dispatch('getUserInfo', {}).then(response => {
       if (JSON.stringify(response.data) === '{}') {
         if (to.path !== '/weekly/login') {
+          if (to.path === '/weekly/historicalSummary') {
+            console.log('可以查看历史督办，朕准了！！！')
+            return next({ })
+          }
+          console.log('没有登录，需要先登录！！！')
+          // alert('您还没有登录，请先登录')
           return next('/weekly/login')
         }
         next()
-        console.log('1111111111')
       } else {
         if (to.path == '/weekly/login') {
-          console.log('2222222222')
+          console.log('判断角色从而返回登陆后的第一个页面！')
           if (response.data.role == 1 || response.data.role == 2 || response.data.role == 3) {
             return next('/weekly/weeklyView')
           } else if (response.data.role == 4) {

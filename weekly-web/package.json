@@ -16,6 +16,8 @@
     "async-validator": "^1.8.2",
     "axios": "^0.18.0",
     "element-ui": "^2.13.2",
+    "quill": "^2.0.0-dev.4",
+    "quill-better-table": "^1.2.10",
     "vue": "^2.5.2",
     "vue-count-to": "^1.0.13",
     "vue-quill-editor": "^3.0.6",

@@ -27,6 +27,7 @@ const companyManage = () => import('@/views/companyManagement/index')
 const adminCompany = () => import('@/views/admin/adminCompany')
 const adminLog = () => import('@/views/admin/adminLog')
 const adminNews = () => import(('@/views/admin/adminNews'))
+const editNews = () => import(('@/views//historicalSummary/historicalSummary_enableEdit'))
 
 Vue.use(Router)
 
@@ -118,8 +119,18 @@ export default new Router({
         name: 'adminNews',
         component: adminNews,
         meta: {
-          zhName: '管理纪要',
+          zhName: '新增督办',
           key: '5-3',
+          role: 1
+        }
+      },
+      {
+        path: '/admin/editNews',
+        name: 'editNews',
+        component: editNews,
+        meta: {
+          zhName: '修改督办',
+          key: '5-4',
           role: 1
         }
       }
@@ -249,8 +260,8 @@ export default new Router({
       isNest: false,
       redirect: '/weekly/historicalSummary',
       meta: {
-        zhName: '历史纪要列表',
-        key: '5',
+        zhName: '历史督办列表',
+        key: '10',
         role: 4
       },
       children: [{
@@ -259,8 +270,8 @@ export default new Router({
         icon: 'el-icon-notebook-1',
         component: historicalSummary,
         meta: {
-          zhName: '历史纪要',
-          key: '5-1',
+          zhName: '历史督办',
+          key: '10-1',
           role: 4
         }
       }]

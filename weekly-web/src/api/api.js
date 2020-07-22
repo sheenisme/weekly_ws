@@ -134,6 +134,9 @@ export default {
   /* 获得新闻 */
   getNews: params => {
     return service.post('/home/news/getNews', params)
+  },
+  updateNews: params => {
+    return service.post('/home/news/updateNews', params)
   }
   /**
    * API demo

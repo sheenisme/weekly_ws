@@ -171,3 +171,8 @@ export const addNews = ({ commit }, params) => {
     return response
   })
 }
+export const updateNews = ({ commit }, params) => {
+  return Api.updateNews(params).then(response => {
+    return response
+  })
+}

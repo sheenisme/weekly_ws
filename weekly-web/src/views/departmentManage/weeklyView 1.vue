@@ -590,6 +590,7 @@ span.content1 {
   height: 36px;
   line-height: 36px;
   width: 30%;
+  overflow: auto;
 }
 span.content2 {
   display: block;
@@ -601,6 +602,7 @@ span.content2 {
   height: 36px;
   line-height: 36px;
   width: 25%;
+  overflow: auto;
 }
 span.content3 {
   display: block;
@@ -612,9 +614,11 @@ span.content3 {
   height: 36px;
   line-height: 36px;
   width: 14%;
+  overflow: auto;
 }
 span.clearcenter {
   text-align: left;
+  overflow: auto;
 }
 span.rightContent {
   border-right: 1px solid #ebeef5;

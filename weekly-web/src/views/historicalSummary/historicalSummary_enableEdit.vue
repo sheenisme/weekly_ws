@@ -14,12 +14,12 @@
               <p class="scrollbar ql-editor"
                  v-html="props.row.content"></p>
             </el-form-item>
-            <!-- <el-form-item label="操作"
+            <el-form-item label="操作"
                           width="100%">
                 <el-button @click="editClick(props.row)"
                            type="text"
                            size="small">编辑</el-button>
-            </el-form-item> -->
+            </el-form-item>
           </el-form>
         </template>
       </el-table-column>
