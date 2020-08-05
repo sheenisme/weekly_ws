@@ -1,6 +1,6 @@
 <template>
   <div class="member-list">
-    <el-row v-if="userInfo.role == 2 || userInfo.role == 3">
+    <el-row v-if="userInfo.role == 3">
       <div class="title"><span v-if="userInfo.role == 2">公司</span><span v-else>部门成员</span>管理</div>
       <el-row>
         <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
@@ -64,6 +64,145 @@
               <el-button v-if="scope.row.usernum == userInfo.usernum" @click="addMember('edit',scope.row)" type="text" size="small">编辑</el-button>
             </template>
           </el-table-column>
+        </el-table>
+        <div class="pagination-box" v-if="memberList.length>0">
+          <el-pagination
+            background
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage"
+            layout="total, prev, pager, next"
+            :total="memberListTotal">
+          </el-pagination>
+        </div>
+        <!--dialog-->
+        <el-dialog
+          :title="dialogTitle"
+          :visible.sync="confirmCreateVisiable"
+          :before-close="handleClose"
+          width="600px"
+          center>
+          <div>
+            <el-form label-position="right" label-width="80px" :model="formUser">
+              <el-form-item label="姓名">
+                <el-input v-model="formUser.username" maxlength="10"></el-input>
+              </el-form-item>
+              <el-form-item label="工号">
+                <el-input v-if="dialogTitle == '添加人员信息'"  v-model="formUser.usernum" maxlength="13"></el-input>
+                <el-input v-if="dialogTitle == '修改人员信息'" :disabled="true" v-model="formUser.usernum" maxlength="13"></el-input>
+              </el-form-item>
+              <el-form-item label="部门名称"   v-if="dialogTitle == '添加人员信息' && userInfo.role !== 3">
+                <el-select v-model="formUser.department_id" @change="changeDepartment()" placeholder="请选择">
+                  <el-option
+                    v-for="item in departmentListOptions"
+                    :key="item.department_id"
+                    :label="item.department_name"
+                    :value="item.department_id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="部门职务"   v-if="dialogTitle == '添加人员信息' && userInfo.role !== 3">
+                <el-select v-model="formUser.role" placeholder="请选择">
+                  <el-option
+                    v-for="item in roleListOptions"
+                    :key="item.role"
+                    :label="item.role_name"
+                    :value="item.role">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="邮箱">
+                <el-input v-model="formUser.email" maxlength="60"></el-input>
+              </el-form-item>
+              <el-form-item label="手机号">
+                <el-input v-model="formUser.telephone" maxlength="11" oninput="this.value=this.value.replace(/[^\d]/g,'')" ></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+          <span slot="footer" class="dialog-footer">
+          <el-button @click="handleClose()">取 消</el-button>
+          <el-button v-if="dialogTitle == '添加人员信息'" type="primary" :loading="loadingFlag" @click="successConfirm('add')">确 定</el-button>
+          <el-button v-if="dialogTitle == '修改人员信息'" type="primary" :loading="loadingFlag" @click="successConfirm('edit')">确 定</el-button>
+        </span>
+        </el-dialog>
+        <!--dialog small-->
+        <el-dialog
+          :title="dialogTitle"
+          :visible.sync="confirmDeleteVisiable"
+          :before-close="handleClose"
+          width="400px"
+          center>
+          <p>{{dialogBody}}</p>
+          <span slot="footer" class="dialog-footer">
+          <el-button @click="handleClose()">取 消</el-button>
+          <el-button type="primary" :loading="loadingFlag" @click="confirmDelete()">确 定</el-button>
+        </span>
+        </el-dialog>
+      </div>
+    </el-row>
+    <el-row v-if="userInfo.role == 2">
+      <div class="title"><span>公司全部成员信息查询</span></div>
+      <el-row>
+        <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <el-col :span="16">
+            <el-input placeholder="请输入内容" maxlength="20" v-model="searchContent" clearable class="input-with-select">
+              <el-button slot="append" icon="el-icon-search" @click="search()">查询</el-button>
+            </el-input>
+          </el-col>
+        </el-col>
+        <!-- <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+          <div class="button-style">
+            <el-button type="primary" @click="addMember('add')">添加成员</el-button>
+          </div>
+        </el-col> -->
+      </el-row>
+      <div class="member-box">
+        <el-table
+          :data="memberList"
+          border
+          style="width: 100%">
+          <el-table-column
+            prop="usernum"
+            label="工号"
+            width="160">
+          </el-table-column>
+          <el-table-column
+            prop="username"
+            label="姓名"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="company_name"
+            label="公司名称">
+          </el-table-column>
+          <el-table-column
+            prop="department_name"
+            label="部门名称"
+            width="140">
+          </el-table-column>
+          <el-table-column
+            prop="role_name"
+            label="职位"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="email"
+            label="邮箱"
+            width="160">
+          </el-table-column>
+          <el-table-column
+            prop="telephone"
+            label="联系方式"
+            width="160">
+          </el-table-column>
+          <!-- <el-table-column
+            label="操作"
+            width="100">
+            <template slot-scope="scope">
+              <el-button v-if="scope.row.usernum !== userInfo.usernum" @click="addMember('edit',scope.row)" type="text" size="small">编辑</el-button>
+              <el-button v-if="scope.row.usernum !== userInfo.usernum" @click="deleteMember(scope.row)" type="text" size="small">移除</el-button>
+              <el-button v-if="scope.row.usernum == userInfo.usernum" @click="addMember('edit',scope.row)" type="text" size="small">编辑</el-button>
+            </template>
+          </el-table-column> -->
         </el-table>
         <div class="pagination-box" v-if="memberList.length>0">
           <el-pagination

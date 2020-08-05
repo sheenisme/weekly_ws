@@ -2,39 +2,36 @@
   <div class="view-weekly">
     <el-row v-if="userInfo.role == 2 || userInfo.role == 3">
       <div class="title">历史周报：--<span v-if="userInfo.role == 2">公司</span><span v-else>部门</span>周报概览</div>
-      <!-- <p>公司<span v-if="userInfo.department_name">--部门</span>：<span>{{userInfo.company_name}}<span v-if="userInfo.department_name">--{{userInfo.department_name}}</span></span></p>
+      <p>公司<span v-if="userInfo.department_name">--部门</span>：<span>{{userInfo.company_name}}<span v-if="userInfo.department_name">--{{userInfo.department_name}}</span></span></p>
       <p>
-          <label>
+        <label>
           <span v-if="userInfo.role == 2">公司人员({{departmentMember.length}}人)：</span>
           <span v-else>部门人员({{departmentMember.length}}人)：</span>
           <el-tag v-for="(item, index) in departmentMember"
-                  :key="index">{{item.username}}({{item.usernum}})</el-tag>
+                  :key="index"
+                  @click.native="search_dir(item.usernum)">{{item.username}}</el-tag>
         </label>
-      </p> -->
-      <!-- <p>
-        <label>未填写周报(<span class="data-style">{{unWeeklyData.length}}人：</span>)
-          <el-tag v-for="(item, index) in unWeeklyData"
-                  :key="index">{{item.username}}({{item.usernum}})</el-tag></label>
-      </p> -->
-      <!-- <p><label>已填周报(<span class="data-style">{{weeklyTableData.length}}人</span>)如下所示：</label></p>
-      <el-table :data="weeklyTableData"
-                border
-                style="width: 100%">
-        <el-table-column label="周报日期"
-                         width="180">
-          <template slot-scope="scope">
-            <span>{{scope.row.startDate | dateFormat}}</span>--<span>{{scope.row.endDate | dateFormat}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="username"
-                         label="姓名"
-                         width="120">
-        </el-table-column>
-        <el-table-column prop="usernum"
-                         label="工号"
-                         width="80">
-        </el-table-column> -->
+      </p>
       <p><label>历史周报(<span class="data-style">{{weeklyTableData.length}}份</span>)如下所示：</label></p>
+      <div class="search-group">
+        <el-col :xs="12"
+                :sm="12"
+                :md="12"
+                :lg="12"
+                :xl="12">
+          <el-col :span="16">
+            <el-input placeholder="请输入内容"
+                      maxlength="20"
+                      v-model="searchContent"
+                      clearable
+                      class="input-with-select">
+              <el-button slot="append"
+                         icon="el-icon-search"
+                         @click="search()">查询</el-button>
+            </el-input>
+          </el-col>
+        </el-col>
+      </div>
       <el-table :data="weeklyTableData"
                 border
                 style="width: 100%">
@@ -46,8 +43,7 @@
               ---<span style="font-size:16px;font-weight:bold;">{{scope.row.endDate | dateFormat}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
               <span style="font-size:16px;font-weight:bold;">提交时间：{{scope.row.time | dateTimeFormat}}</span><br>
             </div>
-            <p v-html="scope.row.content"
-               style="margin-top: 0px;margin-bottom: 0px;"></p>
+            <p v-html="scope.row.content" class="weeklycontent"></p>
           </template>
         </el-table-column>
         <!-- <el-table-column label="最近一次提交日期"
@@ -67,6 +63,7 @@
           </template>
         </el-table-column> -->
       </el-table>
+      <!-- 页码显示和设置  -->
       <div class="pagination-box"
            v-if="weeklyTableData.length>0">
         <el-pagination background
@@ -105,10 +102,30 @@
         <label>
           <span>部门人员({{departmentMember.length}}人)：</span>
           <el-tag v-for="(item, index) in departmentMember"
-                  :key="index">{{item.username}}</el-tag>
+                  :key="index"
+                  @click.native="search_dir(item.usernum)">{{item.username}}</el-tag>
         </label>
       </p>
       <p><label>历史周报(<span class="data-style">{{weeklyTableData.length}}份</span>)如下所示：</label></p>
+      <div class="search-group">
+        <el-col :xs="12"
+                :sm="12"
+                :md="12"
+                :lg="12"
+                :xl="12">
+          <el-col :span="16">
+            <el-input placeholder="请输入内容"
+                      maxlength="20"
+                      v-model="searchContent"
+                      clearable
+                      class="input-with-select">
+              <el-button slot="append"
+                         icon="el-icon-search"
+                         @click="search()">查询</el-button>
+            </el-input>
+          </el-col>
+        </el-col>
+      </div>
       <el-table :data="weeklyTableData"
                 border
                 style="width: 100%">
@@ -121,7 +138,7 @@
               <span style="font-size:16px;font-weight:bold;">提交时间：{{scope.row.time | dateTimeFormat}}</span><br>
             </div>
             <p v-html="scope.row.content"
-               style="margin-top: 0px;margin-bottom: 0px;"></p>
+               class="weeklycontent"></p>
           </template>
         </el-table-column>
       </el-table>
@@ -157,7 +174,7 @@
       </el-dialog>
     </el-row>
     <el-row v-if="userInfo.role == 1">
-
+      <p> 管理员禁止查看历史周报</p>
     </el-row>
   </div>
 </template>
@@ -168,6 +185,7 @@ export default {
   data () {
     return {
       weeklyContent: '',
+      searchContent: '',
       currentDate: new Date().toLocaleDateString(),
       day: new Date().getDay(),
       weekDay: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
@@ -190,7 +208,7 @@ export default {
     /* 获取部门人员列表 */
     this.departmentMemberList()
     /* 获取已写周报列表 */
-    this.departmrntWeeklyList()
+    this.departmentWeeklyList()
   },
   computed: {
     ...mapGetters([
@@ -203,9 +221,20 @@ export default {
       'addWeekly',
       'getDepartmentWeeklyList',
       'getDepartmentHistoryWeeklyList',
-      'getDepartmentMemberList',
-      'getUnDepartmentMemberList'
+      'NoPage',
+      'getUnDepartmentMemberList',
+      'getDepartmentMemberListNoPage'
     ]),
+    // 实现查找功能
+    search () {
+      this.queryDepartmentWeeklyList(1, 10)
+    },
+    // 实现点击名字直接查找他的周报
+    search_dir (id) {
+      // console.log(id)
+      this.searchContent = id
+      this.queryDepartmentWeeklyList(1, 10)
+    },
     formatDateTime (item) {
       var date = new Date(parseInt(item))
       var y = date.getFullYear()
@@ -240,12 +269,12 @@ export default {
     handleCurrentChange (currentPage) {
       this.queryDepartmentWeeklyList(currentPage, 10)
     },
-    departmrntWeeklyList () {
+    departmentWeeklyList () {
       this.queryDepartmentWeeklyList(1, 10)
     },
     queryDepartmentWeeklyList (currentPage, pageSize) {
       /* 获取已写历史全部周报列表 */
-      this.getDepartmentHistoryWeeklyList({ currentPage, pageSize }).then(res => {
+      this.getDepartmentHistoryWeeklyList({ currentPage, pageSize, searchContent: this.searchContent }).then(res => {
         if (res.errno == 0) {
           this.weeklyTableData = res.data.data
           this.weeklyListTotal = res.data.count
@@ -271,9 +300,9 @@ export default {
       })
     },
     departmentMemberList () {
-      this.getDepartmentMemberList().then(res => {
+      this.getDepartmentMemberListNoPage().then(res => {
         if (res.errno == 0) {
-          this.departmentMember = res.data.data.map(item => {
+          this.departmentMember = res.data.map(item => {
             return {
               username: item.username,
               usernum: item.usernum
@@ -319,7 +348,7 @@ export default {
             this.$message.success(res.errmsg || '提交成功')
             this.confirmSubmitVisiable = false
             this.editWeeklyContentRow = ''
-            this.departmrntWeeklyList()
+            this.departmentWeeklyList()
           } else {
             this.$message.error(res.errmsg || '服务器开小差')
           }
@@ -346,5 +375,61 @@ export default {
     text-align: right;
     margin: 10px 0px;
   }
+}
+
+</style>
+<style type="text/css">
+.weeklycontent{
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size:14px;
+  font-weight:normal;
+  overflow: auto;
+}
+span.content1 {
+  display: block;
+  float: left;
+  border-left: 1px solid #ebeef5;
+  border-top: 1px solid #ebeef5;
+  text-align: center;
+  height: 36px;
+  line-height: 36px;
+  width: 30%;
+  overflow: auto;
+}
+span.content2 {
+  display: block;
+  float: left;
+  border-left: 1px solid #ebeef5;
+  border-top: 1px solid #ebeef5;
+  text-align: center;
+  height: 36px;
+  line-height: 36px;
+  width: 25%;
+  overflow: auto;
+}
+span.content3 {
+  display: block;
+  float: left;
+  border-left: 1px solid #ebeef5;
+  border-top: 1px solid #ebeef5;
+  text-align: center;
+  height: 36px;
+  line-height: 36px;
+  width: 14%;
+  overflow: auto;
+}
+span.clearcenter {
+  text-align: left;
+  overflow: auto;
+}
+span.rightContent {
+  border-right: 1px solid #ebeef5;
+}
+span.bottomContent {
+  border-bottom: 1px solid #ebeef5;
+}
+span.backgroundSet {
+  background-color: rgb(249, 249, 249);
 }
 </style>

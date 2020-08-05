@@ -10,7 +10,7 @@
       <template>
         <div v-for="item in menuList"
              v-bind:key='item'>
-          <el-submenu v-if="item.isNest && item.meta.role >= userInfo.role"
+          <el-submenu v-if="item.isNest && item.meta.role >= userInfo.role "
                       :index="item.path">
             <template slot="title">
               <i :class="item.icon"></i>
@@ -25,8 +25,8 @@
               </el-menu-item>
             </template>
           </el-submenu>
-
-          <el-menu-item v-if="!item.isNest && item.meta.role >= userInfo.role"
+          <!--&& !(item.meta.role ==2 && item.meta.key !='1-2') v-if='(userInfo.role == 2 && item.meta.exp == true )'  -->
+          <el-menu-item v-if="!item.isNest && item.meta.role >= userInfo.role && ((userInfo.role === 2 && item.meta.exp !== true) || userInfo.role !==2)"
                         :key="item.children[0].path"
                         :index="item.children[0].path">
             <router-link :to="item.children[0].path">
@@ -59,9 +59,9 @@ export default {
     }
   },
   created () {
-    // console.log(this.$router.options.routes, 'this.$router.options.routes');
-    // console.log(this.menuList, 'this.menuListmenuListmenuListmenuListmenuListmenuList');
-    // console.log(this.$route.path);
+    console.log(this.$router.options.routes, 'this.$router.options.routes')
+    console.log(this.menuList, 'this.menuListmenuListmenuListmenuListmenuListmenuList')
+    console.log(this.$route.path)
   },
   methods: {
     allowUse (id) {

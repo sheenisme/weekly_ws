@@ -1,14 +1,80 @@
 <template>
-  <div class="write-weekly">
+  <div class="write-keySupervision">
     <el-drawer size="90%"
                direction="ttb"
                :visible.sync="drawer">
       <div style="width:88%; position: absolute;left:6%;right:6%;top:1%;">
         <template>
-          <h3 style="text-align:center;">{{this.newsTitle}}</h3>
-          <!--  v-html="this.newsContent"-->
+          <!-- <h3 style="text-align:center;">{{this.newsTitle}}</h3>
             <p class="scrollbar ql-editor"
-                 v-html="this.newsContent"></p>
+                 v-html="this.newsContent"></p> -->
+          <!--  重点督办显示  -->
+          <h3 style="text-align:center;">最近一期的重点督办事项</h3>
+          <el-table class="key-table"
+                    :data="nowKeysData"
+                    height="550"
+                    border
+                    style="width: 100%">
+            <el-table-column label="重点项目名称"
+                             width="230px">
+              <template slot-scope="scope">
+                <span>{{ scope.row.重点项目名称 }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="完成要求"
+                             width="210px">
+              <template slot-scope="scope">
+                <span>{{ scope.row.完成要求 }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column disabled
+                             label="时间节点"
+                             width="150px">
+              <template slot-scope="scope">
+                <span>{{ scope.row.时间节点 }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="负责人"
+                             width="150px">
+              <template slot-scope="scope">
+                <span>{{ JSON.stringify(JSON.parse(JSON.stringify(scope.row.负责人))).replace(/"/g,'').replace(/,/g,'、').replace('[','').replace(']','') }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="完成情况"
+                             width="207px">
+              <template slot-scope="scope">
+                <span>{{ scope.row.完成情况 }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="任务来源"
+                             width="160px">
+              <template slot-scope="scope">
+                <span>{{ scope.row.任务来源 }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="期数"
+                             width="150px">
+              <template slot-scope="scope">
+                <span>{{ scope.row.期数 }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="完成时间"
+                             width="150px">
+              <template slot-scope="scope">
+                <span>{{ scope.row.完成时间 }}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="pagination-box"
+               v-if="nowKeysData.length>0">
+            <el-pagination background
+                           @current-change="handleCurrentChange"
+                           :current-page.sync="currentPage"
+                           layout="total, prev, pager, next"
+                           :total="nowKeysDataTotal">
+            </el-pagination>
+          </div>
+
         </template>
       </div>
     </el-drawer>
@@ -200,8 +266,13 @@ export default {
       tabledatas2: [],
       multipleSelection: [],
       drawer: true,
-      newsTitle: '',
-      newsContent: '',
+      // 新闻的
+      // newsTitle: '',
+      // newsContent: '',
+      // 重点督办的
+      currentPage: 1,
+      nowKeysDataTotal: 0,
+      nowKeysData: [],
 
       currentDate: new Date().toLocaleDateString(),
       day: new Date().getDay(),
@@ -241,27 +312,29 @@ export default {
     }
   },
   created () {
-    // 获取新闻
-    this.getNews().then(res => {
-      // console.log(res)
-      if (res.errno == 0) {
-        console.log(res.data.data)
-        let newsdata = res.data.data[0]
-        console.log(newsdata)
-        for (let key in newsdata) {
-          if (key == 'title') {
-            this.newsTitle = newsdata[key]
-          } else if (key == 'content') {
-            this.newsContent = newsdata[key]
-          } else {
-            // console.log(key + '---' + newsdata[key])
-          }
-        }
-        // console.log(this.newsTitle + '   内容为：' + this.newsContent)
-      } else {
-        this.$message.error(res.errmsg || '服务器开小差')
-      }
-    })
+    /* 获取全部重点事项列表 */
+    this.getNowKeysList(1, 10)
+    // // 获取新闻
+    // this.getNews().then(res => {
+    //   // console.log(res)
+    //   if (res.errno == 0) {
+    //     // console.log(res.data.data)
+    //     let newsdata = res.data.data[0]
+    //     // console.log(newsdata)
+    //     for (let key in newsdata) {
+    //       if (key == 'title') {
+    //         this.newsTitle = newsdata[key]
+    //       } else if (key == 'content') {
+    //         this.newsContent = newsdata[key]
+    //       } else {
+    //         // console.log(key + '---' + newsdata[key])
+    //       }
+    //     }
+    //     // console.log(this.newsTitle + '   内容为：' + this.newsContent)
+    //   } else {
+    //     this.$message.error(res.errmsg || '服务器开小差')
+    //   }
+    // })
     // 下面部分为新增
     this.tabledatas = [
       {
@@ -299,26 +372,31 @@ export default {
       {
         下周重点工作计划: '',
         完成标准及输出结果: '',
+        完成时间点: '',
         备注: ''
       },
       {
         下周重点工作计划: '',
         完成标准及输出结果: '',
+        完成时间点: '',
         备注: ''
       },
       {
         下周重点工作计划: '',
         完成标准及输出结果: '',
+        完成时间点: '',
         备注: ''
       },
       {
         下周重点工作计划: '',
         完成标准及输出结果: '',
+        完成时间点: '',
         备注: ''
       },
       {
         下周重点工作计划: '',
         完成标准及输出结果: '',
+        完成时间点: '',
         备注: ''
       }
     ]
@@ -361,10 +439,15 @@ export default {
     })
   },
   computed: {
-    ...mapGetters([])
+    ...mapGetters(['userInfo'])
   },
   methods: {
-    // 之后为新增的代码
+    ...mapActions([
+      'getCurrentWeekly',
+      'addWeekly',
+      'getNowKeySupervision',
+      'getNews'
+    ]),
     // 单个修改
     edit_Single (row, index) {
       row.show = !row.show
@@ -466,6 +549,7 @@ export default {
         let list = {
           下周重点工作计划: '',
           完成标准及输出结果: '',
+          完成时间点: '',
           备注: ''
         }
         this.tabledatas2.push(list)
@@ -497,12 +581,6 @@ export default {
     //   this.multipleSelection = val;
     // },
 
-    // 之后为原始代码
-    ...mapActions([
-      'getCurrentWeekly',
-      'addWeekly',
-      'getNews'
-    ]),
     formatDateTime (item) {
       var date = new Date(parseInt(item))
       var y = date.getFullYear()
@@ -603,13 +681,44 @@ export default {
         console.log('输入的周报内容为：' + weekcontenttext)
         this.$message.warning('输入周报才能提交')
       }
+    },
+    // 处理页码变化
+    handleCurrentChange (currentPage) {
+      this.getNowKeysList(currentPage, 10)
+      // console.log('当前页数：', currentPage)
+    },
+    getNowKeysList (pageNum, pageSize) {
+      this.getNowKeySupervision({ pageNum, pageSize }).then(res => {
+        // console.log('查询的页数：', pageNum)
+        if (res.errno === 0) {
+          this.nowKeysDataTotal = res.data.count
+          this.currentPage = pageNum
+          this.nowKeysData = res.data.data.map(item => {
+            return {
+              id: item.id,
+              重点项目名称: item.item_name,
+              完成要求: item.item_requires,
+              时间节点: item.item_time,
+              负责人: JSON.parse(item.item_leadings),
+              完成情况: item.item_execution,
+              任务来源: item.item_sources,
+              期数: item.item_period,
+              完成时间: item.item_date,
+              show: false
+            }
+          })
+        } else {
+          this.$message.error(res.errmsg || '服务器开小差')
+        }
+        console.log(this.nowKeysData)
+      })
     }
   }
 }
 </script>
 
 <style lang="postcss" scoped>
-.write-weekly {
+.write-keySupervision {
 }
 </style>
 <style type="text/css">

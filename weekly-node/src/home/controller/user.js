@@ -88,6 +88,7 @@ module.exports = class extends Base {
                 return this.fail("原密码错误");
             }
         } catch(e) {
+            console.log(e)
             return this.fail('修改失败');
         }
     }

@@ -178,7 +178,7 @@ module.exports = class extends Base {
   async getDepartmentHistoryWeeklyListAction() {
     let page = this.post('pageNum');
     let pagesize = this.post('pageSize');
-    // const searchContent = this.post('searchContent');
+    const searchContent = this.post('searchContent');
 
     let companyNumber;
     let companyWeeklyList;
@@ -202,7 +202,7 @@ module.exports = class extends Base {
       // select * from weekly.week_week inner join weekly.week_user on week_user.usernum = week_week.usernum where week_user.comapny_id = 'eastmoney' and week_user.department_id='dataCenter'
       if (this.user.role == 2) {
         const companyWeeklyList = await this.model('week').where({
-          //'username|usernum|content': ['like', '%' + searchContent + '%'],
+          'username|usernum': ['like', '%' + searchContent + '%'],
           company_id: this.user.company_id,
           time: {'>': 1580486400000 , '<': endWeekStamp},
           role: {'>=': this.user.role}
@@ -210,7 +210,7 @@ module.exports = class extends Base {
         return this.success(companyWeeklyList);
       } else if (this.user.role == 3) {
         const departmentWeeklyList = await this.model('week').where({
-          //'username|usernum|content': ['like', '%' + searchContent + '%'],
+          'username|usernum': ['like', '%' + searchContent + '%'],
           company_id: this.user.company_id,
           department_id: this.user.department_id,
           time: {'>': 1580486400000 , '<': endWeekStamp},
@@ -219,6 +219,7 @@ module.exports = class extends Base {
         return this.success(departmentWeeklyList);
       }else if (this.user.role == 4) {
         const departmentWeeklyList = await this.model('week').where({
+          'username|usernum': ['like', '%' + searchContent + '%'],
           company_id: this.user.company_id,
           department_id: this.user.department_id,
           time: {'>': 1580486400000 , '<': endWeekStamp},

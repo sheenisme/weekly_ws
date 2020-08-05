@@ -183,7 +183,6 @@ span.content1{
   border-left:1px solid #ebeef5;
   border-top:1px solid #ebeef5;
   text-align:center;
-  font-weight:bold;
   height: 36px;
   line-height: 36px;
   width:30%;
@@ -195,7 +194,6 @@ span.content2{
   border-left:1px solid #ebeef5;
   border-top:1px solid #ebeef5;
   text-align:center;
-  font-weight:bold;
   height: 36px;
   line-height: 36px;
   width:25%;
@@ -207,7 +205,6 @@ span.content3{
   border-left:1px solid #ebeef5;
   border-top:1px solid #ebeef5;
   text-align:center;
-  font-weight:bold;
   height: 36px;
   line-height: 36px;
   width:14%;

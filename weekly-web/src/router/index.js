@@ -26,8 +26,12 @@ const companyManage = () => import('@/views/companyManagement/index')
 // 管理员-管理公司
 const adminCompany = () => import('@/views/admin/adminCompany')
 const adminLog = () => import('@/views/admin/adminLog')
+
 const adminNews = () => import(('@/views/admin/adminNews'))
 const editNews = () => import(('@/views//historicalSummary/historicalSummary_enableEdit'))
+
+const adminkeySupervision = () => import(('@/views/admin/adminkeySupervision'))
+const keySupervision = () => import(('@/views/keySupervision/index'))
 
 Vue.use(Router)
 
@@ -40,7 +44,8 @@ export default new Router({
       name: 'login',
       meta: {
         zhName: '登陆',
-        key: '0'
+        key: '0',
+        exp: false
       },
       component: login
     }, {
@@ -49,7 +54,8 @@ export default new Router({
       redirect: '/weekly/login',
       meta: {
         zhName: '登陆',
-        key: '0'
+        key: '0',
+        exp: false
       },
       component: login
     }, {
@@ -58,7 +64,8 @@ export default new Router({
       redirect: '/weekly/writeWeekly',
       meta: {
         zhName: '主页',
-        key: '1'
+        key: '1',
+        exp: false
       },
       component: home
     }, {
@@ -70,7 +77,8 @@ export default new Router({
       meta: {
         zhName: '概览',
         key: '0',
-        role: 4
+        role: 4,
+        exp: false
       },
       children: [{
         path: '/weekly/dashBoard',
@@ -80,7 +88,8 @@ export default new Router({
           //  zhName: '概览',
           zhName: '首页',
           key: '0-1',
-          role: 4
+          role: 4,
+          exp: false
         },
         component: dashBoard
       }]
@@ -93,7 +102,8 @@ export default new Router({
       meta: {
         zhName: '管理员管理',
         key: '5',
-        role: 1
+        role: 1,
+        exp: false
       },
       children: [{
         path: '/weekly/adminCompany',
@@ -102,7 +112,8 @@ export default new Router({
         meta: {
           zhName: '管理公司',
           key: '5-1',
-          role: 2
+          role: 1,
+          exp: false
         }
       }, {
         path: '/admin/adminLog',
@@ -111,7 +122,8 @@ export default new Router({
         meta: {
           zhName: '管理日志',
           key: '5-2',
-          role: 1
+          role: 1,
+          exp: false
         }
       },
       {
@@ -119,9 +131,10 @@ export default new Router({
         name: 'adminNews',
         component: adminNews,
         meta: {
-          zhName: '新增督办',
+          zhName: '新增督办1',
           key: '5-3',
-          role: 1
+          role: 1,
+          exp: false
         }
       },
       {
@@ -129,9 +142,21 @@ export default new Router({
         name: 'editNews',
         component: editNews,
         meta: {
-          zhName: '修改督办',
+          zhName: '修改督办1',
           key: '5-4',
-          role: 1
+          role: 1,
+          exp: false
+        }
+      },
+      {
+        path: '/admin/adminkeySupervision',
+        name: 'adminkeySupervision',
+        component: adminkeySupervision,
+        meta: {
+          zhName: '新增督办2',
+          key: '5-5',
+          role: 1,
+          exp: false
         }
       }
       ]
@@ -144,7 +169,8 @@ export default new Router({
       meta: {
         zhName: '公司管理',
         key: '4',
-        role: 2
+        role: 1,
+        exp: false
       },
       children: [{
         path: '/weekly/companyManage',
@@ -153,7 +179,8 @@ export default new Router({
         meta: {
           zhName: '管理部门',
           key: '4-1',
-          role: 2
+          role: 1,
+          exp: false
         }
       }]
     }, {
@@ -165,7 +192,8 @@ export default new Router({
       meta: {
         zhName: '部门管理',
         key: '1',
-        role: 3
+        role: 3,
+        exp: false
       },
       children: [{
         path: '/weekly/weeklyView',
@@ -174,7 +202,8 @@ export default new Router({
         meta: {
           zhName: '本周周报',
           key: '1-1',
-          role: 3
+          role: 3,
+          exp: true
         }
       }, {
         path: '/weekly/memberList',
@@ -183,7 +212,8 @@ export default new Router({
         meta: {
           zhName: '成员管理',
           key: '1-2',
-          role: 3
+          role: 3,
+          exp: true
         }
       }]
     }, {
@@ -195,7 +225,8 @@ export default new Router({
       meta: {
         zhName: '写周报',
         key: '2',
-        role: 4
+        role: 4,
+        exp: true
       },
       children: [{
         path: '/weekly/writeWeekly',
@@ -204,7 +235,8 @@ export default new Router({
         meta: {
           zhName: '填写周报',
           key: '2-1',
-          role: 4
+          role: 4,
+          exp: true
         },
         component: writeWeekly
       }]
@@ -217,7 +249,8 @@ export default new Router({
       meta: {
         zhName: '周报列表',
         key: '3',
-        role: 4
+        role: 4,
+        exp: true
       },
       children: [{
         path: '/weekly/weeklyList',
@@ -226,7 +259,8 @@ export default new Router({
         meta: {
           zhName: '查看周报',
           key: '3-1',
-          role: 4
+          role: 4,
+          exp: true
         },
         component: weeklyList
       }
@@ -240,7 +274,8 @@ export default new Router({
       meta: {
         zhName: '历史周报列表',
         key: '4',
-        role: 4
+        role: 4,
+        exp: false
       },
       children: [{
         path: '/weekly/HistoryWeekly',
@@ -250,29 +285,56 @@ export default new Router({
         meta: {
           zhName: '历史周报',
           key: '4-1',
-          role: 4
+          role: 4,
+          exp: false
         }
       }]
-    }, {
-      path: '/historicalSummary',
-      name: 'historicalSummary',
+    },
+    // {
+    //   path: '/historicalSummary',
+    //   name: 'historicalSummary',
+    //   component: home,
+    //   isNest: false,
+    //   redirect: '/weekly/historicalSummary',
+    //   meta: {
+    //     zhName: '历史督办列表',
+    //     key: '10',
+    //     role: 4
+    //   },
+    //   children: [{
+    //     path: '/weekly/historicalSummary',
+    //     name: 'historicalSummar',
+    //     icon: 'el-icon-notebook-1',
+    //     component: historicalSummary,
+    //     meta: {
+    //       zhName: '历史督办',
+    //       key: '10-1',
+    //       role: 4
+    //     }
+    //   }]
+    // },
+    {
+      path: '/keySupervision',
+      name: 'keySupervision',
       component: home,
       isNest: false,
-      redirect: '/weekly/historicalSummary',
+      redirect: '/weekly/keySupervision',
       meta: {
-        zhName: '历史督办列表',
-        key: '10',
-        role: 4
+        zhName: '重点督办列表',
+        key: '11',
+        role: 4,
+        exp: false
       },
       children: [{
-        path: '/weekly/historicalSummary',
-        name: 'historicalSummar',
-        icon: 'el-icon-notebook-1',
-        component: historicalSummary,
+        path: '/weekly/keySupervision',
+        name: 'keySupervision',
+        icon: 'el-icon-notebook-2',
+        component: keySupervision,
         meta: {
-          zhName: '历史督办',
-          key: '10-1',
-          role: 4
+          zhName: '重点督办',
+          key: '11-1',
+          role: 4,
+          exp: false
         }
       }]
     }

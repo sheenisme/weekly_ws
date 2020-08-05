@@ -43,21 +43,20 @@ export default {
 
 <style lang="postcss" scoped>
 .footer {
-  padding: 20px 0px;
+  padding: 5px 0px;
   & .footer-wrapper {
     width: 100%;
-    min-width: 990px;
     margin: 0 auto;
     & .footer-link-wrap {
       color: #999;
-      font-size: 12px;
+      font-size: 10px;
       text-align: center;
       /*line-height: 24px;*/
       & > a {
         color: #999;
       }
       &:last-child {
-        margin-top: 10px;
+        margin-top: 1px;
       }
       &:not(:last-child) {
         & > a:not(:last-child) {

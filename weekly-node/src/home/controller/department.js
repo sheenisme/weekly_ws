@@ -183,6 +183,17 @@ module.exports = class extends Base {
           department_id: this.user.department_id,
           role: {'>=': this.user.role}
         }).select();
+      } else if (this.user.role == 1) {
+        departmentMemberList = await this.model('user').field('id, company_id, company_name, department_id, department_name, email, role, role_name, username, usernum,telephone').where({
+          role: {'>': this.user.role}
+        }).order('role asc,department_id asc').select();
+      }
+      else if (this.user.role == 4) {
+        departmentMemberList = await this.model('user').field('id, company_id, company_name, department_id, department_name, email, role, role_name, username, usernum,telephone').where({
+          company_id: this.user.company_id,
+          department_id: this.user.department_id,
+          role: {'>=': this.user.role}
+        }).order('role asc,department_id asc').select();
       }
 
       return this.success(departmentMemberList);

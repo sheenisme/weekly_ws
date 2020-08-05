@@ -176,3 +176,24 @@ export const updateNews = ({ commit }, params) => {
     return response
   })
 }
+// 新增关于重点督办的函数
+export const getAllKeySupervision = ({ commit }, params) => {
+  return Api.getAllKeySupervision(params).then(response => {
+    return response
+  })
+}
+export const addKeySupervision = ({ commit }, params) => {
+  return Api.addKeySupervision(params).then(response => {
+    return response
+  })
+}
+export const updateKeySupervision = ({ commit }, params) => {
+  return Api.updateKeySupervision(params).then(response => {
+    return response
+  })
+}
+export const getNowKeySupervision = ({ commit }, params) => {
+  return Api.getNowKeySupervision(params).then(response => {
+    return response
+  })
+}

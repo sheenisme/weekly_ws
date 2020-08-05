@@ -137,6 +137,20 @@ export default {
   },
   updateNews: params => {
     return service.post('/home/news/updateNews', params)
+  },
+
+  // 新增关于重点督办的函数
+  addKeySupervision: params => {
+    return service.post('/home/keysupervison/addKeySupervision', params)
+  },
+  getAllKeySupervision: params => {
+    return service.post('/home/keysupervison/getAllKeySupervision', params)
+  },
+  updateKeySupervision: params => {
+    return service.post('/home/keysupervison/updateKeySupervision', params)
+  },
+  getNowKeySupervision: params => {
+    return service.post('/home/keysupervison/getNowKeySupervision', params)
   }
   /**
    * API demo
