@@ -19,7 +19,7 @@ const writeWeekly = () => import('@/views/writeWeekly/index')
 const weeklyList = () => import('@/views/weeklyList/index')
 const departmentWeeklyList = () => import(('@/views/departmentManage/departmentHistoryWeekly'))
 // 历史纪要
-const historicalSummary = () => import(('@/views//historicalSummary/historicalSummary'))
+const historicalSummary = () => import(('@/views/historicalSummary/historicalSummary'))
 
 // 公司管理-管理部门
 const companyManage = () => import('@/views/companyManagement/index')
@@ -182,37 +182,14 @@ export default new Router({
           role: 1,
           exp: false
         }
-      }]
-    }, {
-      path: '/weekly/departmentManage',
-      name: 'departmentManage',
-      isNest: true,
-      icon: 'el-icon-menu',
-      component: home,
-      meta: {
-        zhName: '部门管理',
-        key: '1',
-        role: 3,
-        exp: false
-      },
-      children: [{
-        path: '/weekly/weeklyView',
-        name: 'weeklyView',
-        component: weeklyView,
-        meta: {
-          zhName: '本周周报',
-          key: '1-1',
-          role: 3,
-          exp: true
-        }
       }, {
         path: '/weekly/memberList',
         name: 'memberList',
         component: memberList,
         meta: {
           zhName: '成员管理',
-          key: '1-2',
-          role: 3,
+          key: '4-3',
+          role: 1,
           exp: true
         }
       }]
@@ -265,6 +242,29 @@ export default new Router({
         component: weeklyList
       }
       ]
+    }, {
+      path: '/weekly/departmentWeekly',
+      name: 'departmentWeekly',
+      isNest: false,
+      component: home,
+      meta: {
+        zhName: '部门周报',
+        key: '1',
+        role: 3,
+        exp: false
+      },
+      children: [{
+        path: '/weekly/weeklyView',
+        name: 'weeklyView',
+        icon: 'el-icon-menu',
+        component: weeklyView,
+        meta: {
+          zhName: '本周周报',
+          key: '1-1',
+          role: 3,
+          exp: true
+        }
+      }]
     }, {
       path: '/weekly/HistoryWeekly',
       name: 'history',
@@ -320,7 +320,7 @@ export default new Router({
       isNest: false,
       redirect: '/weekly/keySupervision',
       meta: {
-        zhName: '重点督办列表',
+        zhName: '重点督办',
         key: '11',
         role: 4,
         exp: false
@@ -328,7 +328,7 @@ export default new Router({
       children: [{
         path: '/weekly/keySupervision',
         name: 'keySupervision',
-        icon: 'el-icon-notebook-2',
+        icon: 'el-icon-message-solid',
         component: keySupervision,
         meta: {
           zhName: '重点督办',

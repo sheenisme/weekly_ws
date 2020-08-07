@@ -70,6 +70,9 @@
       </div>
     </el-row>
     <el-row v-if="userInfo.role == 1">
+      <p> 管理员禁止查看本周周报</p>
+    </el-row>
+    <!-- <el-row v-if="userInfo.role == 1">
       <div class="title">所有周报概览</div>
       <p>今天：<span>{{currentDate}}</span>，<span>{{currentWeek}}</span></p>
       <p>
@@ -142,7 +145,7 @@
           </div>
         </div>
       </template>
-    </el-row>
+    </el-row> -->
     <!--dialog-->
     <el-dialog :title="dialogTitle"
                :visible.sync="confirmSubmitVisiable"

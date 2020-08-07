@@ -18,6 +18,34 @@
       <el-button type="danger"
                  @click="delect_More">批量删除</el-button>
       <div>
+        <div style="margin:3px auto;font-color:blue;">
+          <el-autocomplete popper-class="my-autocomplete"
+                           style="width:340px;"
+                           v-model="autoState"
+                           :fetch-suggestions="querySearch"
+                           placeholder="请输入纪要的类型"
+                           @select="handleSelect">
+            <template slot="prepend"> 类&nbsp;&nbsp;&nbsp;型:</template>
+            <i class="el-icon-edit el-input__icon"
+               slot="suffix"
+               @click="handleIconClick">
+            </i>
+            <template slot-scope="{ item }">
+              <div class="dname">{{ item.value }}</div>
+            </template>
+          </el-autocomplete>
+          <el-input v-model="periods"
+                    style="width:275px;margin-left:3px;"
+                    placeholder="请输入期数">
+            <template slot="prepend">期&nbsp;&nbsp;&nbsp;数:</template>
+          </el-input>
+          <el-input v-model="publisher"
+                   style="width:305px;margin-left:3px;"
+                   placeholder="请输入发布人"
+                   >
+          <template slot="prepend">发布人:</template>
+        </el-input>
+        </div>
         <el-table :data="tabledatas"
                   border
                   :header-cell-style="{
@@ -29,7 +57,7 @@
           <el-table-column width="39px"
                            type="selection"></el-table-column>
           <el-table-column label="重点项目名称"
-                           width="180px">
+                           width="300px">
             <template slot-scope="scope">
               <el-input v-if="scope.row.show"
                         type="textarea"
@@ -41,7 +69,7 @@
             </template>
           </el-table-column>
           <el-table-column label="完成要求"
-                           width="177px">
+                           width="280px">
             <template slot-scope="scope">
               <el-input v-if="scope.row.show"
                         type="textarea"
@@ -54,7 +82,7 @@
           </el-table-column>
           <el-table-column disabled
                            label="时间节点"
-                           width="140px">
+                           width="160px">
             <template slot-scope="scope">
               <el-date-picker v-if="scope.row.show"
                               size="small"
@@ -68,7 +96,7 @@
             </template>
           </el-table-column>
           <el-table-column label="负责人"
-                           width="158px">
+                           width="162px">
             <template slot-scope="scope">
               <el-select v-if="scope.row.show"
                          multiple
@@ -88,7 +116,7 @@
             </template>
           </el-table-column>
           <el-table-column label="完成情况"
-                           width="140px">
+                           width="154px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
                 <el-input type="textarea"
@@ -100,7 +128,7 @@
               <span v-else>{{ scope.row.完成情况 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="任务来源"
+          <!-- <el-table-column label="任务来源"
                            width="124px">
             <template slot-scope="scope">
               <span v-if="scope.row.show">
@@ -125,7 +153,7 @@
               </span>
               <p v-else>{{ scope.row.期数 }}</p>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <!-- <el-table-column label="操作"
                            width="148px">
             <template slot-scope="scope">
@@ -153,7 +181,10 @@ export default {
       // 下面6行为新增
       tabledatas: [],
       multipleSelection: [],
+      periods: null,
       states: [],
+      autoTypes: [],
+      autoState: '',
       // 获取当前时间
       currentDate: this.getNowFormatDate(),
       day: new Date().getDay(),
@@ -420,6 +451,33 @@ export default {
       }
       return flag
     },
+
+    // 类型输入建议代码
+    querySearch (queryString, cb) {
+      var autoTypes = this.autoTypes
+      var results = queryString ? autoTypes.filter(this.createFilter(queryString)) : autoTypes
+      // 调用 callback 返回建议列表的数据
+      cb(results)
+    },
+    createFilter (queryString) {
+      return (autoTypes) => {
+        return (autoTypes.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+      }
+    },
+    loadAll () {
+      return [
+        { 'value': '月度总结会议' },
+        { 'value': '经营分析会议' },
+        { 'value': '其他会议' }
+      ]
+    },
+    handleSelect (item) {
+      console.log(item)
+    },
+    handleIconClick (ev) {
+      console.log(ev)
+    },
+    // 提交督办
     submitKeySupervision () {
       this.save_More()
       if (this.judgeOption() === true) {
@@ -444,6 +502,9 @@ export default {
         this.$message.error('请全部填写表格，不要有空的！方可提交哦！！！')
       }
     }
+  },
+  mounted () {
+    this.autoTypes = this.loadAll()
   }
 }
 </script>

@@ -174,7 +174,7 @@
       </el-dialog>
     </el-row>
     <el-row v-if="userInfo.role == 1">
-      <p> 管理员禁止查看历史周报</p>
+      <p> 管理员禁止查看历史周报 </p>
     </el-row>
   </div>
 </template>
@@ -205,10 +205,15 @@ export default {
   },
   created () {
     this.currentWeek = this.weekDay[this.day]
-    /* 获取部门人员列表 */
-    this.departmentMemberList()
-    /* 获取已写周报列表 */
-    this.departmentWeeklyList()
+
+    if (this.userInfo.role == 1) {
+      ;
+    } else {
+      /* 获取部门人员列表 */
+      this.departmentMemberList()
+      /* 获取已写周报列表 */
+      this.departmentWeeklyList()
+    }
   },
   computed: {
     ...mapGetters([
@@ -291,11 +296,11 @@ export default {
             if (res.errno == 0) {
               this.unWeeklyData = res.data.data
             } else {
-              this.$message.warning('服务器出了小差')
+              this.$message.warning('服务器出了小差1')
             }
           })
         } else {
-          this.$message.error('服务器出了小差')
+          this.$message.error('服务器出了小差2')
         }
       })
     },
@@ -309,7 +314,7 @@ export default {
             }
           })
         } else {
-          this.$message.error(res.errmsg || '服务器开小差')
+          this.$message.error(res.errmsg || '服务器开小差3')
         }
       })
     },
@@ -323,7 +328,7 @@ export default {
         if (res.errno == 0) {
           this.$message.success(res.errmsg || '提交成功')
         } else {
-          this.$message.error(res.errmsg || '服务器开小差')
+          this.$message.error(res.errmsg || '服务器开小差4')
         }
       })
     },
@@ -350,7 +355,7 @@ export default {
             this.editWeeklyContentRow = ''
             this.departmentWeeklyList()
           } else {
-            this.$message.error(res.errmsg || '服务器开小差')
+            this.$message.error(res.errmsg || '服务器开小差5')
           }
           this.loadingFlag = false
         })

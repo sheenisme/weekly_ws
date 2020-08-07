@@ -1,19 +1,27 @@
 <template>
   <div class="get-keySupervision">
-    <div class="title">重点督办事项</div>
-    <div>
-    <el-tree :data="treeData"
-             :props="defaultProps"
-             @node-click="handleTreeNodeClick" ></el-tree>
-    </div>
+    <div class="title">与我相关的-重点督办事项</div>
     <div>
       <el-table class="key-table"
                 :data="keysData"
                 height="544"
                 border
                 style="width: 100%">
+        <el-table-column label="期数"
+                         width="129px">
+          <template slot-scope="scope">
+            <span v-if="scope.row.show">
+              <el-input type="textarea"
+                        :autosize="{ minRows: 1, maxRows: 3}"
+                        size="mini"
+                        placeholder="请输入内容"
+                        v-model="scope.row.期数"></el-input>
+            </span>
+            <p v-else>{{ scope.row.期数 }}</p>
+          </template>
+        </el-table-column>
         <el-table-column label="重点项目名称"
-                         width="170px">
+                         width="143px">
           <template slot-scope="scope">
             <el-input v-if="scope.row.show"
                       type="textarea"
@@ -25,7 +33,7 @@
           </template>
         </el-table-column>
         <el-table-column label="完成要求"
-                         width="190px">
+                         width="160px">
           <template slot-scope="scope">
             <el-input v-if="scope.row.show"
                       type="textarea"
@@ -38,7 +46,7 @@
         </el-table-column>
         <el-table-column disabled
                          label="时间节点"
-                         width="160px">
+                         width="99px">
           <template slot-scope="scope">
             <el-date-picker v-if="scope.row.show"
                             size="small"
@@ -52,7 +60,7 @@
           </template>
         </el-table-column>
         <el-table-column label="负责人"
-                         width="140px">
+                         width="132px">
           <template slot-scope="scope">
             <el-select v-if="scope.row.show"
                        multiple
@@ -72,7 +80,7 @@
           </template>
         </el-table-column>
         <el-table-column label="完成情况"
-                         width="193px">
+                         width="140px">
           <template slot-scope="scope">
             <span v-if="scope.row.show">
               <el-input type="textarea"
@@ -84,8 +92,21 @@
             <span v-else>{{ scope.row.完成情况 }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="任务来源"
+                         width="124px">
+          <template slot-scope="scope">
+            <span v-if="scope.row.show">
+              <el-input type="textarea"
+                        :autosize="{ minRows: 1, maxRows: 3}"
+                        size="mini"
+                        placeholder="请输入内容"
+                        v-model="scope.row.任务来源"></el-input>
+            </span>
+            <span v-else>{{ scope.row.任务来源 }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="完成时间"
-                         width="160px">
+                         width="99px">
           <template slot-scope="scope">
             <el-date-picker v-if="scope.row.show"
                             size="small"
@@ -99,7 +120,7 @@
           </template>
         </el-table-column>
         <el-table-column label="操作"
-                         width="77px">
+                         width="69px">
           <template slot-scope="scope">
             <el-button size="mini"
                        type="primary"
@@ -126,46 +147,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      // 树数据
-      treeData: [{
-        label: '一级 1',
-        children: [{
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }]
-      }, {
-        label: '一级 2',
-        children: [{
-          label: '二级 2-1',
-          children: [{
-            label: '三级 2-1-1'
-          }]
-        }, {
-          label: '二级 2-2',
-          children: [{
-            label: '三级 2-2-1'
-          }]
-        }]
-      }, {
-        label: '一级 3',
-        children: [{
-          label: '二级 3-1',
-          children: [{
-            label: '三级 3-1-1'
-          }]
-        }, {
-          label: '二级 3-2',
-          children: [{
-            label: '三级 3-2-1'
-          }]
-        }]
-      }],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      },
+      // .replace(/"/g,'').replace(/,/g,'、').replace('[','').replace(']','')
       currentPage: 1,
       keysDataTotal: 0,
       keysData: [],
@@ -195,6 +177,10 @@ export default {
     }
   },
   created () {
+    /* 获取人员列表 */
+    this.departmentMemberList()
+    /* 获取全部重点事项列表 */
+    this.getKeysList(1, 10)
   },
   computed: {
     ...mapGetters(['userInfo'])
@@ -207,14 +193,6 @@ export default {
       'getAllKeySupervision',
       'updateKeySupervision'
     ]),
-    // 点击树形结构处理函数
-    handleTreeNodeClick (nodaData, node, vueCompent) {
-      console.log('节点数据是：', nodaData, '节点是：', node, 'vue组件是：', vueCompent)
-      /* 获取人员列表 */
-      this.departmentMemberList()
-      /* 获取全部重点事项列表 */
-      this.getKeysList(1, 10)
-    },
     // 获取人员列表
     departmentMemberList () {
       this.getDepartmentMemberListNoPage().then(res => {
