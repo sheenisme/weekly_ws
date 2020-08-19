@@ -59,9 +59,9 @@ export default {
     }
   },
   created () {
-    console.log(this.$router.options.routes, 'this.$router.options.routes')
-    console.log(this.menuList, 'this.menuListmenuListmenuListmenuListmenuListmenuList')
-    console.log(this.$route.path)
+    // console.log(this.$router.options.routes, 'this.$router.options.routes')
+    // console.log(this.menuList, 'this.menuListmenuListmenuListmenuListmenuListmenuList')
+    // console.log(this.$route.path)
   },
   methods: {
     allowUse (id) {

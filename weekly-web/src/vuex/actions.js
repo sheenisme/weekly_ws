@@ -2,7 +2,7 @@ import Api from '../api/api'
 import * as types from './mutation-types'
 
 // example
-export const getUserInfo = ({commit}, params) => {
+export const getUserInfo = ({ commit }, params) => {
   return Api.getUserInfo(params).then(response => {
     commit(types.USER_INFO, response.data)
     return response
@@ -177,8 +177,18 @@ export const updateNews = ({ commit }, params) => {
   })
 }
 // 新增关于重点督办的函数
-export const getAllKeySupervision = ({ commit }, params) => {
-  return Api.getAllKeySupervision(params).then(response => {
+export const getKeySupervision = ({ commit }, params) => {
+  return Api.getKeySupervision(params).then(response => {
+    return response
+  })
+}
+export const getKeysById = ({ commit }, params) => {
+  return Api.getKeysById(params).then(response => {
+    return response
+  })
+}
+export const getKeyTree = ({ commit }, params) => {
+  return Api.getKeyTree(params).then(response => {
     return response
   })
 }
@@ -194,6 +204,18 @@ export const updateKeySupervision = ({ commit }, params) => {
 }
 export const getNowKeySupervision = ({ commit }, params) => {
   return Api.getNowKeySupervision(params).then(response => {
+    return response
+  })
+}
+// 提交下周周报计划
+export const addNextContent = ({ commit }, params) => {
+  return Api.addNextContent(params).then(response => {
+    return response
+  })
+}
+// 获取计划
+export const getNextContent = ({ commit }, params) => {
+  return Api.getNextContent(params).then(response => {
     return response
   })
 }

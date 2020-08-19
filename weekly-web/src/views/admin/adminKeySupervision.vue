@@ -181,9 +181,10 @@ export default {
       // 下面6行为新增
       tabledatas: [],
       multipleSelection: [],
-      periods: null,
       states: [],
       autoTypes: [],
+      periods: null,
+      publisher: '',
       autoState: '',
       // 获取当前时间
       currentDate: this.getNowFormatDate(),
@@ -232,45 +233,35 @@ export default {
         完成要求: '',
         时间节点: '',
         负责人: null,
-        完成情况: '',
-        任务来源: 'XXX会议',
-        期数: '2020年7月29日'
+        完成情况: ''
       },
       {
         重点项目名称: '',
         完成要求: '',
         时间节点: '',
         负责人: null,
-        完成情况: '',
-        任务来源: 'XXX会议',
-        期数: '2020年7月29日'
+        完成情况: ''
       },
       {
         重点项目名称: '',
         完成要求: '',
         时间节点: '',
         负责人: null,
-        完成情况: '',
-        任务来源: 'XXX会议',
-        期数: '2020年7月29日'
+        完成情况: ''
       },
       {
         重点项目名称: '',
         完成要求: '',
         时间节点: '',
         负责人: null,
-        完成情况: '',
-        任务来源: 'XXX会议',
-        期数: '2020年7月29日'
+        完成情况: ''
       },
       {
         重点项目名称: '',
         完成要求: '',
         时间节点: '',
         负责人: null,
-        完成情况: '',
-        任务来源: 'XXX会议',
-        期数: '2020年7月29日'
+        完成情况: ''
       }
     ]
     this.tabledatas.map(i => {
@@ -388,8 +379,6 @@ export default {
           时间节点: '',
           负责人: null,
           完成情况: '',
-          任务来源: 'XXX会议',
-          期数: '2020年7月29日',
           show: true
         }
         this.tabledatas.push(list)
@@ -472,6 +461,7 @@ export default {
       ]
     },
     handleSelect (item) {
+      // console.log(this.autoState)
       console.log(item)
     },
     handleIconClick (ev) {
@@ -480,11 +470,17 @@ export default {
     // 提交督办
     submitKeySupervision () {
       this.save_More()
+
       if (this.judgeOption() === true) {
-        //  console.log('提交的重点表格内容为', this.tabledatas)
+        // console.log('提交的重点表格内容为', this.tabledatas)
+        // console.log('抬头是：', this.autoState, this.periods, this.publisher)
+
         var params = {
           content: this.tabledatas,
-          date: new Date().toLocaleDateString()
+          date: this.getNowFormatDate(),
+          type: this.autoState,
+          period: this.periods,
+          publisher: this.publisher
         }
         if (params.content) {
           console.log('submitKeySupervision--传到后台了这些：', params)

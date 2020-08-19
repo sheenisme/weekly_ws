@@ -6,11 +6,10 @@
       <el-select v-model="selectValue"
                  clearable
                  placeholder="请选择...">
-        <el-option :value="selectValue">
+        <el-option>
           <el-tree :data="treeData"
                    :props="defaultProps"
                    accordion
-                   highlight-current
                    icon-class='el-icon-remove'
                    @node-click="handleTreeNodeClick"></el-tree>
         </el-option>
@@ -19,7 +18,7 @@
     <div>
       <el-table class="key-table"
                 :data="keysData"
-                height="760"
+                height="544"
                 border
                 style="width: 100%">
         <el-table-column label="重点项目名称"
@@ -136,7 +135,6 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      showIds: null,
       treeData: [],
       defaultProps: {
         children: 'child',
@@ -258,16 +256,10 @@ export default {
       if (nodeData.lids) {
         console.log('将要查询这些ID:', JSON.stringify(nodeData.lids), '会议期数是：', JSON.stringify(nodeData.label))
         this.selectValue = nodeData.label
-        this.showIds = nodeData.lids
-        this.getKeysListById(1, 10)
+        this.getKeysListById(1, 10, nodeData.lids)
       } else {
         console.log('点击的不是叶子节点！！！')
       }
-    },
-
-    // 点击选择器后处理组件
-    handlSelectClick () {
-      console.log('选择器处理事件！')
     },
     // 获取人员列表
     departmentMemberList () {
@@ -320,8 +312,8 @@ export default {
     //   })
     // },
     // 通过id获取重点督办列表
-    getKeysListById (pageNum, pageSize) {
-      this.getKeysById({ pageNum, pageSize, ids: this.showIds }).then(res => {
+    getKeysListById (pageNum, pageSize, ids) {
+      this.getKeysById({ pageNum, pageSize, ids }).then(res => {
         // console.log('查询的页数：', pageNum)
         if (res.errno === 0) {
           this.keysDataTotal = res.data.count
@@ -341,9 +333,8 @@ export default {
         } else {
           this.$message.error(res.errmsg || '服务器开小差--getKeysListById')
         }
-        console.log(this.keysData)
+        // console.log(this.keysData)
       })
-      // console.log(this.keysData)
     },
 
     // 修改重点督办事项

@@ -16,13 +16,13 @@
                     border
                     style="width: 100%">
             <el-table-column label="重点项目名称"
-                             width="230px">
+                             width="350px">
               <template slot-scope="scope">
                 <span>{{ scope.row.重点项目名称 }}</span>
               </template>
             </el-table-column>
             <el-table-column label="完成要求"
-                             width="210px">
+                             width="260px">
               <template slot-scope="scope">
                 <span>{{ scope.row.完成要求 }}</span>
               </template>
@@ -35,27 +35,15 @@
               </template>
             </el-table-column>
             <el-table-column label="负责人"
-                             width="150px">
+                             width="180px">
               <template slot-scope="scope">
                 <span>{{ JSON.stringify(JSON.parse(JSON.stringify(scope.row.负责人))).replace(/"/g,'').replace(/,/g,'、').replace('[','').replace(']','') }}</span>
               </template>
             </el-table-column>
             <el-table-column label="完成情况"
-                             width="207px">
+                             width="317px">
               <template slot-scope="scope">
                 <span>{{ scope.row.完成情况 }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="任务来源"
-                             width="160px">
-              <template slot-scope="scope">
-                <span>{{ scope.row.任务来源 }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="期数"
-                             width="150px">
-              <template slot-scope="scope">
-                <span>{{ scope.row.期数 }}</span>
               </template>
             </el-table-column>
             <el-table-column label="完成时间"
@@ -87,6 +75,7 @@
     </p>
     <div>
       <el-button type="danger"
+                 :loading="loadingFlag"
                  @click="submitWeekly">提交</el-button>
       <el-button type="success"
                  @click="save_More">保存</el-button>
@@ -99,7 +88,7 @@
       <!-- <el-button type="primary" @click="edit_More">批量编辑</el-button>
       <el-button type="danger" @click="delect_More">批量删除</el-button>-->
       <div>
-        <el-table :data="tabledatas"
+        <el-table :data="theTableDatas"
                   border
                   :header-cell-style="{
            'background-color': '#F9F9F9',
@@ -175,7 +164,7 @@
         </el-table>
       </div>
       <div style="margin-top:20px">
-        <el-table :data="tabledatas2"
+        <el-table :data="nextTableDatas"
                   border
                   :header-cell-style="{
            'background-color': '#F9F9F9',
@@ -258,12 +247,13 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import Vue from 'vue'
 export default {
   data () {
     return {
       // 下面6行为新增
-      tabledatas: [],
-      tabledatas2: [],
+      theTableDatas: [],
+      nextTableDatas: [],
       multipleSelection: [],
       drawer: true,
       // 新闻的
@@ -335,79 +325,7 @@ export default {
     //     this.$message.error(res.errmsg || '服务器开小差')
     //   }
     // })
-    // 下面部分为新增
-    this.tabledatas = [
-      {
-        本周重点目标内容: '',
-        关键结果: '',
-        未完成原因分析: '',
-        备注: ''
-      },
-      {
-        本周重点目标内容: '',
-        关键结果: '',
-        未完成原因分析: '',
-        备注: ''
-      },
-      {
-        本周重点目标内容: '',
-        关键结果: '',
-        未完成原因分析: '',
-        备注: ''
-      },
-      {
-        本周重点目标内容: '',
-        关键结果: '',
-        未完成原因分析: '',
-        备注: ''
-      },
-      {
-        本周重点目标内容: '',
-        关键结果: '',
-        未完成原因分析: '',
-        备注: ''
-      }
-    ]
-    this.tabledatas2 = [
-      {
-        下周重点工作计划: '',
-        完成标准及输出结果: '',
-        完成时间点: '',
-        备注: ''
-      },
-      {
-        下周重点工作计划: '',
-        完成标准及输出结果: '',
-        完成时间点: '',
-        备注: ''
-      },
-      {
-        下周重点工作计划: '',
-        完成标准及输出结果: '',
-        完成时间点: '',
-        备注: ''
-      },
-      {
-        下周重点工作计划: '',
-        完成标准及输出结果: '',
-        完成时间点: '',
-        备注: ''
-      },
-      {
-        下周重点工作计划: '',
-        完成标准及输出结果: '',
-        完成时间点: '',
-        备注: ''
-      }
-    ]
-    this.tabledatas.map(i => {
-      i.show = true
-      return i
-    })
-    this.tabledatas2.map(i => {
-      i.show = true
-      return i
-    })
+
     // 下面代码为原始代码
     this.currentWeek = this.weekDay[this.day]
     let currentYear = new Date().getFullYear()
@@ -433,8 +351,30 @@ export default {
     let endWeekDate = this.formatDateTime(endWeekStamp)
     this.getCurrentWeekly().then(res => {
       if (res.errno === 0) {
-        this.weekcontenttext = res.data.content
-        this.weeklyId = res.data.id
+        // console.log(res)
+        if (res.data.id) {
+          this.theTableDatas = JSON.parse(res.data.theTable)
+          this.nextTableDatas = JSON.parse(res.data.nextTable)
+          this.weeklyId = res.data.id
+          this.initShowTheTable()
+          this.initShowNextTable()
+        } else {
+          // 获取nextcontent表里的上周写的计划
+          this.getNextContent().then(response => {
+            if (response.errno === 0) {
+              // console.log(response)
+              // 如果返回数据里长度不为0，说明nextcontent有该用户的数据
+              if (response.data.length) {
+                // console.log('获取上周写的计划:', response.data[0].content)
+                this.initTheTableByLast(response.data[0].content)
+                this.initShowTheTable()
+              } else {
+                this.initTheTable()
+              }
+            }
+          })
+          this.initNextTable()
+        }
       }
     })
   },
@@ -445,49 +385,158 @@ export default {
     ...mapActions([
       'getCurrentWeekly',
       'addWeekly',
+      'addNextContent',
+      'getNextContent',
       'getNowKeySupervision',
       'getNews'
     ]),
+    // 用上次写的计划初始化本周表格
+    initTheTableByLast (content) {
+      // console.log('content:', content)
+      var data = JSON.parse(JSON.parse(JSON.stringify(content)))
+      console.log('data:', data)
+      for (let i = 0; i < data.length; i++) {
+        let addObj = {}
+        let lineObj = data[i]
+        // console.log(lineObj)
+        addObj.本周重点目标内容 = lineObj['下周重点工作计划']
+        addObj.备注 = lineObj['备注']
+        addObj.关键结果 = ''
+        addObj.未完成原因分析 = ''
+        addObj.show = true
+        this.theTableDatas.push(addObj)
+      }
+      // console.log('theTableDatas:', this.theTableDatas)
+      // console.log('nextTableDatas:', this.nextTableDatas)
+      // replace('下周重点工作计划', '本周重点目标内容').replace('完成标准及输出结果', '关键结果').replace('完成时间点', '未完成原因分析')
+    },
+    // 用空数据初始化本周表格
+    initTheTable () {
+      this.theTableDatas = [
+        {
+          本周重点目标内容: '',
+          关键结果: '',
+          未完成原因分析: '',
+          备注: ''
+        },
+        {
+          本周重点目标内容: '',
+          关键结果: '',
+          未完成原因分析: '',
+          备注: ''
+        },
+        {
+          本周重点目标内容: '',
+          关键结果: '',
+          未完成原因分析: '',
+          备注: ''
+        },
+        {
+          本周重点目标内容: '',
+          关键结果: '',
+          未完成原因分析: '',
+          备注: ''
+        },
+        {
+          本周重点目标内容: '',
+          关键结果: '',
+          未完成原因分析: '',
+          备注: ''
+        }
+      ]
+      this.initShowTheTable()
+    },
+    // 初始化下周表格
+    initNextTable () {
+      this.nextTableDatas = [
+        {
+          下周重点工作计划: '',
+          完成标准及输出结果: '',
+          完成时间点: '',
+          备注: ''
+        },
+        {
+          下周重点工作计划: '',
+          完成标准及输出结果: '',
+          完成时间点: '',
+          备注: ''
+        },
+        {
+          下周重点工作计划: '',
+          完成标准及输出结果: '',
+          完成时间点: '',
+          备注: ''
+        },
+        {
+          下周重点工作计划: '',
+          完成标准及输出结果: '',
+          完成时间点: '',
+          备注: ''
+        },
+        {
+          下周重点工作计划: '',
+          完成标准及输出结果: '',
+          完成时间点: '',
+          备注: ''
+        }
+      ]
+      this.initShowNextTable()
+    },
+    // 初始化本周表格显示属性，让表格可修改
+    initShowTheTable () {
+      this.theTableDatas.map(i => {
+        i.show = true
+        return i
+      })
+    },
+    // 初始化下周计划表格属性，让表格可修改
+    initShowNextTable () {
+      this.nextTableDatas.map(i => {
+        i.show = true
+        return i
+      })
+    },
     // 单个修改
     edit_Single (row, index) {
       row.show = !row.show
-      this.$set(this.tabledatas, index, row)
+      this.$set(this.theTableDatas, index, row)
     },
     edit_Single2 (row, index) {
       row.show = !row.show
-      this.$set(this.tabledatas2, index, row)
+      this.$set(this.nextTableDatas, index, row)
     },
     // 批量修改
     edit_More () {
       // 保存本周
-      this.tabledatas.map((i, index) => {
+      this.theTableDatas.map((i, index) => {
         i.show = true
-        this.$set(this.tabledatas, index, i)
+        this.$set(this.theTableDatas, index, i)
       })
+      console.log(this.theTableDatas)
       // 保存下周
-      this.tabledatas2.map((i, index) => {
+      this.nextTableDatas.map((i, index) => {
         i.show = true
-        this.$set(this.tabledatas2, index, i)
+        this.$set(this.nextTableDatas, index, i)
       })
     },
     // 本周数据批量保存
     save_More () {
       // 保存本周
-      this.tabledatas.map((i, index) => {
+      this.theTableDatas.map((i, index) => {
         i.show = false
-        this.$set(this.tabledatas, index, i)
+        this.$set(this.theTableDatas, index, i)
       })
       // 保存下周
-      this.tabledatas2.map((i, index) => {
+      this.nextTableDatas.map((i, index) => {
         i.show = false
-        this.$set(this.tabledatas2, index, i)
+        this.$set(this.nextTableDatas, index, i)
       })
     },
     // //下周数据批量保存
     //  save_More2() {
-    //   this.tabledatas2.map((i, index) => {
+    //   this.nextTableDatas.map((i, index) => {
     //     i.show = false;
-    //     this.$set(this.tabledatas2, index, i);
+    //     this.$set(this.nextTableDatas, index, i);
     //   });
     // },
     // 单个删除
@@ -497,7 +546,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.tabledatas.splice(index, 1)
+        this.theTableDatas.splice(index, 1)
         this.$message({
           type: 'success',
           message: '删除成功!'
@@ -515,7 +564,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.tabledatas2.splice(index, 1)
+        this.nextTableDatas.splice(index, 1)
         this.$message({
           type: 'success',
           message: '删除成功!'
@@ -536,10 +585,10 @@ export default {
           未完成原因分析: '',
           备注: ''
         }
-        this.tabledatas.push(list)
+        this.theTableDatas.push(list)
       } else {
         this.multipleSelection.forEach((val, index) => {
-          this.tabledatas.splice(index, 0, JSON.parse(JSON.stringify(val)))
+          this.theTableDatas.splice(index, 0, JSON.parse(JSON.stringify(val)))
         })
       }
     },
@@ -552,26 +601,26 @@ export default {
           完成时间点: '',
           备注: ''
         }
-        this.tabledatas2.push(list)
+        this.nextTableDatas.push(list)
       } else {
         this.multipleSelection.forEach((val, index) => {
-          this.tabledatas2.splice(index, 0, JSON.parse(JSON.stringify(val)))
+          this.nextTableDatas.splice(index, 0, JSON.parse(JSON.stringify(val)))
         })
       }
     },
     // // 批量删除
     // delect_More() {
-    //   for (let i = 0; i < this.tabledatas.length; i++) {
-    //     const element = this.tabledatas[i];
+    //   for (let i = 0; i < this.theTableDatas.length; i++) {
+    //     const element = this.theTableDatas[i];
     //     element.id = i;
     //   }
     //   if (this.multipleSelection.length === 0) {
     //     this.$message.error("请先至少选择一项");
     //   }
     //   this.multipleSelection.forEach(element => {
-    //     this.tabledatas.forEach((e, i) => {
+    //     this.theTableDatas.forEach((e, i) => {
     //       if (element.id === e.id) {
-    //         this.tabledatas.splice(i, 1);
+    //         this.theTableDatas.splice(i, 1);
     //       }
     //     });
     //   });
@@ -600,8 +649,8 @@ export default {
       // 下面为新增
       this.save_More()
       let weekcontenttext = '<span class="content1 backgroundSet">本周重点目标内容(O)</span><span class="content1 backgroundSet">关键结果(KRs)</span><span class="content2 backgroundSet">未完成原因分析</span><span class="content3 backgroundSet rightContent">备注</span><br>'
-      let str1 = JSON.parse(JSON.stringify(this.tabledatas))
-      let str2 = JSON.parse(JSON.stringify(this.tabledatas2))
+      let str1 = JSON.parse(JSON.stringify(this.theTableDatas))
+      let str2 = JSON.parse(JSON.stringify(this.nextTableDatas))
       let keys1 = {
         本周重点目标内容: '',
         关键结果: '',
@@ -658,20 +707,45 @@ export default {
         }
         weekcontenttext += '<br>'
       }
-      console.log('即将要进入数据库的周报内容为：')
-      console.log(weekcontenttext)
-      // 下面为原始代码
+      // 判断有没有重复提交，防止多次提交bug
+      this.getCurrentWeekly().then(res => {
+        if (res.errno == 0) {
+          this.weeklyId = res.data.id
+        }
+      })
+      // console.log('即将要进入数据库的周报内容为：')
+      // console.log(weekcontenttext)
       var params = {
         content: weekcontenttext,
         date: this.currentDate,
-        id: this.weeklyId
+        id: this.weeklyId,
+        theTable: JSON.stringify(this.theTableDatas),
+        nextTable: JSON.stringify(this.nextTableDatas)
+      }
+      // 添加本周写的下周计划到nextcontent表里
+      var nextContent = {
+        content: JSON.stringify(this.nextTableDatas)
       }
       if (params.content) {
-        console.log(params.content)
+        console.log('写入数据的全部内容为：', params, nextContent)
         this.loadingFlag = true
         this.addWeekly(params).then(res => {
           if (res.errno === 0) {
-            this.$message.success(res.errmsg || '提交成功!')
+            // 周报提交成功，下面将下周工作计划放到nextcontent表里
+            if (nextContent.content) {
+              this.addNextContent(nextContent).then(res => {
+                if (res.errno === 0) {
+                  this.loadingFlag = false
+                  this.$message.success(res.errmsg || '提交成功!')
+                } else {
+                  this.$message.error(res.errmsg || '服务器开小差!--提交下周工作计划到nextcontent表时出错')
+                }
+                this.loadingFlag = false
+              })
+            } else {
+              console.log('输入的下周工作计划的内容为：' + nextContent.content)
+              this.$message.warning('下周工作计划内容不能为空！！！')
+            }
           } else {
             this.$message.error(res.errmsg || '服务器开小差!')
           }
@@ -682,6 +756,7 @@ export default {
         this.$message.warning('输入周报才能提交')
       }
     },
+
     // 处理页码变化
     handleCurrentChange (currentPage) {
       this.getNowKeysList(currentPage, 10)
@@ -701,8 +776,6 @@ export default {
               时间节点: item.item_time,
               负责人: JSON.parse(item.item_leadings),
               完成情况: item.item_execution,
-              任务来源: item.item_sources,
-              期数: item.item_period,
               完成时间: item.item_date,
               show: false
             }
@@ -710,7 +783,7 @@ export default {
         } else {
           this.$message.error(res.errmsg || '服务器开小差')
         }
-        console.log(this.nowKeysData)
+        // console.log(this.nowKeysData)
       })
     }
   }

@@ -143,14 +143,27 @@ export default {
   addKeySupervision: params => {
     return service.post('/home/keysupervison/addKeySupervision', params)
   },
-  getAllKeySupervision: params => {
-    return service.post('/home/keysupervison/getAllKeySupervision', params)
+  getKeySupervision: params => {
+    return service.post('/home/keysupervison/getKeySupervision', params)
+  },
+  getKeyTree: params => {
+    return service.post('/home/keysupervison/getKeyTree', params)
+  },
+  getKeysById: params => {
+    return service.post('/home/keysupervison/getKeysById', params)
   },
   updateKeySupervision: params => {
     return service.post('/home/keysupervison/updateKeySupervision', params)
   },
   getNowKeySupervision: params => {
     return service.post('/home/keysupervison/getNowKeySupervision', params)
+  },
+  // 提交下周工作计划
+  addNextContent: params => {
+    return service.post('/home/nextcontent/addNextContent', params)
+  },
+  getNextContent: params => {
+    return service.post('/home/nextcontent/getNextContent', params)
   }
   /**
    * API demo

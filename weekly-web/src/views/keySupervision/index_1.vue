@@ -192,7 +192,7 @@ export default {
       'getCurrentWeekly',
       'getDepartmentMemberListNoPage',
       'addKeySupervision',
-      'getAllKeySupervision',
+      'getKeySupervision',
       'updateKeySupervision'
     ]),
     // 获取人员列表
@@ -218,7 +218,7 @@ export default {
     },
     // 获取重点督办列表
     getKeysList (pageNum, pageSize) {
-      this.getAllKeySupervision({ pageNum, pageSize }).then(res => {
+      this.getKeySupervision({ pageNum, pageSize }).then(res => {
         // console.log('查询的页数：', pageNum)
         if (res.errno === 0) {
           this.keysDataTotal = res.data.count
