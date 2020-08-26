@@ -39,7 +39,7 @@ export default {
   body {
     width: 100%;
     height: 100%;
-    background-color: #eee !important;
+    background-color: #ffffff !important;
     margin: 0;
     padding: 0;
     overflow-y: hidden;

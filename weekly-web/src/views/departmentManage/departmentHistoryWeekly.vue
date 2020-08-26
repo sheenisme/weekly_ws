@@ -12,7 +12,7 @@
                   @click.native="search_dir(item.usernum)">{{item.username}}</el-tag>
         </label>
       </p>
-      <p><label>历史周报(<span class="data-style">{{weeklyTableData.length}}份</span>)如下所示：</label></p>
+      <p><label>历史周报(<span class="data-style">{{weeklyListTotal}}份</span>)如下所示：</label></p>
       <div class="search-group">
         <el-col :xs="12"
                 :sm="12"
@@ -278,8 +278,10 @@ export default {
       this.queryDepartmentWeeklyList(1, 10)
     },
     queryDepartmentWeeklyList (currentPage, pageSize) {
+      console.log('当前页面数：', currentPage, '页面大小是：', pageSize)
       /* 获取已写历史全部周报列表 */
       this.getDepartmentHistoryWeeklyList({ currentPage, pageSize, searchContent: this.searchContent }).then(res => {
+        console.log('已写历史全部周报列表的返回结果res', res)
         if (res.errno == 0) {
           this.weeklyTableData = res.data.data
           this.weeklyListTotal = res.data.count
@@ -435,6 +437,13 @@ span.bottomContent {
   border-bottom: 1px solid #ebeef5;
 }
 span.backgroundSet {
-  background-color: rgb(249, 249, 249);
+  background-color: #AAD4D4;
+  font-size: 15px;
+  color: #378A8A;
+}
+span.backgroundSetNext {
+  background-color: #fac08f;
+  font-size: 15px;
+  color: #a3642e;
 }
 </style>

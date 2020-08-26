@@ -149,7 +149,7 @@ export default {
 
 <style lang="postcss" scoped>
 .header {
-  color: #fff;
+  color: #ffffff;
   font-size: 16px;
   background: #3a79ff;
   height: 46px;

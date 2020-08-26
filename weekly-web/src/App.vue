@@ -34,7 +34,7 @@ export default {
   body {
     width: 100%;
     height: 100%;
-    background-color: #eee !important;
+    background-color: #ffffff !important;
     margin: 0;
     padding: 0;
     overflow-y: hidden;
@@ -155,7 +155,7 @@ export default {
 
   *::-webkit-scrollbar-track {
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #f5f5f5;
+    background-color: #ffffff;
   }
 
   *::-webkit-scrollbar-thumb {

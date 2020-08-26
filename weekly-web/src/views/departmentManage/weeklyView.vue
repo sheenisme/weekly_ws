@@ -471,6 +471,13 @@ span.bottomContent {
   border-bottom: 1px solid #ebeef5;
 }
 span.backgroundSet {
-  background-color: rgb(249, 249, 249);
+  background-color: #AAD4D4;
+  font-size: 15px;
+  color: #378A8A;
+}
+span.backgroundSetNext {
+  background-color: #fac08f;
+  font-size: 15px;
+  color: #a3642e;
 }
 </style>

@@ -21,7 +21,13 @@
                 :data="keysData"
                 height="760"
                 border
-                style="width: 100%">
+                style="width: 100%"
+                :header-cell-style="{
+           'background-color': '#FAC08F',
+           'font-size': '15px',
+           'color': '#A3642E',
+           'text-align': 'center',
+          }">
         <el-table-column label="重点项目名称"
                          width="170px">
           <template slot-scope="scope">

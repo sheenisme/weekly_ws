@@ -14,7 +14,12 @@
                     :data="nowKeysData"
                     height="550"
                     border
-                    style="width: 100%">
+                    style="width: 100%"
+                    :header-cell-style="{
+                      'background-color': '#FAC08F',
+                      'font-size': '15px',
+                      'color': '#A3642E',
+                      'text-align': 'center',}">
             <el-table-column label="重点项目名称"
                              width="350px">
               <template slot-scope="scope">
@@ -91,8 +96,9 @@
         <el-table :data="theTableDatas"
                   border
                   :header-cell-style="{
-           'background-color': '#F9F9F9',
-           'font-size': '14px',
+           'background-color': '#AAD4D4',
+           'font-size': '15px',
+           'color': '#378A8A',
            'text-align': 'center',
           }">
           <!-- <el-table-column type="selection"></el-table-column> -->
@@ -167,8 +173,9 @@
         <el-table :data="nextTableDatas"
                   border
                   :header-cell-style="{
-           'background-color': '#F9F9F9',
-           'font-size': '14px',
+           'background-color': '#FAC08F',
+           'font-size': '15px',
+           'color': '#A3642E',
            'text-align': 'center',
           }">
           <!-- <el-table-column type="selection"></el-table-column> -->
@@ -685,7 +692,7 @@ export default {
         }
         weekcontenttext += '<br>'
       }
-      weekcontenttext += '<span class="content1 backgroundSet">下周重点工作计划</span><span class="content1 backgroundSet">完成标准及输出结果</span><span class="content2 backgroundSet">完成时间点</span><span class="content3 backgroundSet rightContent">备注</span><br>'
+      weekcontenttext += '<span class="content1 backgroundSetNext">下周重点工作计划</span><span class="content1 backgroundSetNext">完成标准及输出结果</span><span class="content2 backgroundSetNext">完成时间点</span><span class="content3 backgroundSetNext rightContent">备注</span><br>'
       console.log(str2)
       for (let i2 of str2) {
         // console.log(i2)

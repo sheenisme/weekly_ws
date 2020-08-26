@@ -1,14 +1,15 @@
-<script src="../../router/index.js"></script>
 <template>
   <div id="login">
-    <div class="loginHeader">
+    <div class="login-header">
       <div class="box-wrapper">
         <i class="el-icon-edit-outline icon-style"></i>&nbsp;&nbsp;
-        <h1 class="system_name">{{systemName}}</h1>
+        <h1>{{systemName}}</h1>
       </div>
     </div>
     <div class="login_contenter">
+      <!--<img class="login_contenter_bg" src="../../assets/suningcloud.jpg">-->
       <div class="content_box">
+        <!-- <img class="content_box_img" src="../../assets/OKR.jpg"> -->
         <div class="content_box_form">
           <h1>登&nbsp;&nbsp;录</h1>
           <p class="form_content">
@@ -17,6 +18,7 @@
                    type="text"
                    name="userNumber"
                    placeholder="工号"
+                   @keyup.enter="submit"
                    v-model="usernum" />
           </p>
           <p class="form_content">
@@ -71,11 +73,10 @@ export default {
         this.login(param).then(res => {
           if (res.errno == 0) {
             this.$message.success(res.errmsg || '登陆成功')
-            // 根据角色可以转发到不同的页面
             if (res.data.role == '1' || res.data.role == '2' || res.data.role == '3') {
-              this.$router.push({ path: '/weekly/dashBoard' })
+              this.$router.push({ path: '/weekly/weeklyView' })
             } else if (res.data.role == '4') {
-              this.$router.push({ path: '/weekly/dashBoard' })
+              this.$router.push({ path: '/weekly/writeWeekly' })
             } else if (res.data.role == '1') {
 
             }
@@ -88,26 +89,26 @@ export default {
   }
 }
 </script>
-<style scoped>
-.login {
-  background-color: #ffffff;
-}
 
-.loginHeader {
+<style lang="postcss" scoped>
+#login {
+  overflow-y: auto;
+  height: 100%;
+}
+.login-header {
   height: 60px;
-  padding: 14px 0 14px 10%;
-  background-color: #ffffff;
-}
-
-.box-wrapper {
-  width: 97%;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-}
-
-.icon-style {
-  font-size: 26px;
+  line-height: 70px;
+  background: #ffffff;
+  & .box-wrapper {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    & .icon-style {
+      font-size: 26px;
+      color: #000000;
+    }
+  }
 }
 
 .login_icon {
@@ -118,38 +119,44 @@ export default {
 }
 
 .login_contenter {
+  position: relative;
   width: 100%;
+  min-width: 1190px;
+  height: 665px;
   background-position: 100% 100%;
   background: #55aaff;
+  //background: url("../../assets/background.jpg") repeat center 0;
 }
+
 .login_contenter_bg {
   position: absolute;
   z-index: -100;
   width: 100%;
   height: 490px;
 }
+
 .content_box {
-  width: 805px;
-  height: 480px;
-  padding: 50px 0px;
+  width: 1190px;
+  height: 100%;
+  padding: 160px 0px;
   margin: 0 auto;
   box-sizing: border-box;
 }
-
-.content_box_img_bg {
-  position: absolute;
+.content_box_img {
+  margin-top: 30px;
+  margin-left: 100px;
 }
 .content_box_form {
-  margin-top: 20px;
   box-sizing: border-box;
   display: inline-block;
-  width: 320px;
-  height: 340px;
-  vertical-align: center;
+  width: 380px;
+  height: 380px;
+  vertical-align: top;
   text-align: center;
   background-color: #ffffff;
   float: right;
   padding: 20px;
+  margin-top: 2px;
 }
 .clear {
   clear: both;
@@ -157,8 +164,9 @@ export default {
 h1 {
   list-style-type: none;
   font-family: PingFangSC-Regular;
-  font-size: 22px;
-  color: #555555;
+  color: #000000;
+  font-size: 24px;
+  margin: 0px;
   letter-spacing: 10px;
 }
 .form_content {
@@ -252,9 +260,7 @@ input:focus::-webkit-input-placeholder {
 }
 .footer {
   width: 100%;
-  height: auto;
   text-align: center;
-  background-color: #ffffff;
 }
 .footer ul {
   list-style-type: none;
@@ -312,8 +318,5 @@ input:focus::-webkit-input-placeholder {
   right: 10px;
   top: 10px;
   color: #5579ee;
-}
-.system_name {
-  letter-spacing: 2px;
 }
 </style>
