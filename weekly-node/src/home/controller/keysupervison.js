@@ -73,7 +73,7 @@ module.exports = class extends Base {
     // console.log("查询重点督办事项")
     // if (!page) { page = '1' }
     // if (!pagesize) { pagesize = '10' }
-    console.log("当前页面是:", page, "页面大小是:", pagesize)
+    // console.log("当前页面是:", page, "页面大小是:", pagesize)
     try {
       const keysList = await this.model('keysupervision').order('id asc').page(page, pagesize).countSelect();
       //  console.log("已查询全部重点督办事项", keysList)
@@ -91,10 +91,10 @@ module.exports = class extends Base {
     // console.log("查询重点督办事项")
     if (!page) { page = '1' }
     if (!pagesize) { pagesize = '10' }
-    console.log("当前页面是:", page, "页面大小是:", pagesize)
+    // console.log("当前页面是:", page, "页面大小是:", pagesize)
     try {
       const keysList = await this.model('keysupervision').where({id: ['IN', JSON.parse(ids)]}).order('id asc').page(page, pagesize).countSelect();
-      console.log("已查询全部重点督办事项", keysList)
+      // console.log("已查询全部重点督办事项", keysList)
       return this.success(keysList);
     } catch (e) {
       console.log(e)
@@ -123,9 +123,10 @@ module.exports = class extends Base {
 
   // 修改
   async updateKeySupervisionAction () {
-    const { id, item_name, item_requires, item_time, item_leadings, item_execution, item_sources, item_period, item_date } = this.post();
+    const { id, item_name, item_requires, item_time, item_leadings, item_execution, item_date } = this.post();
     try {
-      const updateRow = await this.model('keysupervision').where({ id }).update({ item_name, item_requires, item_time, item_leadings, item_execution, item_sources, item_period, item_date });
+      const updateRow = await this.model('keysupervision').where({ id }).update({ item_name, item_requires, item_time, item_leadings, item_execution, item_date });
+      // console.log("更新的重点督办事项为：", updateRow)
       return this.success(updateRow);
     } catch (e) {
       console.log(e)

@@ -471,6 +471,28 @@ span.bottomContent {
   border-bottom: 1px solid #ebeef5;
 }
 span.backgroundSet {
-  background-color: rgb(249, 249, 249);
+  background-color: #AAD4D4;
+  font-size: 15px;
+  color: #378A8A;
+}
+span.backgroundSetNext {
+  background-color: #fac08f;
+  font-size: 15px;
+  color: #a3642e;
+}
+td.th1 {
+  width: 5%;
+}
+td.th2{
+  width: 32%;
+}
+td.th3{
+  width: 32%;
+}
+td.th4{
+  width: 18%;
+}
+td.th5{
+  width: 13%;
 }
 </style>

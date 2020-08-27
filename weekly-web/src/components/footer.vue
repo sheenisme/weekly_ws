@@ -5,7 +5,7 @@
       <!--欢迎使用{{systemName}}-->
       <!--</div>-->
       <div class="footer-link-wrap">
-        <span style="font-size:22px;color:#5579ee;">&nbsp;&nbsp;强管理&nbsp;&nbsp;促发展&nbsp;&nbsp;炼内功&nbsp;&nbsp;</span>
+        <span style="font-size:14px;font-weight:bold;color:#555555;">&nbsp;&nbsp;强管理&nbsp;&nbsp;促发展&nbsp;&nbsp;炼内功&nbsp;&nbsp;</span>
       </div>
       <div class="footer-link-wrap">Copyright©&nbsp;2020
         <a href="https://www.winsensor.com"
@@ -44,6 +44,7 @@ export default {
 <style lang="postcss" scoped>
 .footer {
   padding: 5px 0px;
+  background-color: #ffffff;
   & .footer-wrapper {
     width: 100%;
     margin: 0 auto;

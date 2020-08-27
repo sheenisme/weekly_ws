@@ -455,8 +455,13 @@ export default {
     },
     loadAll () {
       return [
-        { 'value': '月度总结会议' },
-        { 'value': '经营分析会议' },
+        { 'value': '集团周例会' },
+        { 'value': '品牌规划会' },
+        { 'value': '经济运行分析会' },
+        { 'value': '总经理办公会' },
+        { 'value': '总结述职会' },
+        { 'value': '经营分析会' },
+        { 'value': '安全会议' },
         { 'value': '其他会议' }
       ]
     },

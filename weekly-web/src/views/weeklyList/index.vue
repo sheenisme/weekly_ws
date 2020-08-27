@@ -16,7 +16,8 @@
           <div style="text-align:center;">
             <span style="font-size:16px;font-weight:bold;">周报时间：{{scope.row.startDate | dateFormat}}</span>---<span style="font-size:16px;font-weight:bold;">{{scope.row.endDate | dateFormat}}</span><br>
           </div>
-          <p v-html="scope.row.content" style="margin-top: 0px;margin-bottom: 0px;"></p>
+          <p v-html="scope.row.content"
+             style="margin-top: 0px;margin-bottom: 0px;"></p>
         </template>
       </el-table-column>
       <!-- <el-table-column label="最近一次提交日期"
@@ -177,50 +178,72 @@ export default {
 }
 </style>
 <style type="text/css">
-span.content1{
-  display:block;
-  float:left;
-  border-left:1px solid #ebeef5;
-  border-top:1px solid #ebeef5;
-  text-align:center;
+span.content1 {
+  display: block;
+  float: left;
+  border-left: 1px solid #ebeef5;
+  border-top: 1px solid #ebeef5;
+  text-align: center;
   height: 36px;
   line-height: 36px;
-  width:30%;
+  width: 30%;
   overflow: auto;
 }
-span.content2{
-  display:block;
-  float:left;
-  border-left:1px solid #ebeef5;
-  border-top:1px solid #ebeef5;
-  text-align:center;
+span.content2 {
+  display: block;
+  float: left;
+  border-left: 1px solid #ebeef5;
+  border-top: 1px solid #ebeef5;
+  text-align: center;
   height: 36px;
   line-height: 36px;
-  width:25%;
+  width: 25%;
   overflow: auto;
 }
-span.content3{
-  display:block;
-  float:left;
-  border-left:1px solid #ebeef5;
-  border-top:1px solid #ebeef5;
-  text-align:center;
+span.content3 {
+  display: block;
+  float: left;
+  border-left: 1px solid #ebeef5;
+  border-top: 1px solid #ebeef5;
+  text-align: center;
   height: 36px;
   line-height: 36px;
-  width:14%;
+  width: 14%;
   overflow: auto;
 }
-span.clearcenter{
-  text-align:left;
+span.clearcenter {
+  text-align: left;
   overflow: auto;
 }
-span.rightContent{
-  border-right:1px solid #ebeef5;
+span.rightContent {
+  border-right: 1px solid #ebeef5;
 }
-span.bottomContent{
-  border-bottom:1px solid #ebeef5;
+span.bottomContent {
+  border-bottom: 1px solid #ebeef5;
 }
-span.backgroundSet{
-  background-color: rgb(249, 249, 249);
+span.backgroundSet {
+  background-color: #AAD4D4;
+  font-size: 15px;
+  color: #378A8A;
+}
+span.backgroundSetNext {
+  background-color: #fac08f;
+  font-size: 15px;
+  color: #a3642e;
+}
+td.th1 {
+  width: 5%;
+}
+td.th2{
+  width: 32%;
+}
+td.th3{
+  width: 32%;
+}
+td.th4{
+  width: 18%;
+}
+td.th5{
+  width: 13%;
 }
 </style>

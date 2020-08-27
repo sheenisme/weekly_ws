@@ -21,7 +21,13 @@
                 :data="keysData"
                 height="760"
                 border
-                style="width: 100%">
+                style="width: 100%"
+                :header-cell-style="{
+           'background-color': '#FAC08F',
+           'font-size': '15px',
+           'color': '#A3642E',
+           'text-align': 'center',
+          }">
         <el-table-column label="重点项目名称"
                          width="170px">
           <template slot-scope="scope">
@@ -387,8 +393,9 @@ export default {
         item_time: row.时间节点,
         item_leadings: JSON.stringify(row.负责人),
         item_execution: row.完成情况,
-        item_date: row.date
+        item_date: row.完成时间
       }
+      console.log('修改后的数据是', row)
       if (params.id) {
         this.updateKeySupervision(params).then(res => {
           if (res.errno === 0) {

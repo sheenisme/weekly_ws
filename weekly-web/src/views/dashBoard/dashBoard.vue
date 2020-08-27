@@ -171,7 +171,7 @@
       <p></p>
       <p style="text-align:center; font-weight:bold; font-size:20px; margin:0px;">致炜盛管理干部的一席话</p>
       <p style="text-indent:2em;  margin:0px;">OKR（Objectives and Key Results）即目标与关键结果，OKR是一种战略目标任务体系，是一套明确目标并跟踪其完成情况的管理工具和方法。OKR的主要目标是明确公司和团队的“目标”以及明确每个目标达成的可衡量的“关键结果”。 </p>
-      <div style="float:left;"><img src="../../assets/index-pic.jpg"></div>
+      <div style="float:left;"><img src="../../assets/index-pic.jpg"> &nbsp;&nbsp;</div>
       <p style="text-indent:2em;  margin:0px;">亲爱的伙伴们，路遥知马力，疾风知劲草。突如其来的全球疫情，让全球经济竞争格局发生演变，我们必须居安思危，敏捷应对。</p>
       <p style="text-indent:2em;  margin:0px;">2020年，我们必须坚定“以客户为中心”的管理和工作理念，践行“尽责、创新、厉行价值创造，铸就同一个汉威”的核心价值观，在集团的赋能支持下，大胆变革，严格管理。我们要坚持高质量发展，坚持长期主义，战略牵引，创新驱动，以“奋斗者、价值创造者”的姿态，聚焦目标，仰望星空，注重结果，脚踏实地。</p>
       <p style="text-indent:2em;  margin:0px;">管理者必须卓有成效，以使命、责任、实践为核心导向，思考自己和负责的团队：我应该为组织贡献什么？我应该对哪些工作成果负责？</p>

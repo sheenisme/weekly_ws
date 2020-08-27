@@ -208,7 +208,7 @@ module.exports = class extends Base {
 
   /* 获取公司-部门历史周报列表  部门总监，部门经理 */
   async getDepartmentHistoryWeeklyListAction () {
-    let page = this.post('pageNum');
+    let page = this.post('currentPage');
     let pagesize = this.post('pageSize');
     const searchContent = this.post('searchContent');
 

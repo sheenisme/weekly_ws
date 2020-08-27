@@ -126,34 +126,34 @@ export default new Router({
           exp: false
         }
       },
-      {
-        path: '/admin/adminNews',
-        name: 'adminNews',
-        component: adminNews,
-        meta: {
-          zhName: '新增督办1',
-          key: '5-3',
-          role: 1,
-          exp: false
-        }
-      },
-      {
-        path: '/admin/editNews',
-        name: 'editNews',
-        component: editNews,
-        meta: {
-          zhName: '修改督办1',
-          key: '5-4',
-          role: 1,
-          exp: false
-        }
-      },
+      // {
+      //   path: '/admin/adminNews',
+      //   name: 'adminNews',
+      //   component: adminNews,
+      //   meta: {
+      //     zhName: '新增督办1',
+      //     key: '5-3',
+      //     role: 1,
+      //     exp: false
+      //   }
+      // },
+      // {
+      //   path: '/admin/editNews',
+      //   name: 'editNews',
+      //   component: editNews,
+      //   meta: {
+      //     zhName: '修改督办1',
+      //     key: '5-4',
+      //     role: 1,
+      //     exp: false
+      //   }
+      // },
       {
         path: '/admin/adminkeySupervision',
         name: 'adminkeySupervision',
         component: adminkeySupervision,
         meta: {
-          zhName: '新增督办2',
+          zhName: '管理督办',
           key: '5-5',
           role: 1,
           exp: false
