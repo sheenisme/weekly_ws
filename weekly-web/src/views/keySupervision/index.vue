@@ -179,6 +179,7 @@ export default {
   },
   created () {
     this.getKeyTreeList()
+    this.getAllKeyList(1, 10)
   },
   computed: {
     ...mapGetters(['userInfo'])
@@ -189,6 +190,7 @@ export default {
       'getDepartmentMemberListNoPage',
       'addKeySupervision',
       'getKeySupervision',
+      'getAllKeySupervision',
       'getKeyTree',
       'getKeysById',
       'updateKeySupervision'
@@ -295,10 +297,14 @@ export default {
     handleCurrentChange (currentPage) {
       // this.getKeysList(currentPage, 10)
       // console.log('当前页数：', currentPage)
-      this.getKeysListById(currentPage, 10)
+      if (this.showIds === null) {
+        this.getAllKeyList(currentPage, 10)
+      } else {
+        this.getKeysListById(currentPage, 10)
+      }
     },
 
-    // // 获取重点督办列表
+    // // 获取重点督办列表---第一版的，现弃用了，代码备不时之需
     // getKeysList (pageNum, pageSize) {
     //   this.getKeySupervision({ pageNum, pageSize }).then(res => {
     //   // console.log('查询的页数：', pageNum)
@@ -325,6 +331,33 @@ export default {
     //   // console.log(this.keysData)
     //   })
     // },
+
+    // 获取全部重点事项列表--新，可用
+    getAllKeyList (pageNum, pageSize) {
+      this.getAllKeySupervision({ pageNum, pageSize }).then(res => {
+        // console.log('查询的页数：', pageNum)
+        if (res.errno === 0) {
+          this.keysDataTotal = res.data.count
+          this.currentPage = pageNum
+          this.keysData = res.data.data.map(item => {
+            return {
+              id: item.id,
+              重点项目名称: item.item_name,
+              完成要求: item.item_requires,
+              时间节点: item.item_time,
+              负责人: JSON.parse(item.item_leadings),
+              完成情况: item.item_execution,
+              完成时间: item.item_date,
+              show: false
+            }
+          })
+        } else {
+          this.$message.error(res.errmsg || '服务器开小差--getAllKeyList ')
+        }
+        console.log(this.keysData)
+        // console.log(this.keysData)
+      })
+    },
     // 通过id获取重点督办列表
     getKeysListById (pageNum, pageSize) {
       this.getKeysById({ pageNum, pageSize, ids: this.showIds }).then(res => {

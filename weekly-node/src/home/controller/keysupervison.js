@@ -84,6 +84,20 @@ module.exports = class extends Base {
     }
   }
 
+  /* 获取全部的重点督办事项 */
+  async getAllKeySupervisionAction () {
+    let page = this.post('pageNum');
+    let pagesize = this.post('pageSize');
+    try {
+      const keysList = await this.model('keysupervision').order('id desc').page(page, pagesize).countSelect();
+      //  console.log("已查询全部重点督办事项", keysList)
+      return this.success(keysList);
+    } catch (e) {
+      console.log(e)
+      return this.fail('服务器getAllKeySupervisionAction()开小差-后台');
+    }
+  }
+
   async getKeysByIdAction(){
     let page = this.post('pageNum');
     let pagesize = this.post('pageSize');

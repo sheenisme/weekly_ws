@@ -182,6 +182,11 @@ export const getKeySupervision = ({ commit }, params) => {
     return response
   })
 }
+export const getAllKeySupervision = ({ commit }, params) => {
+  return Api.getAllKeySupervision(params).then(response => {
+    return response
+  })
+}
 export const getKeysById = ({ commit }, params) => {
   return Api.getKeysById(params).then(response => {
     return response

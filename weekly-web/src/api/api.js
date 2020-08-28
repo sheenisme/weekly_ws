@@ -146,6 +146,9 @@ export default {
   getKeySupervision: params => {
     return service.post('/home/keysupervison/getKeySupervision', params)
   },
+  getAllKeySupervision: params => {
+    return service.post('/home/keysupervison/getAllKeySupervision', params)
+  },
   getKeyTree: params => {
     return service.post('/home/keysupervison/getKeyTree', params)
   },
