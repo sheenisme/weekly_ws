@@ -17,7 +17,7 @@ const memberList = () => import('@/views/departmentManage/memberList')
 const writeWeekly = () => import('@/views/writeWeekly/index')
 // 历史周报
 const weeklyList = () => import('@/views/weeklyList/index')
-const departmentWeeklyList = () => import(('@/views/departmentManage/departmentHistoryWeekly'))
+const departmentHistoryWeeklyList = () => import(('@/views/departmentManage/departmentHistoryWeekly'))
 // 历史纪要
 const historicalSummary = () => import(('@/views/historicalSummary/historicalSummary'))
 
@@ -281,7 +281,7 @@ export default new Router({
         path: '/weekly/HistoryWeekly',
         name: 'departmentWeeklyList',
         icon: 'el-icon-notebook-2',
-        component: departmentWeeklyList,
+        component: departmentHistoryWeeklyList,
         meta: {
           zhName: '历史周报',
           key: '4-1',

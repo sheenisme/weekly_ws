@@ -218,43 +218,30 @@ module.exports = class extends Base {
     const usernumList = [];
 
     if (!page) { page = '1' }
-    if (!pagesize) { pagesize = '10' }
-    /* 计算一周时间戳 */
-    const currentYear = new Date().getFullYear();
-    const currentMonth = new Date().getMonth();
-    const currentDay = new Date().getDate();
-    const currentTimeStamp = new Date(currentYear, currentMonth, currentDay, 0, 0, 0).getTime();
-    let currentDayNum = new Date().getDay();
-    if (currentDayNum == 0) currentDayNum = 7;
-    const startWeekNum = currentDayNum - 1;
-    const endWeekNum = 7 - currentDayNum + 1;
-    const startWeekStamp = currentTimeStamp - 1000 * 3600 * 24 * startWeekNum;
-    const endWeekStamp = currentTimeStamp + 1000 * (3600 * 24 * endWeekNum - 1);
+    if (!pagesize) { pagesize = '10' }  
+       
     try {
       // select * from weekly.week_week inner join weekly.week_user on week_user.usernum = week_week.usernum where week_user.comapny_id = 'eastmoney' and week_user.department_id='dataCenter'
       if (this.user.role == 2) {
         const companyWeeklyList = await this.model('week').where({
-          'username|usernum': ['like', '%' + searchContent + '%'],
+          'usernum': ['like', '%' + searchContent + '%'],
           company_id: this.user.company_id,
-          time: { '>': 1580486400000, '<': endWeekStamp },
           role: { '>=': this.user.role }
         }).order('time desc, role asc, department_id asc').page(page, pagesize).countSelect();
         return this.success(companyWeeklyList);
       } else if (this.user.role == 3) {
         const departmentWeeklyList = await this.model('week').where({
-          'username|usernum': ['like', '%' + searchContent + '%'],
+          'usernum': ['like', '%' + searchContent + '%'],
           company_id: this.user.company_id,
           department_id: this.user.department_id,
-          time: { '>': 1580486400000, '<': endWeekStamp },
           role: { '>=': this.user.role }
         }).order('time desc, role asc, company_id asc, department_id asc').page(page, pagesize).countSelect();
         return this.success(departmentWeeklyList);
       } else if (this.user.role == 4) {
         const departmentWeeklyList = await this.model('week').where({
-          'username|usernum': ['like', '%' + searchContent + '%'],
+          'usernum': ['like', '%' + searchContent + '%'],
           company_id: this.user.company_id,
           department_id: this.user.department_id,
-          time: { '>': 1580486400000, '<': endWeekStamp },
           role: { '>=': this.user.role }
         }).order('time desc,  department_id asc').page(page, pagesize).countSelect();
         return this.success(departmentWeeklyList);
